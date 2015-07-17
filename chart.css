@@ -1,56 +1,62 @@
 .man {
-	border: solid 1px #444444;
-	width: 462px;
-	position: absolute;
+  border: solid 1px #444444;
+  width: 462px;
+  position: absolute;
 }
 
 .paper {
-	position: absolute;
-	width: 462px;
-	overflow: hidden;
+  position: absolute;
+  width: 462px;
+  overflow: hidden;
 }
 
 .dev_team {
-	background-color: #CAF1FF;
+  background-color: #CAF1FF;
 }
 
 .test_ready {
-	fill : #990066;
+  fill : #00FFFF;
 }
 
 .code_review {
-	fill : yellow;
+  fill : yellow;
 }
 .in_progress {
-	fill : lightgreen;
+  fill : lightgreen;
 }
 
 .merge_ready {
-	fill : orange;
+  fill : orange;
 }
 
 .subtasks {
-	fill: #666600 !important;	
+  fill: #666600 !important;
 }
 
 body {
-    color: white;
-    background-color: black;
+  color: white;
+  background-color: black;
 }
 
 text {
-	font-size: 18px;
-	font-family: "Calibri", sans-serif;
-	fill : white;
+  font-size: 18px;
+  font-family: "Calibri", sans-serif;
+  fill : white;
+  -webkit-font-smoothing: antialiased;
 }
 
 .textline {
-	  color: white;
-	  text-anchor : start;
+  color: white;
+  text-anchor : start;
+}
+
+.message {
+  font-size : 40px;
+  text-align: center;
 }
 
 .man_name {
-	fill: white;
-	font-size : 20px;
-	font-weight : bold;
+  fill: white;
+  font-size : 20px;
+  font-weight : bold;
 }
