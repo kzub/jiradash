@@ -368,9 +368,9 @@ function draw(){
 }
 
 var TASKS_TO_WORK =
-'status = "In Progress" Or status = "To Do" OR status="Open" OR status="Code Review" OR status="Merge ready" OR status="Test ready" ' +
-'AND assignee IN (' + DEVTEAM.join(',') + ') ' +
-'ORDER BY priority,updatedDate';
+  'status = "In Progress" Or status = "To Do" OR status="Open" OR status="Code Review" OR status="Merge ready" OR status="Test ready" ' +
+  'AND assignee IN (' + DEVTEAM.join(',') + ') ' +
+  'ORDER BY priority,updatedDate';
 var query = '/jira/api/2/search?maxResults=5000&fields=id,key,assignee,status,priority,issuetype,subtasks,summary,project,timespent&jql=' + TASKS_TO_WORK;
 
 var stop = false;
