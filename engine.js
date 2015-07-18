@@ -183,11 +183,11 @@ var CONST = {
 }
 
 var PRIORITY_RANK = {
-  'ASAP'    : 4,
-  'Blocker' : 3,
-  'Critical': 2,
-  'Major'   : 1,
-  'Minor'   : 0
+  'ASAP'     : 4,
+  'Critical' : 3,
+  'Very High': 2,
+  'High'     : 1,
+  'Normal'   : 0
 };
 
 var TASK_STATUSES  = ['In Progress', 'To Do', 'Open'];
@@ -266,7 +266,7 @@ function processResults(data){
       });
     }
 
-    if(i==0){ console.log(issue); }
+    // if(i==0){ console.log(issue); }
   };
 }
 
