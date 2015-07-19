@@ -230,7 +230,8 @@ var PRIORITY_RANK = {
 
 
 var TASK_STATUSES  = ['In Progress', 'To Do', 'Open', 'WTF'];
-var TASK_STATUSES  = ['!Closed', '!Done', '!Rejected', '!Code Review', '!Merge ready', '!Test ready'];
+var TASK_STATUSES  = ['!Closed', '!Done', '!Rejected', '!Code Review', '!Merge ready', '!Test ready', '!In Release'];
+var QA_TASK_STATUSES  = ['!Closed', '!Done', '!Rejected', '!Code Review', '!Merge ready', '!In Release'];
 
 var USER_LINK = 'https://onetwotripdev.atlassian.net/issues/?jql=assignee IN ({login}) and ({statuses}) ORDER BY priority,updated';
 var TASK_LINK = 'https://onetwotripdev.atlassian.net/browse/{key}';
@@ -272,13 +273,8 @@ var BLOCKS = [
 { skip : 1 },
 
 { login : 'h3x3d', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
-{ login : 'konstantin.zubkov', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
-{ login : 'andrey.lakotko', title_link : USER_LINK, task_links : TASK_LINK, limit : DEVLIMIT},
-{ skip : 1 },
-
-{ skip : 1 },
-{ skip : 1 },
-{ login : 'anastasia.oblomova', title_link : USER_LINK, task_links : TASK_LINK, limit : DEVLIMIT}
+{ login : 'andrey.lakotko', statuses : QA_TASK_STATUSES, title_link : USER_LINK, task_links : TASK_LINK, limit : DEVLIMIT},
+{ login : 'anastasia.oblomova', statuses : QA_TASK_STATUSES, title_link : USER_LINK, task_links : TASK_LINK, limit : DEVLIMIT}
 ];
 
 /*
