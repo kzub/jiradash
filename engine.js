@@ -58,7 +58,7 @@ Storage.prototype.getPersons = function(login){
   return this.persons;
 };
 
-Storage.prototype.getTasks = function(login, status, sort){
+Storage.prototype.getTasks = function(login, statuses, sort){
   var filtered_tasks = [];
 
   for(var i = 0; i < this.tasks.length; i++){
@@ -76,16 +76,39 @@ Storage.prototype.getTasks = function(login, status, sort){
       }
     }
 
-    // filter by status
-    if(!status){
+    // filter by statuses
+    if(!statuses){
       filtered_tasks.push(task);
     }
-    else if(status instanceof Array){
-      if(status.indexOf(task.status) > -1){
+    // list of allowed/denied statuseses
+    else if(statuses instanceof Array){
+      var include = undefined; // it is important to inizialize it here!
+
+      for(var idx in statuses){
+        var status = statuses[idx];
+        // in reject mode, task will be included only if all statuese are not exists
+        if(status[0] === '!'){
+          if(include === undefined){
+            include = true;
+          }
+          if(status.slice(1) === task.status){
+            include = false;
+            break;
+          }
+        }
+        // in direct mode, task will be included if any of statuses is exist
+        else if(status === task.status){
+          include = true;
+          break;
+        }
+      }
+      // do iclude action if needed
+      if(include){
         filtered_tasks.push(task);
       }
     }
-    else if(status === task.status){
+    // just one statuses string
+    else if(statuses === task.status || (statuses[0] === '!' && statuses.slice(1) !== task.status)){
       filtered_tasks.push(task);
     }
   }
@@ -147,12 +170,19 @@ function SVG(container){
   svg.setAttribute('class', 'paper');
   container.appendChild(svg);
 
-  this.text = function(x, y, text){
+  this.text = function(x, y, text, url){
     var txt = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    svg.appendChild(txt);
     txt.setAttribute('x', x);
     txt.setAttribute('y', y);
     txt.innerHTML = text;
+
+    if(url){
+      var link = makeLink(url)
+      link.appendChild(txt);
+      svg.appendChild(link);
+    }else{
+      svg.appendChild(txt);
+    }
     return txt;
   };
 
@@ -160,16 +190,24 @@ function SVG(container){
     var svgimg = document.createElementNS('http://www.w3.org/2000/svg','image');
     svgimg.setAttributeNS(null,'height', w);
     svgimg.setAttributeNS(null,'width', h);
-    svgimg.setAttributeNS('http://www.w3.org/1999/xlink','href', url);
+    svgimg.setAttributeNS('http://www.w3.org/1999/xlink','xlink:href', url);
     svgimg.setAttributeNS(null,'x', x);
     svgimg.setAttributeNS(null,'y', y);
     svgimg.setAttributeNS(null, 'visibility', 'visible');
     svg.appendChild(svgimg);
-  }
+    return svgimg;
+  };
+
+  function makeLink(url){
+    var element = document.createElementNS('http://www.w3.org/2000/svg','a');
+    element.setAttributeNS('http://www.w3.org/1999/xlink','xlink:href', url);
+    element.setAttribute('target', '_blank');
+    return element;
+  };
 
   this.setAttribute = function(attr, value){
     svg.setAttribute(attr, value);
-  }
+  };
 };
 
 /*
@@ -190,50 +228,57 @@ var PRIORITY_RANK = {
   'Normal'   : 0
 };
 
-var TASK_STATUSES  = ['In Progress', 'To Do', 'Open'];
-var DEVTEAM   = ['alexey.sutiagin','ek','fedor.shumov','aleksandr.gladkikh','andrey.ivanov','ivan.hilkov','renat.abdusalamov','anton.ipatov','Ango','alexander.litvinov','andrey.plotnikov','andrey.iliopulo','alexander.neyasov','marina.severyanova','Yury.Kocharyan','konstantin.kalinin','konstantin.zubkov','h3x3d'];
-var DEVLIMIT  = 5;
-var LEADLIMIT = 15;
+
+var TASK_STATUSES  = ['In Progress', 'To Do', 'Open', 'WTF'];
+var TASK_STATUSES  = ['!Closed', '!Done', '!Rejected', '!Code Review', '!Merge ready', '!Test ready'];
+
+var USER_LINK = 'https://onetwotripdev.atlassian.net/issues/?jql=assignee IN ({login}) and ({statuses}) ORDER BY priority,updated';
+var TASK_LINK = 'https://onetwotripdev.atlassian.net/browse/{key}';
+var STATUS_LINK = 'https://onetwotripdev.atlassian.net/issues/?jql=assignee IN ({logins}) and ({statuses}) ORDER BY priority,updated';
+
+var DEVTEAM   = ['alexey.sutiagin','ek','fedor.shumov','aleksandr.gladkikh','andrey.ivanov','ivan.hilkov','renat.abdusalamov','anton.ipatov','Ango','alexander.litvinov','andrey.plotnikov','andrey.iliopulo','alexander.neyasov','marina.severyanova','Yury.Kocharyan','konstantin.kalinin','konstantin.zubkov','h3x3d','andrey.lakotko','anastasia.oblomova'];
+var DEVLIMIT  = 4;
+var LEADLIMIT = 14;
 
 var BLOCKS = [
-{ login : 'alexey.sutiagin', status : TASK_STATUSES, limit : LEADLIMIT},
-{ login : 'ek', status : TASK_STATUSES, limit : LEADLIMIT},
-{ login : 'fedor.shumov', status : TASK_STATUSES, limit : LEADLIMIT},
-{ status : 'Code Review', logins : DEVTEAM },
+{ login : 'alexey.sutiagin', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : LEADLIMIT},
+{ login : 'ek', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : LEADLIMIT},
+{ login : 'fedor.shumov', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : LEADLIMIT},
+{ statuses : ['Code Review'], title_link : STATUS_LINK, task_links : TASK_LINK, logins : DEVTEAM, title : 'Code Review' },
 
-{ login : 'aleksandr.gladkikh', status : TASK_STATUSES, limit : DEVLIMIT},
-{ login : 'andrey.ivanov', status : TASK_STATUSES, limit : DEVLIMIT},
-{ login : 'ivan.hilkov', status : TASK_STATUSES, limit : DEVLIMIT},
-{ status : 'Test ready', logins : DEVTEAM},
+{ login : 'aleksandr.gladkikh', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
+{ login : 'andrey.ivanov', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
+{ login : 'ivan.hilkov', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
+{ statuses : ['Test ready'], title_link : STATUS_LINK, task_links : TASK_LINK, logins : DEVTEAM, title : 'Test Ready'},
 
-{ login : 'renat.abdusalamov', status : TASK_STATUSES, limit : DEVLIMIT},
-{ login : 'anton.ipatov', status : TASK_STATUSES, limit : DEVLIMIT},
-{ login : 'Ango', status : TASK_STATUSES, limit : DEVLIMIT},
-{ status : 'Merge ready', logins : DEVTEAM},
+{ login : 'renat.abdusalamov', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
+{ login : 'anton.ipatov', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
+{ login : 'Ango', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
+{ statuses : ['Merge ready'], title_link : STATUS_LINK, task_links : TASK_LINK, logins : DEVTEAM, title : 'Merge Ready'},
 
-{ login : 'alexander.litvinov', status : TASK_STATUSES, limit : DEVLIMIT},
-{ login : 'andrey.plotnikov', status : TASK_STATUSES, limit : DEVLIMIT},
-{ login : 'andrey.iliopulo', status : TASK_STATUSES, limit : DEVLIMIT},
+{ login : 'alexander.litvinov', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
+{ login : 'andrey.plotnikov', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
+{ login : 'andrey.iliopulo', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
+{ statuses : ['In Release'], title_link : STATUS_LINK, task_links : TASK_LINK, logins : DEVTEAM, title : 'Release'},
+
+{ login : 'alexander.neyasov', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
 { skip : 1 },
-
-{ login : 'alexander.neyasov', status : TASK_STATUSES, limit : DEVLIMIT},
-{ skip : 1 },
-{ login : 'marina.severyanova', status : TASK_STATUSES, limit : DEVLIMIT},
-{ skip : 1 },
-
-{ login : 'Yury.Kocharyan', status : TASK_STATUSES, limit : DEVLIMIT},
-{ login : 'konstantin.kalinin', status : TASK_STATUSES, limit : DEVLIMIT},
-{ skip : 1 },
+{ login : 'marina.severyanova', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
 { skip : 1 },
 
-{ login : 'h3x3d', status : TASK_STATUSES, limit : DEVLIMIT},
-{ login : 'konstantin.zubkov', status : TASK_STATUSES, limit : DEVLIMIT},
-{ login : 'andrey.lakotko', limit : DEVLIMIT},
+{ login : 'Yury.Kocharyan', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
+{ login : 'konstantin.kalinin', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
+{ skip : 1 },
+{ skip : 1 },
+
+{ login : 'h3x3d', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
+{ login : 'konstantin.zubkov', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
+{ login : 'andrey.lakotko', title_link : USER_LINK, task_links : TASK_LINK, limit : DEVLIMIT},
 { skip : 1 },
 
 { skip : 1 },
 { skip : 1 },
-{ login : 'anastasia.oblomova', limit : DEVLIMIT}
+{ login : 'anastasia.oblomova', title_link : USER_LINK, task_links : TASK_LINK, limit : DEVLIMIT}
 ];
 
 /*
@@ -286,6 +331,67 @@ function drawMsg(text){
   container.innerHTML = text;
 }
 
+function prepareURL(block, urlKey, data){
+  var template = block[urlKey];
+  if(!template) {
+    return;
+  }
+
+  var vars = template.match(/\{[a-z]*\}/g);
+  for(var idx in vars){
+    var variable = vars[idx];
+
+    if(variable === '{login}'){
+      template = template.replace(variable, data.login);
+      continue;
+    }
+
+    if(variable === '{logins}'){
+      template = template.replace(variable, data.logins.join(','));
+      continue;
+    }
+
+    if(variable === '{statuses}'){
+      if(data.statuses instanceof Array){
+        var statusQuery = '';
+        for(var idx in data.statuses){
+          var status = data.statuses[idx];
+
+          if(statusQuery){
+            statusQuery += (status[0] === '!' ? ' AND ' : ' OR ');
+          }
+
+          if(status[0] === '!'){
+            statusQuery += ("status != '" + status.slice(1)) + "'";
+          }
+          else{
+           statusQuery += ("status = '" + status + "'");
+          }
+        }
+        template = template.replace(variable, statusQuery);
+        continue;
+      }
+      else if(data.statuses){
+        template = template.replace(variable, data.statuses);
+        continue;
+      }
+
+      template = template.replace(variable, 'createdDate < endOfYear()'); /* ~no filter */
+      continue;
+    }
+
+    if(variable === '{key}'){
+      template = template.replace(variable, data.key);
+      continue;
+    }
+
+    // not found => bad scheme
+    console.error('BAD SCHEME FOR', variable, urlKey, data);
+  }
+
+  return template;
+}
+
 function draw(){
   function getLine(init){
     if(init !== undefined){
@@ -304,17 +410,17 @@ function draw(){
       continue;
     }
 
-    if(block.login){
+    if(block.title){
+      title = block.title;
+    }
+    else if(block.login){
       var person = storage.getPersons(block.login);
       title = person && person.displayName || block.login;
-    }
-    else if(block.status){
-      title = block.status instanceof Array ? block.status.join() : block.status;
     }
 
     var block_data = {
       title : title,
-      tasks : storage.getTasks(block.login || block.logins, block.status, 'priority')
+      tasks : storage.getTasks(block.login || block.logins, block.statuses, 'priority')
     };
 
     // create box
@@ -324,8 +430,10 @@ function draw(){
 
     // init SVG
     paper = new SVG(container);
+    // generate from template and block data
+    var url = prepareURL(block, 'title_link', block);
     // add names
-    paper.text(0, getLine(1), block_data.title).setAttribute('class', 'man_name');
+    paper.text(0, getLine(1), block_data.title, url).setAttribute('class', 'man_name');
 
     var tasks_to_display = 2;
     // add tasks
@@ -340,16 +448,17 @@ function draw(){
 
       // draw  info line
       var text = [task.timespent + 'h', task.key, task.summary].join(' ');
+      var url = prepareURL(block, 'task_links', task);
+
       var y = getLine();
-      paper.text(36, y, text).setAttribute('class', css_name);
+      paper.text(36, y, text, url).setAttribute('class', css_name);
       paper.img(0,  y-14, 16, 16, task.priorityIcon);
       paper.img(16, y-14, 16, 16, task.issuetypeIcon);
 
       tasks_to_display++;
 
       if(i >= block.limit -1){
-        paper.text(0, getLine(), '. . .');
-        tasks_to_display += 0.5;
+        paper.text(0, y + 10, '. . .');
         break;
       }
     }
@@ -368,10 +477,11 @@ function draw(){
 }
 
 var TASKS_TO_WORK =
-  'status = "In Progress" Or status = "To Do" OR status="Open" OR status="Code Review" OR status="Merge ready" OR status="Test ready" ' +
+  //'(status = "In Progress" Or status = "To Do" OR status="Open" OR status="Code Review" OR status="Merge ready" OR status="Test ready") ' +
+  '(status != Closed AND status != Done and status != Rejected) ' +
   'AND assignee IN (' + DEVTEAM.join(',') + ') ' +
   'ORDER BY priority,updatedDate';
-var query = '/jira/api/2/search?maxResults=5000&fields=id,key,assignee,status,priority,issuetype,subtasks,summary,project,timespent&jql=' + TASKS_TO_WORK;
+var query = '/jira/api/2/search?maxResults=2000&fields=id,key,assignee,status,priority,issuetype,subtasks,summary,project,timespent&jql=' + TASKS_TO_WORK;
 
 var stop = false;
 function loadData(){
@@ -393,6 +503,8 @@ function loadData(){
 
 window.onload = function(){
   drawMsg('Loading...');
+  // *** for debugginng
+  // *** define `var _data =` variable with real response and uncomment next line
+  // d3.json = function(a, cb){ cb(null, _data); }
   loadData();
-  // processResults(null, _data);
 }
