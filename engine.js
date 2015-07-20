@@ -454,14 +454,16 @@ function draw(){
       paper.img(0,  y-14, 16, 16, task.priorityIcon);
       paper.img(16, y-14, 16, 16, task.issuetypeIcon);
 
-      tasks_to_display++;
-
+      var left = block_data.tasks.length - 1 - i;
       if(i > block.limit - 1){
-        var left = block_data.tasks.length - 1 - i;
         if(left){
           paper.text(0, y + 18, left + ' more ...', title_url);
         }
         break;
+      }
+
+      if(left){
+        tasks_to_display++;        
       }
     }
 
