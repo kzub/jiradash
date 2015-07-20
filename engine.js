@@ -454,7 +454,10 @@ function draw(){
       tasks_to_display++;
 
       if(i > block.limit - 1){
-        paper.text(0, y + 18, block_data.tasks.length - 1 - i + ' more ...', title_url);
+        var left = block_data.tasks.length - 1 - i;
+        if(left){
+          paper.text(0, y + 18, left + ' more ...', title_url);
+        }
         break;
       }
     }
