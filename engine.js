@@ -238,8 +238,8 @@ var TASK_LINK = 'https://onetwotripdev.atlassian.net/browse/{key}';
 var STATUS_LINK = 'https://onetwotripdev.atlassian.net/issues/?jql=assignee IN ({logins}) and ({statuses}) ORDER BY priority,updated';
 
 var DEVTEAM   = ['alexey.sutiagin','ek','fedor.shumov','aleksandr.gladkikh','andrey.ivanov','ivan.hilkov','renat.abdusalamov','anton.ipatov','Ango','alexander.litvinov','andrey.plotnikov','andrey.iliopulo','alexander.neyasov','marina.severyanova','Yury.Kocharyan','konstantin.kalinin','konstantin.zubkov','h3x3d','andrey.lakotko','anastasia.oblomova'];
-var DEVLIMIT  = 4;
-var LEADLIMIT = 14;
+var LEADLIMIT = 15;
+var DEVLIMIT  = 5;
 
 var BLOCKS = [
 { login : 'alexey.sutiagin', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : LEADLIMIT},
@@ -427,9 +427,9 @@ function draw(){
     // init SVG
     paper = new SVG(container);
     // generate from template and block data
-    var url = prepareURL(block, 'title_link', block);
+    var title_url = prepareURL(block, 'title_link', block);
     // add names
-    paper.text(0, getLine(1), block_data.title, url).setAttribute('class', 'man_name');
+    paper.text(0, getLine(1), block_data.title, title_url).setAttribute('class', 'man_name');
 
     var tasks_to_display = 2;
     // add tasks
@@ -444,17 +444,17 @@ function draw(){
 
       // draw  info line
       var text = [task.timespent + 'h', task.key, task.summary].join(' ');
-      var url = prepareURL(block, 'task_links', task);
+      var task_url = prepareURL(block, 'task_links', task);
 
       var y = getLine();
-      paper.text(36, y, text, url).setAttribute('class', css_name);
+      paper.text(36, y, text, task_url).setAttribute('class', css_name);
       paper.img(0,  y-14, 16, 16, task.priorityIcon);
       paper.img(16, y-14, 16, 16, task.issuetypeIcon);
 
       tasks_to_display++;
 
-      if(i >= block.limit -1){
-        paper.text(0, y + 10, '. . .');
+      if(i > block.limit - 1){
+        paper.text(0, y + 18, block_data.tasks.length - 1 - i + ' more ...', title_url);
         break;
       }
     }
@@ -504,3 +504,4 @@ window.onload = function(){
   // d3.json = function(a, cb){ cb(null, _data); }
   loadData();
 }
+
