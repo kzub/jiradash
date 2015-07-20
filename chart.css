@@ -15,7 +15,7 @@
 }
 
 .test_ready {
-  fill : #00FFFF;
+  /*fill : #00FFFF;*/
 }
 
 .code_review {
@@ -26,11 +26,12 @@
 }
 
 .merge_ready {
-  fill : orange;
+  /*fill : orange;*/
 }
 
 .subtasks {
   fill: #666600 !important;
+  /*opacity: 0.5;*/
 }
 
 body {

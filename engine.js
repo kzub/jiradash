@@ -174,7 +174,7 @@ function SVG(container){
     var txt = document.createElementNS("http://www.w3.org/2000/svg", "text");
     txt.setAttribute('x', x);
     txt.setAttribute('y', y);
-    txt.innerHTML = text;
+    txt.textContent = text;
 
     if(url){
       var link = makeLink(url, text);
@@ -463,7 +463,7 @@ function draw(){
       }
 
       if(left){
-        tasks_to_display++;        
+        tasks_to_display++;
       }
     }
 
