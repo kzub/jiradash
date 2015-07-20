@@ -177,7 +177,7 @@ function SVG(container){
     txt.innerHTML = text;
 
     if(url){
-      var link = makeLink(url)
+      var link = makeLink(url, text);
       link.appendChild(txt);
       svg.appendChild(link);
     }else{
@@ -198,9 +198,12 @@ function SVG(container){
     return svgimg;
   };
 
-  function makeLink(url){
+  function makeLink(url, description){
     var element = document.createElementNS('http://www.w3.org/2000/svg','a');
     element.setAttributeNS('http://www.w3.org/1999/xlink','xlink:href', url);
+    if(description){
+      element.setAttributeNS('http://www.w3.org/1999/xlink','xlink:title', description);
+    }
     element.setAttribute('target', '_blank');
     return element;
   };
@@ -230,8 +233,8 @@ var PRIORITY_RANK = {
 
 
 var TASK_STATUSES  = ['In Progress', 'To Do', 'Open', 'WTF'];
-var TASK_STATUSES  = ['!Closed', '!Done', '!Rejected', '!Code Review', '!Merge ready', '!Test ready', '!In Release'];
-var QA_TASK_STATUSES  = ['!Closed', '!Done', '!Rejected', '!Code Review', '!Merge ready', '!In Release'];
+var TASK_STATUSES  = ['!Closed', '!Done', '!Rejected', '!Merge ready', '!Test ready', '!In Release'];
+var QA_TASK_STATUSES  = ['!Closed', '!Done', '!Rejected', '!Merge ready', '!In Release'];
 
 var USER_LINK = 'https://onetwotripdev.atlassian.net/issues/?jql=assignee IN ({login}) and ({statuses}) ORDER BY priority,updated';
 var TASK_LINK = 'https://onetwotripdev.atlassian.net/browse/{key}';
@@ -245,7 +248,7 @@ var BLOCKS = [
 { login : 'alexey.sutiagin', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : LEADLIMIT},
 { login : 'ek', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : LEADLIMIT},
 { login : 'fedor.shumov', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : LEADLIMIT},
-{ statuses : ['Code Review'], title_link : STATUS_LINK, task_links : TASK_LINK, logins : DEVTEAM, title : 'Code Review' },
+{ skip : 1, statuses : ['Code Review'], title_link : STATUS_LINK, task_links : TASK_LINK, logins : DEVTEAM, title : 'Code Review' },
 
 { login : 'aleksandr.gladkikh', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
 { login : 'andrey.ivanov', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
