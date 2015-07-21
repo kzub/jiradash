@@ -58,7 +58,7 @@ Storage.prototype.getPersons = function(login){
   return this.persons;
 };
 
-Storage.prototype.getTasks = function(login, statuses, sort){
+Storage.prototype.getTasks = function(login, statuses, task_sorter){
   var filtered_tasks = [];
 
   for(var i = 0; i < this.tasks.length; i++){
@@ -113,10 +113,8 @@ Storage.prototype.getTasks = function(login, statuses, sort){
     }
   }
 
-  if(sort){
-    filtered_tasks.sort(function(a, b){
-      return b[sort] - a[sort];
-    });
+  if(task_sorter){
+    filtered_tasks.sort(task_sorter);
   }
   return filtered_tasks;
 };
@@ -224,11 +222,11 @@ var CONST = {
 }
 
 var PRIORITY_RANK = {
-  'ASAP'     : 4,
-  'Critical' : 3,
+  'ASAP'     : 0,
+  'Critical' : 1,
   'Very High': 2,
-  'High'     : 1,
-  'Normal'   : 0
+  'High'     : 3,
+  'Normal'   : 4
 };
 
 
@@ -301,6 +299,7 @@ function processResults(data){
         statusIcon    : issue.fields.status.iconUrl,
         priorityIcon  : issue.fields.priority.iconUrl,
         priority      : PRIORITY_RANK[issue.fields.priority.name],
+        rank          : issue.fields.customfield_10300,
         issuetypeIcon : issue.fields.issuetype.iconUrl,
         key           : issue.key,
         subtasks      : issue.fields.subtasks.length,
@@ -310,7 +309,7 @@ function processResults(data){
       });
     }
 
-    // if(i==0){ console.log(issue); }
+    if(i==0){ console.log(issue); }
   };
 }
 
@@ -391,6 +390,22 @@ function prepareURL(block, urlKey, data){
   return template;
 }
 
+var task_sorter = new (function SORTER(){
+  var scale = 10000;
+
+  function calcRank(s){
+    var a = 0;
+    for(var i in s){
+      a += (1/(+i+1))*s.charCodeAt(i);
+    }
+    return a;
+  }
+
+  return function(a, b){
+    return (a.priority*scale + calcRank(a.rank)) - (b.priority*scale + calcRank(b.rank));
+  }
+})();
+
 function draw(){
   function getLine(init){
     if(init !== undefined){
@@ -419,7 +434,7 @@ function draw(){
 
     var block_data = {
       title : title,
-      tasks : storage.getTasks(block.login || block.logins, block.statuses, 'priority')
+      tasks : storage.getTasks(block.login || block.logins, block.statuses, task_sorter)
     };
 
     // create box
@@ -485,7 +500,7 @@ var TASKS_TO_WORK =
   '(status != Closed AND status != Done and status != Rejected) ' +
   'AND assignee IN (' + DEVTEAM.join(',') + ') ' +
   'ORDER BY priority,updatedDate';
-var query = '/jira/api/2/search?maxResults=2000&fields=id,key,assignee,status,priority,issuetype,subtasks,summary,project,timespent&jql=' + TASKS_TO_WORK;
+var query = '/jira/api/2/search?maxResults=2000&fields=id,customfield_10300,key,assignee,status,priority,issuetype,subtasks,summary,project,timespent&jql=' + TASKS_TO_WORK;
 
 var stop = false;
 function loadData(){
