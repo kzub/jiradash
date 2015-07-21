@@ -242,6 +242,57 @@ var DEVTEAM   = ['alexey.sutiagin','ek','fedor.shumov','aleksandr.gladkikh','and
 var LEADLIMIT = 15;
 var DEVLIMIT  = 5;
 
+var TASK_REWRITES = [
+  {
+    conditions : {
+      login  : ['ivan.hilkov', 'Ango', 'andrey.iliopulo', 'marina.severyanova'],
+      status : ['Code Review']
+    },
+    actions : {
+      login : 'fedor.shumov'
+    }
+  },
+  {
+    conditions : {
+      login  : ['aleksandr.gladkikh', 'renat.abdusalamov', 'alexander.litvinov', 'alexander.neyasov', 'Yury.Kocharyan', 'h3x3d'],
+      status : ['Code Review']
+    },
+    actions : {
+      login : 'alexey.sutiagin'
+    }
+  },
+  {
+    conditions : {
+      login  : ['andrey.ivanov', 'anton.ipatov', 'andrey.plotnikov'],
+      status : ['Code Review']
+    },
+    actions : {
+      login : 'ek'
+    }
+  },
+];
+
+TASK_REWRITES_APPLY = function(task){
+  for(var idx in TASK_REWRITES){
+    var apply = true;
+    var rule = TASK_REWRITES[idx];
+
+    for(var key in rule.conditions){
+      if(rule.conditions[key].indexOf(task[key]) === -1){
+        apply = false;
+        break;
+      }
+    }
+
+    if(apply){
+      for(var key in rule.actions){
+        task[key] = rule.actions[key];
+      }
+    }
+  }
+};
+
+
 var BLOCKS = [
 { login : 'alexey.sutiagin', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : LEADLIMIT},
 { login : 'ek', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : LEADLIMIT},
@@ -293,7 +344,7 @@ function processResults(data){
 
       storage.addPerson(login, displayName, avatar);
 
-      storage.addPersonTask(login, {
+      var task = {
         login         : login,
         status        : issue.fields.status.name,
         statusIcon    : issue.fields.status.iconUrl,
@@ -306,7 +357,10 @@ function processResults(data){
         summary       : issue.fields.summary,
         project       : issue.fields.project.key,
         timespent     : Math.round(10*issue.fields.timespent/3600)/10
-      });
+      };
+
+      TASK_REWRITES_APPLY(task);
+      storage.addPersonTask(task.login, task);
     }
 
     if(i==0){ console.log(issue); }
@@ -470,15 +524,15 @@ function draw(){
       paper.img(16, y-14, 16, 16, task.issuetypeIcon);
 
       var left = block_data.tasks.length - 1 - i;
+      if(left){
+        tasks_to_display++;
+      }
+
       if(i > block.limit - 1){
         if(left){
           paper.text(0, y + 18, left + ' more ...', title_url);
         }
         break;
-      }
-
-      if(left){
-        tasks_to_display++;
       }
     }
 
