@@ -175,7 +175,11 @@ function SVG(container){
     txt.textContent = text;
 
     if(url){
-      var link = makeLink(url, text);
+      if(url.url && (url.summary || url.description)){
+        var link = makeLink(url.url, (url.summary || '') + (url.description||''));
+      }else{
+        var link = makeLink(url, text);
+      }
       link.appendChild(txt);
       svg.appendChild(link);
     }else{
@@ -355,6 +359,7 @@ function processResults(data){
         key           : issue.key,
         subtasks      : issue.fields.subtasks.length,
         summary       : issue.fields.summary,
+        description   : issue.fields.description,
         project       : issue.fields.project.key,
         timespent     : Math.round(10*issue.fields.timespent/3600)/10
       };
@@ -363,7 +368,7 @@ function processResults(data){
       storage.addPersonTask(task.login, task);
     }
 
-    if(i==0){ console.log(issue); }
+    // if(i==0){ console.log(issue); }
   };
 }
 
@@ -515,8 +520,12 @@ function draw(){
       }
 
       // draw  info line
-      var text = [task.timespent + 'h', task.key, task.summary].join(' ');
-      var task_url = prepareURL(block, 'task_links', task);
+      var text = [task.key, task.timespent + 'h',  task.summary].join(' ');
+      var task_url = {
+        url        : prepareURL(block, 'task_links', task),
+        summary    : task.summary,
+        description: task.description
+      };
 
       var y = getLine();
       paper.text(36, y, text, task_url).setAttribute('class', css_name);
@@ -554,7 +563,10 @@ var TASKS_TO_WORK =
   '(status != Closed AND status != Done and status != Rejected) ' +
   'AND assignee IN (' + DEVTEAM.join(',') + ') ' +
   'ORDER BY priority,updatedDate';
-var query = '/jira/api/2/search?maxResults=2000&fields=id,customfield_10300,key,assignee,status,priority,issuetype,subtasks,summary,project,timespent&jql=' + TASKS_TO_WORK;
+var query =
+  '/jira/api/2/search?maxResults=2000' +
+  '&fields=id,customfield_10300,key,assignee,description,status,priority,issuetype,subtasks,summary,project,timespent' +
+  '&jql=' + TASKS_TO_WORK;
 
 var stop = false;
 function loadData(){
