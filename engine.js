@@ -40,6 +40,10 @@ Storage.prototype.addPerson = function(login, displayName, avatar){
       avatar : avatar
     };
   }
+  else if(!this.persons[login].displayName){
+    this.persons[login].displayName = displayName;
+    this.persons[login].avatar = avatar;
+  }
 };
 
 Storage.prototype.addPersonTask = function(login, task){
@@ -361,10 +365,23 @@ function processResults(data){
         summary       : issue.fields.summary,
         description   : issue.fields.description,
         project       : issue.fields.project.key,
-        timespent     : Math.round(10*issue.fields.timespent/3600)/10
+        timespent     : Math.round(10*issue.fields.timespent/3600)/10,
       };
 
       TASK_REWRITES_APPLY(task);
+
+      // if(task.subtasks){
+      //   (function(tt){
+      //     json
+      //     setTimeout(function(){
+      //       console.log(tt)
+      //       if(tt.update){
+      //         tt.update(tt);
+      //       }
+      //     }, 1000);
+      //   })(task);
+      // }
+
       storage.addPersonTask(task.login, task);
     }
 
@@ -465,13 +482,43 @@ var task_sorter = new (function SORTER(){
   }
 })();
 
-function draw(){
-  function getLine(init){
-    if(init !== undefined){
-      this.line = init;
-    }
-    return CONST.line_height*this.line++;
+function getLine(init){
+  if(init !== undefined){
+    this.line = init;
+  }
+  return CONST.line_height*this.line++;
+};
+
+function drawLineTextFromTask(block, paper, elms, y, task){
+  //  mark tasks with subtasks
+  var css_name = task.status.replace(/ /g, '_').toLowerCase();
+  if(task.subtasks){
+    css_name += ' subtasks';
+  }
+
+  // draw  info line
+  var text = [task.key, task.timespent + 'h',  task.summary].join(' ');
+  // generate url's
+  var task_url = {
+    url        : prepareURL(block, 'task_links', task),
+    summary    : task.summary,
+    description: task.description
   };
+
+  if(elms){
+    console.log('redraw', elms);
+    return;
+  }
+
+  var elements = [];
+  elements.push(paper.text(36, y, text, task_url).setAttribute('class', css_name));
+  elements.push(paper.img(0,  y-14, 16, 16, task.priorityIcon));
+  elements.push(paper.img(16, y-14, 16, 16, task.issuetypeIcon));
+
+  return elements;
+}
+
+function draw(){
 
   // MAIN CODE:
   for(var idx in BLOCKS){
@@ -513,24 +560,14 @@ function draw(){
     for(var i in block_data.tasks){
       var task = block_data.tasks[i];
 
-      // mark tasks with subtasks
-      var css_name = task.status.replace(/ /g, '_').toLowerCase();
-      if(task.subtasks){
-        css_name += ' subtasks';
-      }
-
-      // draw  info line
-      var text = [task.key, task.timespent + 'h',  task.summary].join(' ');
-      var task_url = {
-        url        : prepareURL(block, 'task_links', task),
-        summary    : task.summary,
-        description: task.description
-      };
-
       var y = getLine();
-      paper.text(36, y, text, task_url).setAttribute('class', css_name);
-      paper.img(0,  y-14, 16, 16, task.priorityIcon);
-      paper.img(16, y-14, 16, 16, task.issuetypeIcon);
+      var elms = drawLineTextFromTask(block, paper, null, y, task);
+      
+      // task.update = (function(){
+      //   return function(updated_task){
+      //     drawLineTextFromTask(block, null, elms, null, updated_task);
+      //   };
+      // })(block, elms);
 
       var left = block_data.tasks.length - 1 - i;
       if(left){
