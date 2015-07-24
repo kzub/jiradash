@@ -615,7 +615,7 @@ function drawLineTextFromTask(block, paper, redraw_elms, y, task){
   }
 
   var elements = [];
-  var text_element = paper.text(25, y, timespentFormater(timespent), task_url);
+  var text_element = paper.text(25, y-1, timespentFormater(timespent), task_url);
   text_element.setAttribute('class', css_name + ' text-hours')
   elements.push(text_element);
 
@@ -756,3 +756,4 @@ window.onload = function(){
   // d3.json = function(a, cb){ cb(null, _data); }
   loadData();
 }
+

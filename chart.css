@@ -23,7 +23,8 @@
   fill : yellow;
 }
 .in_progress {
-  fill : lightgreen;
+  /*fill : lightgreen;*/
+  fill: #3CD216;
 }
 
 .merge_ready {
@@ -47,10 +48,10 @@ text {
   -webkit-font-smoothing: antialiased;
   /*font-family: 'Verdana', monospace;*/
 }
-.text-hours {
-  opacity: .7;
+.text-hours { 
   text-anchor: end;
-  fill: white !important;
+  fill: #555 !important;
+  font-size: 16px;
 }
 .text-task-number {
 }
