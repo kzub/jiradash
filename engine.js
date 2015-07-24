@@ -62,7 +62,7 @@ Storage.prototype.getPersons = function(login){
   return this.persons;
 };
 
-Storage.prototype.getTasks = function(login, statuses, task_sorter){
+Storage.prototype.getTasks = function(login, statuses, project, task_sorter){
   var filtered_tasks = [];
 
   for(var i = 0; i < this.tasks.length; i++){
@@ -76,6 +76,13 @@ Storage.prototype.getTasks = function(login, statuses, task_sorter){
         }
       }
       else if(task.login !== login){
+        continue;
+      }
+    }
+
+    // filter by project
+    if(project){
+      if(project !== task.project){
         continue;
       }
     }
@@ -189,6 +196,11 @@ function SVG(container){
     }else{
       svg.appendChild(txt);
     }
+
+    txt.changeText = function(a){
+      this.textContent = a;
+    }
+
     return txt;
   };
 
@@ -201,6 +213,10 @@ function SVG(container){
     svgimg.setAttributeNS(null,'y', y);
     svgimg.setAttributeNS(null, 'visibility', 'visible');
     svg.appendChild(svgimg);
+
+    svgimg.changeImage = function(new_url){
+      svgimg.setAttributeNS('http://www.w3.org/1999/xlink','xlink:href', new_url);
+    };
     return svgimg;
   };
 
@@ -244,9 +260,11 @@ var QA_TASK_STATUSES  = ['!Closed', '!Done', '!Rejected', '!Merge ready', '!In R
 
 var USER_LINK = 'https://onetwotripdev.atlassian.net/issues/?jql=assignee IN ({login}) and ({statuses}) ORDER BY priority,updated';
 var TASK_LINK = 'https://onetwotripdev.atlassian.net/browse/{key}';
-var STATUS_LINK = 'https://onetwotripdev.atlassian.net/issues/?jql=assignee IN ({logins}) and ({statuses}) ORDER BY priority,updated';
+var STATUS_LINK = 'https://onetwotripdev.atlassian.net/issues/?jql=project IN({project}) and ({statuses}) ORDER BY priority,updated';
 
-var DEVTEAM   = ['alexey.sutiagin','ek','fedor.shumov','aleksandr.gladkikh','andrey.ivanov','ivan.hilkov','renat.abdusalamov','anton.ipatov','Ango','alexander.litvinov','andrey.plotnikov','andrey.iliopulo','alexander.neyasov','marina.severyanova','Yury.Kocharyan','konstantin.kalinin','konstantin.zubkov','h3x3d','andrey.lakotko','anastasia.oblomova'];
+var AVIATEAM  = ['alexey.sutiagin','ek','fedor.shumov','aleksandr.gladkikh','andrey.ivanov','ivan.hilkov','renat.abdusalamov','anton.ipatov','Ango','alexander.litvinov','andrey.plotnikov','andrey.iliopulo','alexander.neyasov','marina.severyanova','Yury.Kocharyan','konstantin.kalinin','konstantin.zubkov','h3x3d','andrey.lakotko','anastasia.oblomova'];
+var DEVTEAM   = AVIATEAM.concat('dmitrii.loskutov');
+
 var LEADLIMIT = 15;
 var DEVLIMIT  = 5;
 
@@ -305,22 +323,22 @@ var BLOCKS = [
 { login : 'alexey.sutiagin', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : LEADLIMIT},
 { login : 'ek', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : LEADLIMIT},
 { login : 'fedor.shumov', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : LEADLIMIT},
-{ skip : 1, statuses : ['Code Review'], title_link : STATUS_LINK, task_links : TASK_LINK, logins : DEVTEAM, title : 'Code Review' },
+{ skip : 1, statuses : ['Code Review'], title_link : STATUS_LINK, task_links : TASK_LINK, logins : AVIATEAM, title : 'Code Review' },
 
 { login : 'aleksandr.gladkikh', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
 { login : 'andrey.ivanov', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
 { login : 'ivan.hilkov', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
-{ statuses : ['Test ready'], title_link : STATUS_LINK, task_links : TASK_LINK, logins : DEVTEAM, title : 'Test Ready'},
+{ project : 'OTT', statuses : ['Test ready'], title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Test Ready'},
 
 { login : 'renat.abdusalamov', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
 { login : 'anton.ipatov', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
 { login : 'Ango', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
-{ statuses : ['Merge ready'], title_link : STATUS_LINK, task_links : TASK_LINK, logins : DEVTEAM, title : 'Merge Ready'},
+{ project : 'OTT', statuses : ['Merge ready'], title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Merge Ready'},
 
 { login : 'alexander.litvinov', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
 { login : 'andrey.plotnikov', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
 { login : 'andrey.iliopulo', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
-{ statuses : ['In Release'], title_link : STATUS_LINK, task_links : TASK_LINK, logins : DEVTEAM, title : 'Release'},
+{ project : 'OTT', statuses : ['In Release'], title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Release'},
 
 { login : 'alexander.neyasov', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
 { skip : 1 },
@@ -337,6 +355,53 @@ var BLOCKS = [
 { login : 'anastasia.oblomova', statuses : QA_TASK_STATUSES, title_link : USER_LINK, task_links : TASK_LINK, limit : DEVLIMIT}
 ];
 
+var each_async = function(ary, fn, fnend) {
+  var i = 0;
+  -function iter() {
+    fn(ary[i], function(){
+      if (++i < ary.length){
+        setTimeout(iter, 0);
+      }else{
+        fnend();
+      }
+    });
+  }();
+};
+
+function loadAdditionalResources(task, urls){
+  var results = [];
+  each_async(urls,
+    function itrer(url, cb){
+      d3.json(url, function(err, data){
+        if(err){
+          console.error('loadAdditionalResources', err);
+        }
+        else if(data){
+          results.push(data);
+        }
+        setTimeout(cb);
+      });
+    },
+    function finish(){
+      var timespent = 0;
+      for(var idx in results){
+        var subtask = results[idx];
+        timespent += timespentToHours(subtask.fields.timespent);
+      }
+      // update calculated timespent
+      task.timespent = timespent;
+      // if task hidden by limit, it doesnt have update function;
+      if(task.update){
+        task.update();
+      }
+    }
+  );
+};
+
+function timespentToHours(timespent){
+  if(!timespent){ return 0; }
+  return Math.round(10*timespent/3600)/10;
+}
 /*
 * Main program
 */
@@ -365,27 +430,30 @@ function processResults(data){
         summary       : issue.fields.summary,
         description   : issue.fields.description,
         project       : issue.fields.project.key,
-        timespent     : Math.round(10*issue.fields.timespent/3600)/10,
+        timespent     : timespentToHours(issue.fields.timespent)
       };
 
       TASK_REWRITES_APPLY(task);
 
-      // if(task.subtasks){
-      //   (function(tt){
-      //     json
-      //     setTimeout(function(){
-      //       console.log(tt)
-      //       if(tt.update){
-      //         tt.update(tt);
-      //       }
-      //     }, 1000);
-      //   })(task);
-      // }
+      // laod all the data associated with task
+      if(issue.fields.subtasks.length){
+        // load task data
+        var urls = [prepareURL(task_query, task)];
+        // load subtasks
+        for(var k = 0; k < issue.fields.subtasks.length; k++){
+          var subtask = issue.fields.subtasks[k];
+          urls.push(prepareURL(task_query, subtask));
+        }
+        // clear subtask time spend util it loaded complete
+        task.timespent = '*';
+
+        loadAdditionalResources(task, urls);
+      }
 
       storage.addPersonTask(task.login, task);
     }
 
-    // if(i==0){ console.log(issue); }
+    // if(issue.fields.subtasks.length){ console.log(issue); }
   };
 }
 
@@ -405,8 +473,7 @@ function drawMsg(text){
   container.innerHTML = text;
 }
 
-function prepareURL(block, urlKey, data){
-  var template = block[urlKey];
+function prepareURL(template, data){
   if(!template) {
     return;
   }
@@ -416,12 +483,12 @@ function prepareURL(block, urlKey, data){
     var variable = vars[idx];
 
     if(variable === '{login}'){
-      template = template.replace(variable, data.login);
+      template = template.replace(variable, data.login || '');
       continue;
     }
 
     if(variable === '{logins}'){
-      template = template.replace(variable, data.logins.join(','));
+      template = template.replace(variable, data.logins ? data.logins.join(',') : '');
       continue;
     }
 
@@ -455,12 +522,14 @@ function prepareURL(block, urlKey, data){
     }
 
     if(variable === '{key}'){
-      template = template.replace(variable, data.key);
+      template = template.replace(variable, data.key || '');
       continue;
     }
 
-    // not found => bad scheme
-    console.error('BAD SCHEME FOR', variable, urlKey, data);
+    if(variable === '{project}'){
+      template = template.replace(variable, data.project || '');
+      continue;
+    }
   }
 
   return template;
@@ -489,31 +558,43 @@ function getLine(init){
   return CONST.line_height*this.line++;
 };
 
-function drawLineTextFromTask(block, paper, elms, y, task){
+function drawLineTextFromTask(block, paper, redraw_elms, y, task){
   //  mark tasks with subtasks
   var css_name = task.status.replace(/ /g, '_').toLowerCase();
   if(task.subtasks){
     css_name += ' subtasks';
   }
 
+  var timespent = task.timespent === '*' ? '' : task.timespent + 'h';
   // draw  info line
-  var text = [task.key, task.timespent + 'h',  task.summary].join(' ');
+  var text = [task.key, timespent, task.summary].join(' ');
   // generate url's
   var task_url = {
-    url        : prepareURL(block, 'task_links', task),
+    url        : prepareURL(block['task_links'], task),
     summary    : task.summary,
     description: task.description
   };
 
-  if(elms){
-    console.log('redraw', elms);
+  // when update data is done and update() is called
+  if(redraw_elms){
+    redraw_elms[0].changeText(text);
+    redraw_elms[2].changeImage(task.issuetypeIcon);
     return;
   }
 
   var elements = [];
-  elements.push(paper.text(36, y, text, task_url).setAttribute('class', css_name));
+  var text_element = paper.text(36, y, text, task_url);
+  text_element.setAttribute('class', css_name)
+
+  elements.push(text_element);
   elements.push(paper.img(0,  y-14, 16, 16, task.priorityIcon));
-  elements.push(paper.img(16, y-14, 16, 16, task.issuetypeIcon));
+
+  // draw loading icon
+  if(task.timespent === '*'){
+    elements.push(paper.img(16, y-14, 16, 16, url_icon_loading));
+  }else{
+    elements.push(paper.img(16, y-14, 16, 16, task.issuetypeIcon));
+  }
 
   return elements;
 }
@@ -540,7 +621,7 @@ function draw(){
 
     var block_data = {
       title : title,
-      tasks : storage.getTasks(block.login || block.logins, block.statuses, task_sorter)
+      tasks : storage.getTasks(block.login || block.logins, block.statuses, block.project, task_sorter)
     };
 
     // create box
@@ -551,7 +632,7 @@ function draw(){
     // init SVG
     paper = new SVG(container);
     // generate from template and block data
-    var title_url = prepareURL(block, 'title_link', block);
+    var title_url = prepareURL(block['title_link'], block);
     // add names
     paper.text(0, getLine(1), block_data.title, title_url).setAttribute('class', 'man_name');
 
@@ -562,12 +643,12 @@ function draw(){
 
       var y = getLine();
       var elms = drawLineTextFromTask(block, paper, null, y, task);
-      
-      // task.update = (function(){
-      //   return function(updated_task){
-      //     drawLineTextFromTask(block, null, elms, null, updated_task);
-      //   };
-      // })(block, elms);
+
+      task.update = (function(t, b, e){
+        return function(){
+          drawLineTextFromTask(b, null, e, null, t);
+        };
+      })(task, block, elms);
 
       var left = block_data.tasks.length - 1 - i;
       if(left){
@@ -600,10 +681,16 @@ var TASKS_TO_WORK =
   '(status != Closed AND status != Done and status != Rejected) ' +
   'AND assignee IN (' + DEVTEAM.join(',') + ') ' +
   'ORDER BY priority,updatedDate';
+
 var query =
   '/jira/api/2/search?maxResults=2000' +
-  '&fields=id,customfield_10300,key,assignee,description,status,priority,issuetype,subtasks,summary,project,timespent' +
+  '&fields=id,customfield_10300,key,assignee,description,status,priority,project,issuetype,subtasks,summary,project,timespent' +
   '&jql=' + TASKS_TO_WORK;
+
+var task_query = '/jira/api/2/issue/{key}' +
+  '?fields=timespent';
+
+var url_icon_loading = 'https://s3.eu-central-1.amazonaws.com/ott-static/images/jira/ajax-loader.gif';
 
 var stop = false;
 function loadData(){
@@ -630,4 +717,3 @@ window.onload = function(){
   // d3.json = function(a, cb){ cb(null, _data); }
   loadData();
 }
-
