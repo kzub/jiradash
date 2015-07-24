@@ -420,19 +420,20 @@ function textSpacer(text, mode, digits){
   return text;
 }
 function timespentFormater(timespent){
-  var symb = 'h';
+  var symb = '';
   var value;
 
   if(timespent > 100){
-    value = Math.round(timespent);
+    value = Math.ceil(timespent);
   }
   else if(timespent > 0){
-    value = Math.round(timespent) + symb;
+    value = Math.ceil(timespent) + symb;
   }
   else{
     return '';
   }
 
+  return value;
   return textSpacer(value, '>', 3);
 }
 /*
@@ -608,23 +609,31 @@ function drawLineTextFromTask(block, paper, redraw_elms, y, task){
 
   // when update data is done and update() is called
   if(redraw_elms){
-    redraw_elms[0].changeText(text);
+    redraw_elms[0].changeText(timespentFormater(timespent));
     redraw_elms[1].changeImage(task.priorityIcon);
     return;
   }
 
   var elements = [];
-  var text_element = paper.text(18, y, text, task_url);
-  text_element.setAttribute('class', css_name)
-
+  var text_element = paper.text(25, y, timespentFormater(timespent), task_url);
+  text_element.setAttribute('class', css_name + ' text-hours')
   elements.push(text_element);
 
   // draw loading icon
   if(task.timespent === '*'){
-    elements.push(paper.img(0, y-14, 16, 16, url_icon_loading));
+    elements.push(paper.img(27, y-14, 16, 16, url_icon_loading));
   }else{
-    elements.push(paper.img(0, y-14, 16, 16, task.priorityIcon));
+    elements.push(paper.img(27, y-14, 16, 16, task.priorityIcon));
   }
+
+  var text_element = paper.text(46, y, task.key, task_url);
+  text_element.setAttribute('class', css_name + ' text-task-number')
+  text_element.setAttributeNS("http://www.w3.org/XML/1998/namespace", 'textLength', '3')
+  elements.push(text_element);
+
+  var text_element = paper.text(134, y, task.summary, task_url);
+  text_element.setAttribute('class', css_name + ' text-summary')
+  elements.push(text_element);
 
   return elements;
 }

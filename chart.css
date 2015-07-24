@@ -8,6 +8,7 @@
   position: absolute;
   width: 462px;
   overflow: hidden;
+  padding-bottom: 5px;
 }
 
 .dev_team {
@@ -41,10 +42,17 @@ body {
 
 text {
   font-size: 18px;
-  font-family: "Calibri", sans-serif;
+  font-family: Arial, sans-serif;
   fill : white;
   -webkit-font-smoothing: antialiased;
   /*font-family: 'Verdana', monospace;*/
+}
+.text-hours {
+  opacity: .7;
+  text-anchor: end;
+  fill: white !important;
+}
+.text-task-number {
 }
 
 .textline {
