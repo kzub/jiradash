@@ -181,6 +181,7 @@ function SVG(container){
 
   this.text = function(x, y, text, url){
     var txt = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    txt.setAttributeNS("http://www.w3.org/XML/1998/namespace", "xml:space","preserve");
     txt.setAttribute('x', x);
     txt.setAttribute('y', y);
     txt.textContent = text;
@@ -399,8 +400,40 @@ function loadAdditionalResources(task, urls){
 };
 
 function timespentToHours(timespent){
-  if(!timespent){ return 0; }
-  return Math.round(10*timespent/3600)/10;
+  if(!timespent){
+    return 0;
+  }
+  return timespent/3600;
+}
+
+function textSpacer(text, mode, digits){
+  text = text.toString();
+
+  if(text.length > digits){
+    text = text.slice(0, digits);
+  }else if(text.length < digits){
+    while(digits - text.length){
+      mode === '>' ? text = ' ' + text : text += ' ';
+    }
+  }
+
+  return text;
+}
+function timespentFormater(timespent){
+  var symb = 'h';
+  var value;
+
+  if(timespent > 100){
+    value = Math.round(timespent);
+  }
+  else if(timespent > 0){
+    value = Math.round(timespent) + symb;
+  }
+  else{
+    return '';
+  }
+
+  return textSpacer(value, '>', 3);
 }
 /*
 * Main program
@@ -420,11 +453,9 @@ function processResults(data){
       var task = {
         login         : login,
         status        : issue.fields.status.name,
-        statusIcon    : issue.fields.status.iconUrl,
         priorityIcon  : issue.fields.priority.iconUrl,
         priority      : PRIORITY_RANK[issue.fields.priority.name],
         rank          : issue.fields.customfield_10300,
-        issuetypeIcon : issue.fields.issuetype.iconUrl,
         key           : issue.key,
         subtasks      : issue.fields.subtasks.length,
         summary       : issue.fields.summary,
@@ -565,9 +596,9 @@ function drawLineTextFromTask(block, paper, redraw_elms, y, task){
     css_name += ' subtasks';
   }
 
-  var timespent = task.timespent === '*' ? '' : task.timespent + 'h';
+  var timespent = task.timespent === '*' ? '   ' : task.timespent;
   // draw  info line
-  var text = [task.key, timespent, task.summary].join(' ');
+  var text = [task.key, timespentFormater(timespent), task.summary].join(' ');
   // generate url's
   var task_url = {
     url        : prepareURL(block['task_links'], task),
@@ -578,22 +609,21 @@ function drawLineTextFromTask(block, paper, redraw_elms, y, task){
   // when update data is done and update() is called
   if(redraw_elms){
     redraw_elms[0].changeText(text);
-    redraw_elms[2].changeImage(task.issuetypeIcon);
+    redraw_elms[1].changeImage(task.priorityIcon);
     return;
   }
 
   var elements = [];
-  var text_element = paper.text(36, y, text, task_url);
+  var text_element = paper.text(18, y, text, task_url);
   text_element.setAttribute('class', css_name)
 
   elements.push(text_element);
-  elements.push(paper.img(0,  y-14, 16, 16, task.priorityIcon));
 
   // draw loading icon
   if(task.timespent === '*'){
-    elements.push(paper.img(16, y-14, 16, 16, url_icon_loading));
+    elements.push(paper.img(0, y-14, 16, 16, url_icon_loading));
   }else{
-    elements.push(paper.img(16, y-14, 16, 16, task.issuetypeIcon));
+    elements.push(paper.img(0, y-14, 16, 16, task.priorityIcon));
   }
 
   return elements;
@@ -684,7 +714,7 @@ var TASKS_TO_WORK =
 
 var query =
   '/jira/api/2/search?maxResults=2000' +
-  '&fields=id,customfield_10300,key,assignee,description,status,priority,project,issuetype,subtasks,summary,project,timespent' +
+  '&fields=id,customfield_10300,key,assignee,description,status,priority,project,subtasks,summary,timespent' +
   '&jql=' + TASKS_TO_WORK;
 
 var task_query = '/jira/api/2/issue/{key}' +

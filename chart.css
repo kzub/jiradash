@@ -44,6 +44,7 @@ text {
   font-family: "Calibri", sans-serif;
   fill : white;
   -webkit-font-smoothing: antialiased;
+  /*font-family: 'Verdana', monospace;*/
 }
 
 .textline {
