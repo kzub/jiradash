@@ -16,6 +16,7 @@
 
     var TASK_REWRITE_RULES = OPTIONS.TASK_REWRITE_RULES || [];
     var PRIORITY_RANK = OPTIONS.PRIORITY_RANK || {};
+    var initialized;
 
     var processResults= function(data){
       for(var i = 0; i < data.issues.length; i++){
@@ -225,12 +226,15 @@
       container.innerHTML = text;
     };
 
+
     this.loadData = function(query, callback){
-      self.clearScreen();
-      self.drawMsg('loading...');
+      if(!initialized){
+        self.drawMsg('loading...');
+      }
 
       network.load([query], function(err, data){
         self.clearScreen();
+        initialized = true;
 
         if(err){
           self.drawMsg([err.status, err.statusText].join(' '));
