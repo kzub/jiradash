@@ -2,22 +2,35 @@
   /*
   * Page layout definition
   */
-  function Layout(columns){
-    if(!columns){
-      columns = 1;
+  function Layout(OPTIONS){
+    var columns = 1;
+    var ratio = window.devicePixelRatio || 1;
+    var screen_width = screen.width * ratio;
+    var screen_height = screen.height * ratio;
+
+    if(OPTIONS && OPTIONS.SCREEN_WIDTH){
+      screen_width = OPTIONS.SCREEN_WIDTH;
+    }
+    if(OPTIONS && OPTIONS.COLUMNS){
+      columns = OPTIONS.COLUMNS;
     }
 
     var scheme = [];
     var x = 0;
     var line;
     var line_height = 20;
-    var block_width = Math.floor(1920 / columns); // FullHD = 1920px
-    var block_margin_x = 0;
+    var block_width;
+    var block_margin_x = 10;
     var block_margin_y = 10;
 
     for(var i = 0; i < columns; i++){
       scheme.push([]);
     }
+
+    this.getBlockWidth = function(){
+      return Math.floor(screen_width / columns) - block_margin_x;
+    };
+    block_width = this.getBlockWidth();
 
     this.getBlockHeight = function(){
       var height = 0;
@@ -58,7 +71,7 @@
     };
 
     this.getBlockLeft = function(){
-      return block_width * x;
+      return (block_width +block_margin_x) * x;
     };
   }
 

@@ -6,10 +6,10 @@
   var url_icon_loading = 'https://s3.eu-central-1.amazonaws.com/ott-static/images/jira/ajax-loader.gif';
   var subtask_query = '/jira/api/2/issue/{key}?fields=timespent';
 
-  function ENGINE(MAIN_CONTAINER, COLUMNS, OPTIONS){
+  function ENGINE(MAIN_CONTAINER, OPTIONS){
     var self = this;
     var storage = new window.TaskStorage();
-    var layout  = new window.TaskLayout(COLUMNS);
+    var layout  = new window.TaskLayout(OPTIONS);
     var network = new window.Network();
     var utils   = new window.Utils(OPTIONS);
     var drawlib = new window.DrawLib();
@@ -159,10 +159,12 @@
         // create box
         var container = document.createElement("div");
         container.setAttribute('class', 'man');
+        container.style.width = layout.getBlockWidth() + 'px';
         MAIN_CONTAINER.appendChild(container);
 
         // init SVG
         paper = new drawlib.paper(container);
+        paper.setStyle('width', container.style.width);
         // generate from template and block data
         var title_url = utils.prepareURL(block['title_link'], block);
         // add names

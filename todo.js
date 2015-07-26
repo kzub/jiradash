@@ -98,13 +98,27 @@
     '&fields=id,customfield_10300,key,assignee,description,status,priority,project,subtasks,summary,timespent' +
     '&jql=' + TASKS_TO_WORK;
 
+
   var options = {
     TASK_REWRITE_RULES : TASK_REWRITE_RULES,
-    PRIORITY_RANK : PRIORITY_RANK
+    PRIORITY_RANK : PRIORITY_RANK,
+    COLUMNS : 4
+  };
+
+  // 1 column for mobile + release/test/merge ready moved to the end
+  if(typeof window.orientation !== 'undefined'){
+    options.COLUMNS = 1;
+    BLOCKS.sort(function(a, b){
+      if(!!a.project === !!b.project){
+        return 0;
+      }
+      return !!a.project > !!b.project;
+    });
   }
 
-  var task_engine = new window.TaskEngine(document.body, 4, options);
+  var task_engine = new window.TaskEngine(document.body, options);
 
+  // MAIN LOOP =>
   (function loadData(){
     task_engine.loadData(query, function(err, result){
       task_engine.draw(BLOCKS, result);

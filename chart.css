@@ -1,14 +1,12 @@
 .man {
-  /*border: solid 1px #444444;*/
-  width: 462px;
   position: absolute;
 }
 
 .paper {
   position: absolute;
-  width: 462px;
   overflow: hidden;
   padding-bottom: 5px;
+  width: inherit;
 }
 
 .dev_team {
@@ -16,14 +14,13 @@
 }
 
 .test_ready {
-  /*fill : #00FFFF;*/
+  /*fill : red;*/
 }
 
 .code_review {
   fill : yellow;
 }
 .in_progress {
-  /*fill : lightgreen;*/
   fill: #3CD216;
 }
 
@@ -33,7 +30,6 @@
 
 .subtasks {
   fill: #00FfFf !important;
-  /*opacity: 0.5;*/
 }
 
 body {
@@ -46,13 +42,14 @@ text {
   font-family: Arial, sans-serif;
   fill : white;
   -webkit-font-smoothing: antialiased;
-  /*font-family: 'Verdana', monospace;*/
 }
+
 .text-hours { 
-  text-anchor: end;
   fill: #555 !important;
+  text-anchor: end;
   font-size: 16px;
 }
+
 .text-task-number {
 }
 

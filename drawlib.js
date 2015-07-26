@@ -62,6 +62,10 @@
     this.setAttribute = function(attr, value){
       svg.setAttribute(attr, value);
     };
+
+    this.setStyle = function(name, value){
+      svg.style[name] = value;
+    };
   };
 
   function LIB(){
