@@ -8,6 +8,7 @@
 
   function ENGINE(MAIN_CONTAINER, OPTIONS){
     var self = this;
+    var initialized;
     var storage = new window.TaskStorage();
     var layout  = new window.TaskLayout(OPTIONS);
     var network = new window.Network();
@@ -15,12 +16,23 @@
     var drawlib = new window.DrawLib();
 
     var TASK_REWRITE_RULES = OPTIONS.TASK_REWRITE_RULES || [];
-    var PRIORITY_RANK = OPTIONS.PRIORITY_RANK || {};
-    var initialized;
+    var PRIORITY_RANK = function(r){
+      if(OPTIONS.PRIORITY_RANK && isFinite(OPTIONS.PRIORITY_RANK[r])){
+        return OPTIONS.PRIORITY_RANK[r];
+      }
+      return 10000; // very low rank
+    }
 
     var processResults= function(data){
       for(var i = 0; i < data.issues.length; i++){
         var issue = data.issues[i];
+
+        if(!issue.fields.assignee){
+          issue.fields.assignee = {
+            name : 'unassigned',
+            avatarUrls : {}
+          };
+        }
 
         if(issue.fields.assignee){
           var displayName = issue.fields.assignee.displayName;
@@ -34,7 +46,7 @@
             login         : login,
             status        : issue.fields.status.name,
             priorityIcon  : issue.fields.priority.iconUrl,
-            priority      : (PRIORITY_RANK[issue.fields.priority.name] || 1000),
+            priority      : PRIORITY_RANK(issue.fields.priority.name),
             rank          : issue.fields.customfield_10300,
             key           : issue.key,
             subtasks      : issue.fields.subtasks.length,

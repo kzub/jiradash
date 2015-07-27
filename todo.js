@@ -116,6 +116,15 @@
     });
   }
 
+  /*BLOCKS =[
+{ statuses : ['To Do', 'Open'], title_link : STATUS_LINK, task_links : TASK_LINK, project : 'OTT', title : 'TODO' },
+];
+
+  var query =
+    '/jira/api/2/search?maxResults=2000' +
+    '&fields=id,customfield_10300,key,assignee,description,status,priority,project,subtasks,summary,timespent' +
+    "&jql=status IN ('Open', 'To Do') AND assignee Is EMPTY and project = OTT ORDER BY priority,rank"
+  */
   var task_engine = new window.TaskEngine(document.body, options);
 
   // MAIN LOOP =>
