@@ -16,12 +16,6 @@
     var drawlib = new window.DrawLib();
 
     var TASK_REWRITE_RULES = OPTIONS.TASK_REWRITE_RULES || [];
-    var PRIORITY_RANK = function(r){
-      if(OPTIONS.PRIORITY_RANK && isFinite(OPTIONS.PRIORITY_RANK[r])){
-        return OPTIONS.PRIORITY_RANK[r];
-      }
-      return 10000; // very low rank
-    }
 
     var processResults= function(data){
       for(var i = 0; i < data.issues.length; i++){
@@ -46,14 +40,15 @@
             login         : login,
             status        : issue.fields.status.name,
             priorityIcon  : issue.fields.priority.iconUrl,
-            priority      : PRIORITY_RANK(issue.fields.priority.name),
+            priority      : utils.PRIORITY_RANK(issue.fields.priority.name),
             rank          : issue.fields.customfield_10300,
             key           : issue.key,
             subtasks      : issue.fields.subtasks.length,
             summary       : issue.fields.summary,
             description   : issue.fields.description,
             project       : issue.fields.project.key,
-            timespent     : utils.timespentToHours(issue.fields.timespent)
+            timespent     : utils.timespentToHours(issue.fields.timespent),
+            updated       : new Date(issue.fields.updated)
           };
 
           utils.rewrite_task(TASK_REWRITE_RULES, task);
@@ -163,9 +158,11 @@
           title = person && person.displayName || block.login;
         }
 
+        var task_sorter = utils['task_sorter_' + block.sort_by] || utils.task_sorter_default;
+
         var block_data = {
           title : title,
-          tasks : storage.getTasks(block.login || block.logins, block.statuses, block.project, utils.task_sorter)
+          tasks : storage.getTasks(block.login || block.logins, block.statuses, block.project, task_sorter)
         };
 
         // create box

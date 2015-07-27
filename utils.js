@@ -2,7 +2,7 @@
   /*
   * some utils for runnung engine
   */
-  function Utils(){
+  function Utils(OPTIONS){
     this.prepareURL = function(template, data){
       if(!template) {
         return;
@@ -109,6 +109,13 @@
       return value;
     };
 
+    this.PRIORITY_RANK = function(r){
+      if(OPTIONS && OPTIONS.PRIORITY_RANK && isFinite(OPTIONS.PRIORITY_RANK[r])){
+        return OPTIONS.PRIORITY_RANK[r];
+      }
+      return 10000; // very low rank
+    };
+
     var scale = 10000;
     var calcTaskRank = function(s){
       var a = 0;
@@ -118,8 +125,12 @@
       return a;
     };
 
-    this.task_sorter = function(a, b){
+    this.task_sorter_default = function(a, b){
       return (a.priority*scale + calcTaskRank(a.rank)) - (b.priority*scale + calcTaskRank(b.rank));
+    };
+
+    this.task_sorter_updated = function(a, b){
+      return b.updated - a.updated;
     };
   };
 
