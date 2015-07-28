@@ -68,7 +68,9 @@
   // MAIN LOOP =>
   (function loadData(){
     task_engine.loadData(query, function(err, result){
-      task_engine.draw(BLOCKS, result);
+      if(!err){
+        task_engine.draw(BLOCKS, result);
+      }
       setTimeout(loadData, 5*60*1000);
     });
   })();
