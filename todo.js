@@ -70,7 +70,7 @@
   { skip : 1 },
 
   { login : 'Yury.Kocharyan', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
-  { login : 'konstantin.kalinin', title_link : USER_LINK, task_links : TASK_LINK, statuses : QA_TASK_STATUSES, limit : DEVLIMIT},
+  { login : 'konstantin.kalinin', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
   { skip : 1 },
   { skip : 1 },
 
