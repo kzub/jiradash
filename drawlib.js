@@ -66,6 +66,17 @@
     this.setStyle = function(name, value){
       svg.style[name] = value;
     };
+
+    this.line = function(x1, y1, x2, y2){
+      var svgline = document.createElementNS('http://www.w3.org/2000/svg','line');
+      svgline.setAttributeNS(null,'x1', x1);
+      svgline.setAttributeNS(null,'y1', y1);
+      svgline.setAttributeNS(null,'x2', x2);
+      svgline.setAttributeNS(null,'y2', y2);
+      svg.appendChild(svgline);
+
+      return svgline;
+    }
   };
 
   function LIB(){

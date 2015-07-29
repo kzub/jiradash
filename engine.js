@@ -150,7 +150,7 @@
           continue;
         }
 
-        if(block.title){
+        if(block.title !== undefined){
           title = block.title;
         }
         else if(block.login){
@@ -158,11 +158,17 @@
           title = person && person.displayName || block.login;
         }
 
-        var task_sorter = utils['task_sorter_' + block.sort_by] || utils.task_sorter_default;
+        var filter_options = {};
+        /* block is a filter itslef */
+        for (var key in block) {
+          filter_options[key] = block[key];
+        };
+        // add some functions
+        filter_options.task_sorter = utils['task_sorter_' + block.sort_by] || utils.task_sorter_default;
 
         var block_data = {
           title : title,
-          tasks : storage.getTasks(block.login || block.logins, block.statuses, block.project, task_sorter)
+          tasks : storage.getTasks(filter_options)
         };
 
         // create box
@@ -175,9 +181,16 @@
         paper = new drawlib.paper(container);
         paper.setStyle('width', container.style.width);
         // generate from template and block data
-        var title_url = utils.prepareURL(block['title_link'], block);
-        // add names
-        paper.text(0, layout.getLine(1), block_data.title, title_url).setAttribute('class', 'man_name');
+        if(title){
+          var title_url = utils.prepareURL(block['title_link'], block);
+          // add names
+          paper.text(0, layout.getLine(1), block_data.title, title_url).setAttribute('class', 'man_name');
+        }else{
+          // or separator line
+          var y =  layout.getLine(0);
+          var line = paper.line(46, y, layout.getBlockWidth() - 10, y);
+          line.setAttribute('class', 'subtask-separator');
+        }
 
         var tasks_to_display = 2;
         // add tasks

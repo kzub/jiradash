@@ -29,7 +29,13 @@
 }
 
 .subtasks {
-  fill: #00FfFf !important;
+  /*fill: #00FfFf !important;*/
+}
+
+.subtask-separator{
+  stroke : #777;
+  stroke-width : 2px;
+  stroke-dasharray: 1,3;
 }
 
 body {
@@ -45,9 +51,13 @@ text {
 }
 
 .text-hours { 
-  fill: #555 !important;
+  fill: #666 !important;
   text-anchor: end;
   font-size: 16px;
+}
+
+.subtasks.text-hours { 
+  fill: #007777 !important;
 }
 
 .text-task-number {

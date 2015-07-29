@@ -37,8 +37,13 @@
     return this.persons;
   };
 
-  TaskStorage.prototype.getTasks = function(login, statuses, project, task_sorter){
+  TaskStorage.prototype.getTasks = function(filter_options){
     var filtered_tasks = [];
+    var login          = filter_options.login;
+    var statuses       = filter_options.statuses;
+    var project        = filter_options.project; 
+    var task_sorter    = filter_options.task_sorter;
+    var subtasks       = filter_options.subtasks;
 
     for(var i = 0; i < this.tasks.length; i++){
       var task = this.tasks[i];
@@ -58,6 +63,13 @@
       // filter by project
       if(project){
         if(project !== task.project){
+          continue;
+        }
+      }
+
+      // filter tasks if subtask criteria not match
+      if(subtasks !== undefined){
+        if(subtasks != !!task.subtasks){
           continue;
         }
       }
