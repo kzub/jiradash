@@ -3,30 +3,13 @@
   * Main program
   */
   // constants
-  var url_icon_loading = 'https://s3.eu-central-1.amazonaws.com/ott-static/images/jira/ajax-loader.gif';
-  var subtask_query = '/jira/api/2/issue/{key}?fields=timespent';
+  var URL_ICON_LOADING = 'https://s3.eu-central-1.amazonaws.com/ott-static/images/jira/ajax-loader.gif';
+  var SUBTASK_QUERY = '/jira/api/2/issue/{key}?fields=timespent';
+  var JIRA_QUERY = '/jira/api/2/search?maxResults=2000' +
+    '&fields=customfield_10300,key,assignee,description,status,priority,project,subtasks,summary,timespent' +
+    '&jql=(%STATUSES%) AND assignee IN (%DEVTEAM%) ORDER BY priority,rank';
 
-  // this class helps extract the value
-  function ISSUE(issue){
-    this.get = function(path){
-      var elements = path.split('.');
-      var pointer  = issue;
-
-      for(var i in elements){
-        pointer = pointer[elements[i]];
-        if(!pointer){
-          return;
-        }
-      }     
-
-      return pointer;
-    };
-  }
-
-  надо переписать на каждый тип отображения свой engine со своими данными из jira
-
-
-  function ENGINE(TYPE, BLOCKS, MAIN_CONTAINER, OPTIONS){
+  function ENGINE(BLOCKS, MAIN_CONTAINER, OPTIONS){
     var self = this;
     var initialized;
     var storage = new window.TaskStorage();
@@ -34,15 +17,16 @@
     var network = new window.Network();
     var utils   = new window.Utils(OPTIONS);
     var drawlib = new window.DrawLib();
-window.storage = storage;
-    var TASK_REWRITE_RULES = OPTIONS.TASK_REWRITE_RULES || [];
+
+    if(layout.isMobile() && OPTIONS.MOBILE_BLOCKS_SORTER){
+      BLOCKS.sort(utils['task_sorter_' + OPTIONS.MOBILE_BLOCKS_SORTER]);
+    }
 
     var processResults= function(data){
       for(var idx = 0; idx < data.issues.length; idx++){
-        var issue = new ISSUE(data.issues[idx]);
+        var issue = new utils.Extractor(data.issues[idx]);
 
         var displayName = issue.get('fields.assignee.displayName');
-        var email       = issue.get('fields.assignee.emailAddress');
         var login       = issue.get('fields.assignee.name');
         var avatar      = issue.get('fields.assignee.avatarUrls.48x48');
 
@@ -60,28 +44,20 @@ window.storage = storage;
           description   : issue.get('fields.description'),
           project       : issue.get('fields.project.key'),
           timespent     : utils.timespentToHours(issue.get('fields.timespent')),
-          updated       : new Date(issue.get('fields.updated')),
-          worklogs      : issue.get('fields.worklog.worklogs')
+          updated       : new Date(issue.get('fields.updated'))
         };
 
-        utils.rewrite_task(TASK_REWRITE_RULES, task);
+        utils.rewrite_task(OPTIONS.TASK_REWRITE_RULES, task);
 
-        // if(task.worklogs && task.worklogs.length){
-        //   task.timespent = 0;
-        //   for(var i in task.worklogs){
-        //     var wl = task.worklogs[i];
-        //     task.timespent += wl.timeSpentSeconds/3600;
-        //   }
-        // }
         // laod all the data associated with task
         var subtasks = issue.get('fields.subtasks');
         if(subtasks && subtasks.length){
           // load task data
-          var urls = [utils.prepareURL(subtask_query, task)];
+          var urls = [utils.prepareURL(SUBTASK_QUERY, task)];
           // prepare url for subtasks loading
           for(var k = 0; k < subtasks.length; k++){
             var subtask = subtasks[k];
-            urls.push(utils.prepareURL(subtask_query, subtask));
+            urls.push(utils.prepareURL(SUBTASK_QUERY, subtask));
           }
           // clear subtask time spend util it loaded complete
           task.timespent = '*';
@@ -137,7 +113,7 @@ window.storage = storage;
 
       // priority icon or loading symbol...
       if(task.timespent === '*'){
-        elements.push(paper.img(27, y-14, 16, 16, url_icon_loading));
+        elements.push(paper.img(27, y-14, 16, 16, URL_ICON_LOADING));
       }else{
         elements.push(paper.img(27, y-14, 16, 16, task.priorityIcon));
       }
@@ -183,10 +159,8 @@ window.storage = storage;
         // add some functions
         filter_options.task_sorter = utils['task_sorter_' + block.sort_by] || utils.task_sorter_default;
 
-        var block_data = {
-          title : title,
-          tasks : storage.getTasks(filter_options)
-        };
+        var block_data_title = title;
+        var block_data_tasks = storage.getTasks(filter_options);
 
         // create box
         var container = document.createElement("div");
@@ -201,7 +175,7 @@ window.storage = storage;
         if(title){
           var title_url = utils.prepareURL(block['title_link'], block);
           // add names
-          paper.text(0, layout.getLine(1), block_data.title, title_url).setAttribute('class', 'man_name');
+          paper.text(0, layout.getLine(1), block_data_title, title_url).setAttribute('class', 'man_name');
         }else{
           // or separator line
           var y =  layout.getLine(0);
@@ -211,8 +185,8 @@ window.storage = storage;
 
         var tasks_to_display = 2;
         // add tasks
-        for(var i in block_data.tasks){
-          var task = block_data.tasks[i];
+        for(var i in block_data_tasks){
+          var task = block_data_tasks[i];
 
           var y = layout.getLine();
           var elms = drawLineTextFromTask(block, task, paper, y);
@@ -225,7 +199,7 @@ window.storage = storage;
           })(task, block, elms);
 
           // draw not all tasks but as block limit require
-          var left = block_data.tasks.length - 1 - i;
+          var left = block_data_tasks.length - 1 - i;
           if(left){
             tasks_to_display++;
           }
@@ -267,10 +241,22 @@ window.storage = storage;
       container.innerHTML = text;
     };
 
-    this.process = function(query, callback){
+    this.process = function(DEVTEAM, STATUSES_TO_LOAD, callback){
       if(!initialized){
         self.drawMsg('loading...');
       }
+
+      // replace vars in templae
+      var query = JIRA_QUERY
+        .replace('%DEVTEAM%', DEVTEAM.join(','))
+        .replace('%STATUSES%', 
+          STATUSES_TO_LOAD.map(function(s){
+            if(s[0] === '!'){
+              return 'status != ' + s.slice(1);
+            }
+            return 'status == ' + s;
+          }).join(' AND ')
+        );
 
       network.load([query], function(err, data){
         self.clearScreen();
@@ -291,7 +277,7 @@ window.storage = storage;
     };
   }
 
-  window.TaskEngine = ENGINE;
+  window.TaskTable = ENGINE;
 })();
 
 

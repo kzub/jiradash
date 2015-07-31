@@ -2,6 +2,15 @@
   /*
   * some utils for runnung engine
   */
+
+  var PRIORITY_RANK = {
+    'ASAP'     : 0,
+    'Critical' : 1,
+    'Very High': 2,
+    'High'     : 3,
+    'Normal'   : 4
+  };
+
   function Utils(OPTIONS){
     this.prepareURL = function(template, data){
       if(!template) {
@@ -66,6 +75,10 @@
     };
 
     this.rewrite_task = function(TASK_REWRITES, task){
+      if(!TASK_REWRITES || !TASK_REWRITES.length){
+        return;
+      }
+
       for(var idx in TASK_REWRITES){
         var apply = true;
         var rule = TASK_REWRITES[idx];
@@ -83,6 +96,23 @@
           }
         }
       }
+    };
+
+    // this class helps extract the value
+    this.Extractor = function(issue){
+      this.get = function(path){
+        var elements = path.split('.');
+        var pointer  = issue;
+
+        for(var i in elements){
+          pointer = pointer[elements[i]];
+          if(!pointer){
+            return;
+          }
+        }
+
+        return pointer;
+      };
     };
 
     this.timespentToHours = function(timespent){
@@ -110,8 +140,8 @@
     };
 
     this.PRIORITY_RANK = function(r){
-      if(OPTIONS && OPTIONS.PRIORITY_RANK && isFinite(OPTIONS.PRIORITY_RANK[r])){
-        return OPTIONS.PRIORITY_RANK[r];
+      if(isFinite(PRIORITY_RANK[r])){
+        return PRIORITY_RANK[r];
       }
       return 10000; // very low rank
     };
@@ -131,6 +161,14 @@
 
     this.task_sorter_updated = function(a, b){
       return b.updated - a.updated;
+    };
+
+    this.task_sorter_project_attribute = function(a, b){
+      return !!a.project - !!b.project;
+    };
+
+    this.task_sorter_timespent = function(a, b){
+      return b.timespent - a.timespent;
     };
   };
 

@@ -32,9 +32,18 @@
     this.persons[login].tasks.push(task);
   };
 
-  TaskStorage.prototype.getPersons = function(login){
-    if(login){ return this.persons[login]; }
-    return this.persons;
+  TaskStorage.prototype.getPersons = function(logins){
+    if(!(logins instanceof Array)){
+      return this.persons[logins];
+    }
+    var persons = [];
+    for(var name in this.persons){
+      if(logins && logins.indexOf(name) === -1){
+        continue;    
+      }
+      persons.push(this.persons[name]);
+    }
+    return persons;
   };
 
   TaskStorage.prototype.getTasks = function(filter_options){
@@ -44,6 +53,7 @@
     var project        = filter_options.project;
     var task_sorter    = filter_options.task_sorter;
     var subtasks       = filter_options.subtasks;
+    var group          = filter_options.group;
 
     for(var i = 0; i < this.tasks.length; i++){
       var task = this.tasks[i];
@@ -111,9 +121,46 @@
       }
     }
 
+    if(group instanceof Object){
+      var keys = group.keys;
+      var aggs = group.aggregates;
+      var grouped = {};
+
+      for(var i in filtered_tasks){
+        var task = filtered_tasks[i];
+        // build task key
+        var key = keys.map(function(k){ return task[k]}).join();
+        // add first element
+        if(!grouped[key]){
+          grouped[key] = task;
+          grouped[key].grouped_elements = 1;
+          continue;
+        }
+        grouped[key].grouped_elements++;
+        // process aggregation
+        for(var i2 in aggs){
+          var ag = aggs[i2];
+          // sum the values
+          if(ag.name === 'sum'){
+            for(var i3 in ag.values){
+              var value = ag.values[i3];
+              grouped[key][value] += task[value];
+            }
+          }
+        }
+      }
+
+      // build new array from grouped tasks
+      filtered_tasks = [];
+      for(var key in grouped){
+        filtered_tasks.push(grouped[key]);
+      }
+    }
+
     if(task_sorter){
       filtered_tasks.sort(task_sorter);
     }
+
     return filtered_tasks;
   };
 

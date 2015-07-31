@@ -14,6 +14,9 @@
     if(OPTIONS && OPTIONS.COLUMNS){
       columns = OPTIONS.COLUMNS;
     }
+    if(isMobile() && OPTIONS.MOBILE_COLUMNS){
+      columns = OPTIONS.MOBILE_COLUMNS;
+    }
 
     var scheme = [];
     var x = 0;
@@ -26,6 +29,11 @@
     for(var i = 0; i < columns; i++){
       scheme.push([]);
     }
+
+    function isMobile(){
+      return typeof window.orientation !== 'undefined'; 
+    };
+    this.isMobile = isMobile;
 
     this.getBlockWidth = function(){
       return Math.floor(screen_width / columns) - block_margin_x;

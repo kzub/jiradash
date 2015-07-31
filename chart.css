@@ -60,6 +60,10 @@ text {
   fill: #007777 !important;
 }
 
+.white {
+  fill: white !important;
+}
+
 .text-task-number {
 }
 
@@ -75,6 +79,35 @@ text {
 }
 
 .man_name {
+  fill: white;
+  font-size : 20px;
+  font-weight : bold;
+}
+
+/* SPENT TIME STILES >>>> */
+
+.bar {
+  /*fill: steelblue;*/
+}
+
+.axis {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #fff;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.text-timespent-names {
+  text-anchor: end;
+  alignment-baseline: before-edge;
   fill: white;
   font-size : 20px;
   font-weight : bold;
