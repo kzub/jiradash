@@ -43,15 +43,15 @@
     SCREEN_WIDTH : '50%'
   };
 
-  var OPTIONS_TODO = {
-    SCREEN_WIDTH : '50%',
-    LOAD_PROJECTS : ['OTT']
-  };
-
   var OPTIONS_DONE = {
     SCREEN_WIDTH : '50%',
     LOAD_BY_PRIORITY : 'updated',
     LOAD_LIMIT : 50,
+    LOAD_PROJECTS : ['OTT']
+  };
+
+  var OPTIONS_TODO = {
+    SCREEN_WIDTH : '50%',
     LOAD_PROJECTS : ['OTT']
   };
 
