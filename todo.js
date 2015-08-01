@@ -86,7 +86,7 @@
     MOBILE_BLOCKS_SORTER : 'project_attribute'
   };
 
-  var task_engine = new window.TaskTable(BLOCKS, document.body, OPTIONS);
+  var task_engine = new window.TaskTable(BLOCKS, document.getElementById('todo_block'), OPTIONS);
 
   // MAIN LOOP =>
   (function loadData(){

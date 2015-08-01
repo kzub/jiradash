@@ -1,59 +1,71 @@
 (function(){
 
-  var TASK_STATUSES     = ['!Closed', '!Done', '!Rejected', '!Merge ready', '!In Release', '!Test ready'];
-  var QA_TASK_STATUSES  = ['!Closed', '!Done', '!Rejected', '!Merge ready', '!In Release'];
-
-  var USER_LINK = 'https://onetwotripdev.atlassian.net/issues/?jql=assignee IN ({login}) and ({statuses}) ORDER BY priority,updated';
   var TASK_LINK = 'https://onetwotripdev.atlassian.net/browse/{key}';
-  var STATUS_LINK = 'https://onetwotripdev.atlassian.net/issues/?jql=project IN({project}) and ({statuses}) ORDER BY priority,updated';
 
-  var AVIATEAM  = ['alexey.sutiagin','ek','fedor.shumov','aleksandr.gladkikh','andrey.ivanov','ivan.hilkov','renat.abdusalamov','anton.ipatov','Ango','alexander.litvinov','andrey.plotnikov','andrey.iliopulo','alexander.neyasov','marina.severyanova','Yury.Kocharyan','konstantin.kalinin','h3x3d','andrey.lakotko','anastasia.oblomova'];
-  var DEVTEAM   = AVIATEAM;
-  var LEADLIMIT = undefined;
-  var DEVLIMIT  = undefined;
-
-  var BLOCKS = [
-  { login : 'alexey.sutiagin', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : LEADLIMIT },
-  { login : 'ek', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : LEADLIMIT },
-  { login : 'fedor.shumov', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : LEADLIMIT },
-
-  { login : 'aleksandr.gladkikh', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
-  { login : 'andrey.ivanov', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
-  { login : 'ivan.hilkov', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
-
-  { login : 'renat.abdusalamov', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
-  { login : 'anton.ipatov', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
-  { login : 'Ango', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
-
-  { login : 'alexander.litvinov', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
-  { login : 'andrey.plotnikov', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
-  { login : 'andrey.iliopulo', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
-
-  { login : 'alexander.neyasov', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
-  { login : 'marina.severyanova', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
-
-  { login : 'Yury.Kocharyan', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
-  { login : 'konstantin.kalinin', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
-
-  { login : 'anastasia.oblomova', statuses : QA_TASK_STATUSES, title_link : USER_LINK, task_links : TASK_LINK, limit : DEVLIMIT},
-  { login : 'andrey.lakotko', statuses : QA_TASK_STATUSES, title_link : USER_LINK, task_links : TASK_LINK, limit : DEVLIMIT},
-  { login : 'h3x3d', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT}
+  var DEVTEAM  = [
+    'alexey.sutiagin','aleksandr.gladkikh','renat.abdusalamov','alexander.litvinov','alexander.neyasov','Yury.Kocharyan','h3x3d',
+    'ek','andrey.ivanov','anton.ipatov','andrey.plotnikov',
+    'fedor.shumov','ivan.hilkov','Ango','andrey.iliopulo','marina.severyanova',
+    'konstantin.kalinin', 'andrey.lakotko','anastasia.oblomova'
   ];
 
-  var STATUSES_TO_LOAD = ['!Closed', '!Done' , '!Rejected'];
-  var OPTIONS = {
-    // COLUMNS : 2,
-    MOBILE_COLUMNS : 1,
-    MOBILE_BLOCKS_SORTER : 'project_attribute'
+  var BLOCKS_TODO = [
+    {
+      title : 'To Do',
+      project : 'OTT',
+      statuses : ['Open'],
+      limit : 16,
+      title_link : 'https://onetwotripdev.atlassian.net/issues/?jql=project IN({project}) AND ({statuses}) AND assignee is Empty ORDER BY priority,updated',
+      task_links : TASK_LINK
+    },{
+      title : 'Bugs',
+      project : 'OTT',
+      statuses : ['To Do'],
+      limit : 16,
+      title_link : 'https://onetwotripdev.atlassian.net/issues/?jql=project IN({project}) AND ({statuses}) AND assignee is Empty ORDER BY priority,updated',
+      task_links : TASK_LINK
+    }
+  ];
+
+  var BLOCKS_DONE= [
+    {
+      title : 'Recently done',
+      project : 'OTT',
+      statuses : ['Done', 'Closed'],
+      limit : 14,
+      title_link : 'https://onetwotripdev.atlassian.net/issues/?jql=project IN({project}) and ({statuses}) ORDER BY priority,updated',
+      task_links : TASK_LINK,
+      sort_by:'updated'
+    }
+  ];
+
+  var OPTIONS_TIMESPENT = {
+    SCREEN_WIDTH : '50%'
   };
 
-  var task_engine = new window.TaskTimespend(DEVTEAM, document.body, OPTIONS);
+  var OPTIONS_TODO = {
+    SCREEN_WIDTH : '50%',
+    LOAD_PROJECTS : ['OTT']
+  };
+
+  var OPTIONS_DONE = {
+    SCREEN_WIDTH : '50%',
+    LOAD_BY_PRIORITY : 'updated',
+    LOAD_LIMIT : 50,
+    LOAD_PROJECTS : ['OTT']
+  };
+
+  var timespent = new window.TaskTimespend(DEVTEAM, document.getElementById('timespend-left'), OPTIONS_TIMESPENT);
+  var todo = new window.TaskTable(BLOCKS_TODO, document.getElementById('timespend-right'), OPTIONS_TODO);
+  var done = new window.TaskTable(BLOCKS_DONE, document.getElementById('timespend-bottom'), OPTIONS_DONE);
 
   // MAIN LOOP =>
   (function loadData(){
-    task_engine.process(7, 40, function(){
+    timespent.process(7*1, 1*40, function(){
       setTimeout(loadData, 5*60*1000);
     });
+    todo.process([], ['!Closed', '!Done' , '!Rejected'], function(){});
+    done.process(DEVTEAM, ['Closed', 'Done'], function(){});
   })();
 })();
 

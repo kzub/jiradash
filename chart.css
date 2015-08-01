@@ -1,4 +1,8 @@
 .man {
+  position: inherit;
+}
+
+.task-table-list {
   position: absolute;
 }
 
@@ -105,10 +109,29 @@ text {
   display: none;
 }
 
+.man-timespent-background{
+  fill : white;
+}
+
 .text-timespent-names {
   text-anchor: end;
   alignment-baseline: before-edge;
   fill: white;
-  font-size : 20px;
+  font-size : 16px;
+  /*font-weight : bold;*/
+}
+
+.text-task-keys {
+  text-anchor: start;
+  alignment-baseline: before-edge;
+  fill: #000;
+  font-size : 15px;
   font-weight : bold;
+}
+
+.timespend-split-screen {
+  /*float: left;*/
+}
+.timespend-view {
+  display: -webkit-box;
 }

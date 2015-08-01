@@ -12,7 +12,8 @@
     if(!this.persons[login]){
       this.persons[login] = {
         displayName : displayName,
-        avatar : avatar
+        avatar : avatar,
+        login : login
       };
     }
     else if(!this.persons[login].displayName){
@@ -33,17 +34,25 @@
   };
 
   TaskStorage.prototype.getPersons = function(logins){
-    if(!(logins instanceof Array)){
-      return this.persons[logins];
-    }
-    var persons = [];
-    for(var name in this.persons){
-      if(logins && logins.indexOf(name) === -1){
-        continue;    
+    if(logins instanceof Array){
+      var persons = [];
+      for(var name in this.persons){
+        if(logins.indexOf(name) === -1){
+          continue;
+        }
+        persons.push(this.persons[name]);
       }
-      persons.push(this.persons[name]);
+      persons.sort(function(a, b){
+        return (logins.indexOf(a.login)||0) - (logins.indexOf(b.login)||0);
+      });
+      return persons;
     }
-    return persons;
+    // or just find a person
+    return this.persons[logins];
+  };
+
+  TaskStorage.prototype.applyTasksFilter = function(tasks, filter_options){
+    return this.getTasks.call({ tasks : tasks }, filter_options);
   };
 
   TaskStorage.prototype.getTasks = function(filter_options){

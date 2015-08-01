@@ -4,10 +4,11 @@
   */
   // constants
   var URL_ICON_LOADING = 'https://s3.eu-central-1.amazonaws.com/ott-static/images/jira/ajax-loader.gif';
-  var SUBTASK_QUERY = '/jira/api/2/issue/{key}?fields=timespent';
   var JIRA_QUERY = '/jira/api/2/search?maxResults=2000' +
     '&fields=key,description,project,priority,worklog,summary,timespent' +
     '&jql=(worklogDate >= -%DAYS_TO_ANALIZE%d) AND assignee IN (%DEVTEAM%) ORDER BY updated';
+
+  var TASK_LINK = 'https://onetwotripdev.atlassian.net/browse/{key}';
 
   function ENGINE(DEVTEAM, MAIN_CONTAINER, OPTIONS){
     var self = this;
@@ -40,7 +41,7 @@ window.storage = storage;
           }
 
           storage.addPerson(login, displayName, avatar);
-          
+
           var task = {
             login         : login,
             // status        : issue.get('fields.status.name'),
@@ -65,18 +66,21 @@ window.storage = storage;
 
     var drawBlocksTable = function(max_days, max_work_hours){
       var people = storage.getPersons(DEVTEAM);
-      
-      var bar_height = 40;
+
+      var bar_height = 18;
+      var bar_margin = 4;
+      var top_margin = 30;
+      var bottom_margin = 10;
+      var left_margin = 160;
+      var right_margin = 00;
+      var max_time = 8 /* work hours*/ * (max_days - (1.5*(max_days/7|0)));
 
       var width = layout.getBlockWidth();
-      var height = people.length * bar_height;
-      var top_margin = 30;
-      var bottom_margin = 100;
-      var left_margin = 230;
-      var max_time = 8 /* work hours*/ * max_days;
+      var height = people.length * (bar_height + bar_margin);
+      var time_to_show_up_task_name = 2 * max_work_hours / (max_days - (2*(max_days/7|0)));
 
       var svg = d3.select(MAIN_CONTAINER).append("svg")
-        .attr("width", width)
+        .attr("width", width + right_margin)
         .attr("height", height + top_margin + bottom_margin)
         .append("g")
         .attr("transform", "translate(" + left_margin + "," + top_margin+ ")");
@@ -84,21 +88,24 @@ window.storage = storage;
       // build color line from red to violet per each man
       var person_color = function(person, task){
         if(person.color_counter === undefined){
-          person.color_counter = 0;
+          person.color_counter = 30;
           person.color_step = 360 / person.tasks.length;
+          if(person.color_step > 10){
+            person.color_step = 10;
+          }
           person.task_keys = {};
         }
 
         if(!person.task_keys[task.key]){
+          person.task_keys[task.key] = d3.hsl(person.color_counter, 0.9, 0.5);
           person.color_counter += person.color_step;
-          person.task_keys[task.key] = d3.hsl(person.color_counter, 0.6, 0.5);
         }
 
         return person.task_keys[task.key];
       }
 
       var x = d3.scale.linear()
-          .range([0, width])
+          .range([0, width - left_margin])
           .domain([0, max_time])
 
       var y = d3.scale.linear()
@@ -108,7 +115,7 @@ window.storage = storage;
       var xAxis = d3.svg.axis()
           .scale(x)
           .orient("bottom")
-          .ticks(20)
+          .ticks(10)
           .tickFormat(function(d){
             return d+'h';
           })
@@ -119,7 +126,8 @@ window.storage = storage;
           .call(xAxis);
 
       // DRAW NAMES
-      svg.append("g").attr("transform", "translate(-10, 7)")
+      svg.append("g")
+        .attr("transform", "translate(-10, 0)")
         .selectAll(".names")
         .data(people)
       .enter().append("text")
@@ -133,39 +141,89 @@ window.storage = storage;
         return p.displayName
       })
       .attr('class', 'text-timespent-names')
-   
+
       // DRAW SPENTLINE
-      svg.selectAll(".bar")
+      var man_line = svg.selectAll(".bar-back")
           .data(people)
         .enter().append("g")
-          .selectAll(".tasks")
-          .data(function(d){
-            return d.tasks;
+
+      // background BIG WHITE BAR
+      man_line.append('rect')
+        .attr("x", 0)
+        .attr("y", function(person, i) {
+          return height - y(i);
+        })
+        .attr("height", bar_height)
+        .attr("width", function(person){
+          var person_timespent = d3.sum(person.tasks, function(t){
+            return t.timespent;
           })
-        .enter().append("rect")
-          .attr("class", "bar")
-          .attr("width", function(task, i, p){
-            var timespent = task.timespent;
-            if(people[p].offset === undefined){
-              people[p].offset = 0;
-            }            
-            task.offset = people[p].offset;
-            people[p].offset += timespent;
-            return x(timespent);
-          })
-          .attr("x", function(task, i, p){
-            return x(task.offset)  /* block shift */;
-          })
-          .attr("y", function(d, i, p) {
-            return height - y(p);
-          })
-          .attr("height", bar_height*0.9)
-          .on('mouseover', function(task){
-            console.log([task.login, task.key, Math.round(10*task.offset)/10].join(' '))
-          })
-          .attr('fill', function(task, i, p){
-            return person_color(people[p], task);
-          })
+          return x(person_timespent);
+        })
+        .attr('class', 'man-timespent-background')
+
+      // lines with tasks (TIMESPEND)
+      man_line = man_line.selectAll(".tasks")
+        .data(function(person){
+          return storage.applyTasksFilter(person.tasks, { group: {
+            keys : ['login', 'key'],
+            aggregates : [{ name : 'sum', values : ['timespent']}]
+          }});
+        })
+      .enter().append("g")
+
+      man_line.append("a")
+        .attr("xlink:href", function(task){
+          return utils.prepareURL(TASK_LINK, task);
+        })
+        .attr('target', '_blank')
+        .attr('xlink:title', function(task){
+          return [task.key, task.summary, Math.round(10*task.timespent)/10 + 'h'].join(' ');
+        })
+        .append('rect')
+        .attr("class", "bar")
+        .attr("width", function(task, i, p){
+          var timespent = task.timespent;
+          if(people[p].offset === undefined){
+            people[p].offset = 0;
+          }
+          task.offset = people[p].offset;
+          people[p].offset += timespent;
+          var bar_width = x(timespent) - 1;
+          if(bar_width < 1){
+            bar_width = 1;
+          }
+          return bar_width;
+        })
+        .attr("x", function(task, i, p){
+          return x(task.offset) /* block shift */;
+        })
+        .attr("y", function(d, i, p) {
+          return height - y(p);
+        })
+        .attr("height", bar_height)
+        // .on('mouseover', function(task){
+        //   console.log([task.login, task.key, Math.round(10*task.offset)/10].join(' '))
+        // })
+        .attr('fill', function(task, i, p){
+          // return 'steelblue';
+          return person_color(people[p], task);
+        })
+      // TASKS KEY (OTT-XXXX)
+      man_line.append('text')
+        .attr("x", function(task, i, p){
+          return x(task.offset) /* block shift */;
+        })
+        .attr("y", function(d, i, p) {
+          return height - y(p);
+        })
+        .text(function(d){
+          return d.key;
+        })
+        .attr('class', 'text-task-keys')
+        .style('visibility', function(task){
+          return task.timespent < time_to_show_up_task_name ? 'hidden' : '';
+        })
 
 
       // NORMAIL AMOUNT OF WORK
@@ -178,13 +236,12 @@ window.storage = storage;
         .attr("transform", "translate(" + x(max_work_hours) + ", 0)")
         .attr("class", "y axis")
         .call(yAxis)
-      .append("text")
-        // .attr("transform", "rotate(0)")
-        .attr("y", height)
-        .attr("dy", "18px")
-        .style("text-anchor", "start")
-        .text("Week work hours");
-
+      // .append("text")
+      //   // .attr("transform", "rotate(0)")
+      //   .attr("y", height)
+      //   .attr("dy", "10px")
+      //   .style("text-anchor", "end")
+      //   .text("deadline");
     };
 
     this.clearScreen = function(){

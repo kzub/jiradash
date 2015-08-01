@@ -5,17 +5,25 @@
   function Layout(OPTIONS){
     var columns = 1;
     var ratio = window.devicePixelRatio || 1;
-    var screen_width = screen.width * ratio;
-    var screen_height = screen.height * ratio;
+    var screen_width = screen.width;
+    var screen_height = screen.height;
 
     if(OPTIONS && OPTIONS.SCREEN_WIDTH){
-      screen_width = OPTIONS.SCREEN_WIDTH;
+      var lastchar = OPTIONS.SCREEN_WIDTH.length - 1;
+      if(lastchar && OPTIONS.SCREEN_WIDTH[lastchar] === '%'){
+        screen_width *= +OPTIONS.SCREEN_WIDTH.slice(0, lastchar)/100;
+      }else{
+        screen_width = OPTIONS.SCREEN_WIDTH;
+      }
     }
+
     if(OPTIONS && OPTIONS.COLUMNS){
       columns = OPTIONS.COLUMNS;
     }
     if(isMobile() && OPTIONS.MOBILE_COLUMNS){
       columns = OPTIONS.MOBILE_COLUMNS;
+      screen_width *= ratio;
+      screen_height *= ratio;
     }
 
     var scheme = [];
@@ -31,7 +39,7 @@
     }
 
     function isMobile(){
-      return typeof window.orientation !== 'undefined'; 
+      return typeof window.orientation !== 'undefined';
     };
     this.isMobile = isMobile;
 

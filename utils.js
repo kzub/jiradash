@@ -146,17 +146,27 @@
       return 10000; // very low rank
     };
 
-    var scale = 10000;
-    var calcTaskRank = function(s){
+    var scale  = 1000;
+    var calcTaskRank = function(t){
       var a = 0;
-      for(var i in s){
-        a += (1/(+i+1))*s.charCodeAt(i);
+      for(var i in t.rank){
+        a += (1/(+i+1))*t.rank.charCodeAt(i);
       }
       return a;
     };
 
+    var today = Date.now();
+    var calcTaskAge = function(t){
+      var age = (1-(today - t.updated)/today)*1000;
+      return age;
+    }
+
     this.task_sorter_default = function(a, b){
-      return (a.priority*scale + calcTaskRank(a.rank)) - (b.priority*scale + calcTaskRank(b.rank));
+      var power =
+        (a.priority*scale + calcTaskRank(a) + calcTaskAge(a))
+        -
+        (b.priority*scale + calcTaskRank(b) + calcTaskAge(b));
+      return power;
     };
 
     this.task_sorter_updated = function(a, b){
