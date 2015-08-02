@@ -173,6 +173,10 @@
       return b.updated - a.updated;
     };
 
+    this.task_sorter_updated_reverse = function(a, b){
+      return a.updated - b.updated;
+    };
+
     this.task_sorter_project_attribute = function(a, b){
       return !!a.project - !!b.project;
     };

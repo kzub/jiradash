@@ -5,7 +5,7 @@
   // constants
   var URL_ICON_LOADING = 'https://s3.eu-central-1.amazonaws.com/ott-static/images/jira/ajax-loader.gif';
   var JIRA_QUERY = '/jira/api/2/search?maxResults=2000' +
-    '&fields=key,description,project,priority,worklog,summary,timespent' +
+    '&fields=key,description,project,priority,worklog,summary,timespent,updated' +
     '&jql=(worklogDate >= -%DAYS_TO_ANALIZE%d) AND assignee IN (%DEVTEAM%) ORDER BY updated';
 
   var TASK_LINK = 'https://onetwotripdev.atlassian.net/browse/{key}';
@@ -54,7 +54,7 @@ window.storage = storage;
             description   : issue.get('fields.description'),
             project       : issue.get('fields.project.key'),
             // timespent     : utils.timespentToHours(issue.get('fields.timespent')),
-            // updated       : new Date(issue.get('fields.updated')),
+            updated       : new Date(issue.get('fields.updated')),
             timespent      : utils.timespentToHours(worklog.get('timeSpentSeconds'))
           };
 
@@ -165,10 +165,14 @@ window.storage = storage;
       // lines with tasks (TIMESPEND)
       man_line = man_line.selectAll(".tasks")
         .data(function(person){
-          return storage.applyTasksFilter(person.tasks, { group: {
-            keys : ['login', 'key'],
-            aggregates : [{ name : 'sum', values : ['timespent']}]
-          }});
+          // get tasks by person
+          return storage.applyTasksFilter(person.tasks, {
+            group: {
+              keys : ['login', 'key'],
+              aggregates : [{ name : 'sum', values : ['timespent']}]
+            },
+            task_sorter : utils.task_sorter_updated_reverse
+          });
         })
       .enter().append("g")
 
