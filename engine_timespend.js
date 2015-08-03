@@ -6,7 +6,7 @@
   var URL_ICON_LOADING = 'https://s3.eu-central-1.amazonaws.com/ott-static/images/jira/ajax-loader.gif';
   var JIRA_QUERY = '/jira/api/2/search?maxResults=2000' +
     '&fields=key,description,project,priority,worklog,summary,timespent,updated' +
-    '&jql=(worklogDate >= -%DAYS_TO_ANALIZE%d) AND assignee IN (%DEVTEAM%) ORDER BY updated';
+    '&jql=(worklogDate >= -%DAYS_TO_ANALIZE%d) AND worklogAuthor IN (%DEVTEAM%) ORDER BY updated';
 
   var TASK_LINK = 'https://onetwotripdev.atlassian.net/browse/{key}';
 
@@ -78,6 +78,7 @@ window.storage = storage;
       var width = layout.getBlockWidth();
       var height = people.length * (bar_height + bar_margin);
       var time_to_show_up_task_name = 2 * max_work_hours / (max_days - (2*(max_days/7|0)));
+      // console.log('time_to_show_up_task_name', time_to_show_up_task_name);
 
       var svg = d3.select(MAIN_CONTAINER).append("svg")
         .attr("width", width + right_margin)

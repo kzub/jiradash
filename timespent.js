@@ -15,14 +15,14 @@
       project : 'OTT',
       statuses : ['Open'],
       limit : 23,
-      title_link : 'https://onetwotripdev.atlassian.net/issues/?jql=project IN({project}) AND ({statuses}) AND assignee is Empty ORDER BY priority,updated',
+      title_link : 'https://onetwotripdev.atlassian.net/issues/?jql=project IN({project}) AND ({statuses}) AND assignee is Empty ORDER BY priority,rank',
       task_links : TASK_LINK
     },{
       title : 'Bugs',
       project : 'OTT',
       statuses : ['To Do'],
       limit : 23,
-      title_link : 'https://onetwotripdev.atlassian.net/issues/?jql=project IN({project}) AND ({statuses}) AND assignee is Empty ORDER BY priority,updated',
+      title_link : 'https://onetwotripdev.atlassian.net/issues/?jql=project IN({project}) AND ({statuses}) AND assignee is Empty ORDER BY priority,rank',
       task_links : TASK_LINK
     }
   ];

@@ -146,27 +146,23 @@
       return 10000; // very low rank
     };
 
-    var scale  = 1000;
-    var calcTaskRank = function(t){
-      var a = 0;
-      for(var i in t.rank){
-        a += (1/(+i+1))*t.rank.charCodeAt(i);
+    var compareRank = function(a, b){
+      var r1 = 0, r2 = 0;
+      for(var idx in a){
+        r1 = a[idx];
+        r2 = b[idx];
+        if(r1 === r2){
+          continue;
+        }
       }
-      return a;
-    };
-
-    var today = Date.now();
-    var calcTaskAge = function(t){
-      var age = (1-(today - t.updated)/today)*1000;
-      return age;
+      return r1 - r2;
     }
 
     this.task_sorter_default = function(a, b){
-      var power =
-        (a.priority*scale + calcTaskRank(a) + calcTaskAge(a))
-        -
-        (b.priority*scale + calcTaskRank(b) + calcTaskAge(b));
-      return power;
+      if(a.priority === b.priority){
+        return compareRank(b, a);
+      }
+      return a.priority - b.priority;
     };
 
     this.task_sorter_updated = function(a, b){
