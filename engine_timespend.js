@@ -18,7 +18,6 @@
     var network = new window.Network();
     var utils   = new window.Utils(OPTIONS);
     var drawlib = new window.DrawLib();
-window.storage = storage;
 
     var processResults= function(data, DAYS_TO_ANALIZE){
       var timeLimit = new Date() - DAYS_TO_ANALIZE*1000*60*60*24;

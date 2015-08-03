@@ -146,16 +146,16 @@
       return 10000; // very low rank
     };
 
-    var compareRank = function(a, b){
-      var r1 = 0, r2 = 0;
-      for(var idx in a){
-        r1 = a[idx];
-        r2 = b[idx];
-        if(r1 === r2){
-          continue;
+    var compareRank = function(b, a){
+      var r1 = '', r2 = '';
+      for(var idx in a.rank){
+        r1 = a.rank[idx];
+        r2 = b.rank[idx];
+        if(r1 !== r2){
+          break;
         }
       }
-      return r1 - r2;
+      return (r1&&r1.charCodeAt()||0) - (r2&&r2.charCodeAt()||0);
     }
 
     this.task_sorter_default = function(a, b){
