@@ -36,15 +36,20 @@
   TaskStorage.prototype.getPersons = function(logins){
     if(logins instanceof Array){
       var persons = [];
-      for(var name in this.persons){
-        if(logins.indexOf(name) === -1){
-          continue;
+      for(var idx in logins){
+        var login = logins[idx];
+        var person = this.persons[login];
+
+        if(!person){
+          person = {
+            displayName : login,
+            login : login,
+            tasks : []
+          };
         }
-        persons.push(this.persons[name]);
+        persons.push(person);
       }
-      persons.sort(function(a, b){
-        return (logins.indexOf(a.login)||0) - (logins.indexOf(b.login)||0);
-      });
+
       return persons;
     }
     // or just find a person

@@ -14,14 +14,14 @@
       title : 'To Do',
       project : 'OTT',
       statuses : ['Open'],
-      limit : 16,
+      limit : 23,
       title_link : 'https://onetwotripdev.atlassian.net/issues/?jql=project IN({project}) AND ({statuses}) AND assignee is Empty ORDER BY priority,updated',
       task_links : TASK_LINK
     },{
       title : 'Bugs',
       project : 'OTT',
       statuses : ['To Do'],
-      limit : 16,
+      limit : 23,
       title_link : 'https://onetwotripdev.atlassian.net/issues/?jql=project IN({project}) AND ({statuses}) AND assignee is Empty ORDER BY priority,updated',
       task_links : TASK_LINK
     }
@@ -32,7 +32,7 @@
       title : 'Recently done',
       project : 'OTT',
       statuses : ['Done', 'Closed'],
-      limit : 14,
+      limit : 25,
       title_link : 'https://onetwotripdev.atlassian.net/issues/?jql=project IN({project}) and ({statuses}) ORDER BY priority,updated',
       task_links : TASK_LINK,
       sort_by:'updated'
@@ -61,7 +61,7 @@
 
   // MAIN LOOP =>
   (function loadData(){
-    timespent.process(7*1, 1*40, function(){
+    timespent.process(7*2, 2*40, function(){
       setTimeout(loadData, 5*60*1000);
     });
     todo.process([], ['!Closed', '!Done' , '!Rejected'], function(){});
