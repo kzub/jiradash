@@ -6,7 +6,7 @@
   var URL_ICON_LOADING = 'https://s3.eu-central-1.amazonaws.com/ott-static/images/jira/ajax-loader.gif';
   var SUBTASK_QUERY = '/jira/api/2/issue/{key}?fields=timespent';
   var JIRA_QUERY = '/jira/api/2/search?maxResults=%LOAD_LIMIT%' +
-    '&fields=customfield_10300,key,assignee,description,status,priority,project,subtasks,summary,timespent,updated' +
+    '&fields=customfield_10300,key,assignee,description,status,priority,project,subtasks,summary,timespent,updated,issuetype' +
     '&jql=(%STATUSES%) AND assignee %DEVTEAM% %PROJECT% ORDER BY %ORDERBY%';
 
   function ENGINE(BLOCKS, MAIN_CONTAINER, OPTIONS){
@@ -44,7 +44,8 @@
           description   : issue.get('fields.description'),
           project       : issue.get('fields.project.key'),
           timespent     : utils.timespentToHours(issue.get('fields.timespent')),
-          updated       : new Date(issue.get('fields.updated'))
+          updated       : new Date(issue.get('fields.updated')),
+          type          : issue.get('fields.issuetype.name')
         };
 
         utils.rewrite_task(OPTIONS.TASK_REWRITE_RULES, task);

@@ -61,12 +61,12 @@
   { login : 'alexander.litvinov', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
   { login : 'andrey.plotnikov', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
   { login : 'andrey.iliopulo', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
-  { project : 'OTT', statuses : ['In Release'], title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Release'},
+  { project : 'OTT', types : ['Release'], title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Release'},
 
   { login : 'alexander.neyasov', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
   { skip : 1 },
   { login : 'marina.severyanova', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
-  { skip : 1 },
+  { project : 'OTT', statuses : ['In Release'], title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Release Tasks'},
 
   { login : 'Yury.Kocharyan', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
   { login : 'konstantin.kalinin', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},

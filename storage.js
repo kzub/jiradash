@@ -68,6 +68,7 @@
     var task_sorter    = filter_options.task_sorter;
     var subtasks       = filter_options.subtasks;
     var group          = filter_options.group;
+    var issue_types    = filter_options.types;
 
     for(var i = 0; i < this.tasks.length; i++){
       var task = this.tasks[i];
@@ -87,6 +88,13 @@
       // filter by project
       if(project){
         if(project !== task.project){
+          continue;
+        }
+      }
+
+      // filter by issue
+      if(issue_types){
+        if(issue_types.indexOf(task.type) === -1){
           continue;
         }
       }
