@@ -55,13 +55,13 @@
     LOAD_PROJECTS : ['OTT']
   };
 
-  var timespent = new window.TaskTimespend(DEVTEAM, document.getElementById('timespend-left'), OPTIONS_TIMESPENT);
+  var timespent = new window.TaskTimespend(DEVTEAM, 7*2, 2*40,  document.getElementById('timespend-left'), OPTIONS_TIMESPENT);
   var todo = new window.TaskTable(BLOCKS_TODO, document.getElementById('timespend-right'), OPTIONS_TODO);
   var done = new window.TaskTable(BLOCKS_DONE, document.getElementById('timespend-bottom'), OPTIONS_DONE);
 
   // MAIN LOOP =>
   (function loadData(){
-    timespent.process(7*2, 2*40, function(){
+    timespent.process(function(){
       setTimeout(loadData, 5*60*1000);
     });
     todo.process([], ['!Closed', '!Done' , '!Rejected'], function(){});

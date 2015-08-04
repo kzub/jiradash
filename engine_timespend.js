@@ -9,8 +9,9 @@
     '&jql=(worklogDate >= -%DAYS_TO_ANALIZE%d) AND worklogAuthor IN (%DEVTEAM%) ORDER BY updated';
 
   var TASK_LINK = 'https://onetwotripdev.atlassian.net/browse/{key}';
+  var WORKLOG_QUERY = '/jira/api/2/issue/{key}/worklog';
 
-  function ENGINE(DEVTEAM, MAIN_CONTAINER, OPTIONS){
+  function ENGINE(DEVTEAM, DAYS_TO_ANALIZE, WORK_HOURS, MAIN_CONTAINER, OPTIONS){
     var self = this;
     var initialized;
     var storage = new window.TaskStorage();
@@ -18,13 +19,33 @@
     var network = new window.Network();
     var utils   = new window.Utils(OPTIONS);
     var drawlib = new window.DrawLib();
+    var loading_queue = 0;
 
-    var processResults= function(data, DAYS_TO_ANALIZE){
+    var processResults= function(data, callback){
       var timeLimit = new Date() - DAYS_TO_ANALIZE*1000*60*60*24;
 
       for(var idx = 0; idx < data.issues.length; idx++){
         var issue = new utils.Extractor(data.issues[idx]);
+        var worklog_info = issue.get('fields.worklog');
         var worklogs = issue.get('fields.worklog.worklogs');
+
+        // if worklog doesn't fit load it
+        if(worklog_info.total > worklog_info.maxResults){
+          loading_queue++;
+          // set task to load worklog detail
+          (function(issue_pointer){
+            // load task data
+            var url = utils.prepareURL(WORKLOG_QUERY, { key : issue.get('key') });
+            network.load(undefined, [url], function(err, context, results){
+              --loading_queue;
+              // update worklog
+              issue_pointer.fields.worklog = results[0]
+              // and reprocess it
+              processResults({ issues : [issue_pointer] }, callback);
+            });
+          })(data.issues[idx]);
+          continue;
+        }
 
         for(var idx2 = 0; idx2 < worklogs.length; idx2++){
           var worklog = new utils.Extractor(worklogs[idx2]);
@@ -43,16 +64,11 @@
 
           var task = {
             login         : login,
-            // status        : issue.get('fields.status.name'),
             priorityIcon  : issue.get('fields.priority.iconUrl'),
-            // priority      : utils.PRIORITY_RANK(issue.get('fields.priority.name')),
-            // rank          : issue.get('fields.customfield_10300'),
             key           : issue.get('key'),
-            // subtasks      : issue.get('fields.subtasks.length'),
             summary       : issue.get('fields.summary'),
             description   : issue.get('fields.description'),
             project       : issue.get('fields.project.key'),
-            // timespent     : utils.timespentToHours(issue.get('fields.timespent')),
             updated       : new Date(issue.get('fields.updated')),
             timespent      : utils.timespentToHours(worklog.get('timeSpentSeconds'))
           };
@@ -61,10 +77,17 @@
           storage.addPersonTask(task.login, task);
         }
       };
+
+      // if all loading processes finished => callback
+      if(loading_queue === 0){
+        callback();
+      }
     };
 
-    var drawBlocksTable = function(max_days, max_work_hours){
+    var drawBlocksTable = function(){
       var people = storage.getPersons(DEVTEAM);
+
+      var people_info = {};
 
       var bar_height = 18;
       var bar_margin = 4;
@@ -72,11 +95,11 @@
       var bottom_margin = 10;
       var left_margin = 160;
       var right_margin = 00;
-      var max_time = 8 /* work hours*/ * (max_days - (1.5*(max_days/7|0)));
+      var max_time = 8 /* work hours*/ * (DAYS_TO_ANALIZE - (1.5*(DAYS_TO_ANALIZE/7|0)));
 
       var width = layout.getBlockWidth();
       var height = people.length * (bar_height + bar_margin);
-      var time_to_show_up_task_name = 2 * max_work_hours / (max_days - (2*(max_days/7|0)));
+      var time_to_show_up_task_name = 2 * WORK_HOURS / (DAYS_TO_ANALIZE - (2*(DAYS_TO_ANALIZE/7|0)));
       // console.log('time_to_show_up_task_name', time_to_show_up_task_name);
 
       var svg = d3.select(MAIN_CONTAINER).append("svg")
@@ -188,11 +211,16 @@
         .attr("class", "bar")
         .attr("width", function(task, i, p){
           var timespent = task.timespent;
-          if(people[p].offset === undefined){
-            people[p].offset = 0;
+
+          if(!people_info[p]){
+            people_info[p] = {
+              offset : 0,
+              tasks  : people[p].tasks
+            };
           }
-          task.offset = people[p].offset;
-          people[p].offset += timespent;
+          task.offset = people_info[p].offset;
+          people_info[p].offset += timespent;
+
           var bar_width = x(timespent) - 1;
           if(bar_width < 1){
             bar_width = 1;
@@ -206,12 +234,8 @@
           return height - y(p);
         })
         .attr("height", bar_height)
-        // .on('mouseover', function(task){
-        //   console.log([task.login, task.key, Math.round(10*task.offset)/10].join(' '))
-        // })
         .attr('fill', function(task, i, p){
-          // return 'steelblue';
-          return person_color(people[p], task);
+          return person_color(people_info[p], task);
         })
       // TASKS KEY (OTT-XXXX)
       man_line.append('text')
@@ -229,7 +253,6 @@
           return task.timespent < time_to_show_up_task_name ? 'hidden' : '';
         })
 
-
       // NORMAIL AMOUNT OF WORK
       var yAxis = d3.svg.axis()
         .scale(y)
@@ -237,15 +260,9 @@
         .ticks(0)
 
       svg.append("g")
-        .attr("transform", "translate(" + x(max_work_hours) + ", 0)")
+        .attr("transform", "translate(" + x(WORK_HOURS) + ", 0)")
         .attr("class", "y axis")
         .call(yAxis)
-      // .append("text")
-      //   // .attr("transform", "rotate(0)")
-      //   .attr("y", height)
-      //   .attr("dy", "10px")
-      //   .style("text-anchor", "end")
-      //   .text("deadline");
     };
 
     this.clearScreen = function(){
@@ -264,7 +281,7 @@
       container.innerHTML = text;
     };
 
-    this.process = function(DAYS_TO_ANALIZE, WORK_HOURS, callback){
+    this.process = function(callback){
       if(!initialized){
         self.drawMsg('loading...');
       }
@@ -275,7 +292,6 @@
         .replace('%DAYS_TO_ANALIZE%', DAYS_TO_ANALIZE);
 
       network.load([query], function(err, data){
-        self.clearScreen();
         initialized = true;
 
         if(err){
@@ -285,9 +301,11 @@
         else if(data){
           storage.clear();
 
-          processResults(data[0], DAYS_TO_ANALIZE);
-          drawBlocksTable(DAYS_TO_ANALIZE, WORK_HOURS);
-          callback(null, data);
+          processResults(data[0], function(){
+            self.clearScreen();
+            drawBlocksTable();
+            callback(null, data);
+          });
         }
       });
     };

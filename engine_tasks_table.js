@@ -125,8 +125,16 @@
       text_element.setAttributeNS("http://www.w3.org/XML/1998/namespace", 'textLength', '3');
       elements.push(text_element);
 
+      var summary = task.summary;
+      // add extra status
+      if(block.title_extras){
+        for(var bdx = 0; bdx < block.title_extras.length; bdx++){
+          summary += ' | ' + task[block.title_extras[bdx]];
+        }
+      }
+
       // task summary
-      text_element = paper.text(134, y, task.summary, task_url, task_url_title);
+      text_element = paper.text(134, y, summary, task_url, task_url_title);
       text_element.setAttribute('class', css_name + ' text-summary');
       elements.push(text_element);
 
