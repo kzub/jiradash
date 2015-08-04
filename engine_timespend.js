@@ -11,7 +11,7 @@
   var TASK_LINK = 'https://onetwotripdev.atlassian.net/browse/{key}';
   var WORKLOG_QUERY = '/jira/api/2/issue/{key}/worklog';
 
-  function ENGINE(DEVTEAM, DAYS_TO_ANALIZE, WORK_HOURS, MAIN_CONTAINER, OPTIONS){
+  function ENGINE(DEVTEAM, DAYS_TO_ANALIZE, MAIN_CONTAINER, OPTIONS){
     var self = this;
     var initialized;
     var storage = new window.TaskStorage();
@@ -95,12 +95,11 @@
       var bottom_margin = 10;
       var left_margin = 160;
       var right_margin = 00;
-      var max_time = 8 /* work hours*/ * (DAYS_TO_ANALIZE - (1.5*(DAYS_TO_ANALIZE/7|0)));
+      var max_time = 8 /* 5 work days in a week */ * (DAYS_TO_ANALIZE - (2*(DAYS_TO_ANALIZE/7|0)));
+      var TIME_TO_SHOW_UP_TASK_NAME = 16;
 
       var width = layout.getBlockWidth();
       var height = people.length * (bar_height + bar_margin);
-      var time_to_show_up_task_name = 2 * WORK_HOURS / (DAYS_TO_ANALIZE - (2*(DAYS_TO_ANALIZE/7|0)));
-      // console.log('time_to_show_up_task_name', time_to_show_up_task_name);
 
       var svg = d3.select(MAIN_CONTAINER).append("svg")
         .attr("width", width + right_margin)
@@ -129,7 +128,7 @@
 
       var x = d3.scale.linear()
           .range([0, width - left_margin])
-          .domain([0, max_time])
+          .domain([0, max_time*1.05])
 
       var y = d3.scale.linear()
           .range([height, 0])
@@ -250,7 +249,7 @@
         })
         .attr('class', 'text-task-keys')
         .style('visibility', function(task){
-          return task.timespent < time_to_show_up_task_name ? 'hidden' : '';
+          return task.timespent < TIME_TO_SHOW_UP_TASK_NAME ? 'hidden' : '';
         })
 
       // NORMAIL AMOUNT OF WORK
@@ -260,7 +259,7 @@
         .ticks(0)
 
       svg.append("g")
-        .attr("transform", "translate(" + x(WORK_HOURS) + ", 0)")
+        .attr("transform", "translate(" + x(max_time) + ", 0)")
         .attr("class", "y axis")
         .call(yAxis)
     };

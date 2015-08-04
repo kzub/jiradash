@@ -55,7 +55,11 @@
     LOAD_PROJECTS : ['OTT']
   };
 
-  var timespent = new window.TaskTimespend(DEVTEAM, 7*2, 2*40,  document.getElementById('timespend-left'), OPTIONS_TIMESPENT);
+  var utils  = new window.Utils();
+  var params = utils.getQueryString();
+  var time_to_look   = +params.timespent || 14;
+
+  var timespent = new window.TaskTimespend(DEVTEAM, time_to_look, document.getElementById('timespend-left'), OPTIONS_TIMESPENT);
   var todo = new window.TaskTable(BLOCKS_TODO, document.getElementById('timespend-right'), OPTIONS_TODO);
   var done = new window.TaskTable(BLOCKS_DONE, document.getElementById('timespend-bottom'), OPTIONS_DONE);
 

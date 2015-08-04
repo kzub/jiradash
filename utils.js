@@ -46,57 +46,57 @@
               }
               else{
                statusQuery += ("status = '" + status + "'");
-              }
-            }
-            template = template.replace(variable, statusQuery);
-            continue;
-          }
-          else if(data.statuses){
-            template = template.replace(variable, data.statuses);
-            continue;
-          }
-          /* no filter */
-          template = template.replace(variable, 'createdDate < endOfYear()');
+             }
+           }
+           template = template.replace(variable, statusQuery);
+           continue;
+         }
+         else if(data.statuses){
+          template = template.replace(variable, data.statuses);
           continue;
         }
+        /* no filter */
+        template = template.replace(variable, 'createdDate < endOfYear()');
+        continue;
+      }
 
-        if(variable === '{key}'){
-          template = template.replace(variable, data.key || '');
-          continue;
-        }
+      if(variable === '{key}'){
+        template = template.replace(variable, data.key || '');
+        continue;
+      }
 
-        if(variable === '{project}'){
-          template = template.replace(variable, data.project || '');
-          continue;
+      if(variable === '{project}'){
+        template = template.replace(variable, data.project || '');
+        continue;
+      }
+    }
+
+    return template;
+  };
+
+  this.rewrite_task = function(TASK_REWRITES, task){
+    if(!TASK_REWRITES || !TASK_REWRITES.length){
+      return;
+    }
+
+    for(var idx in TASK_REWRITES){
+      var apply = true;
+      var rule = TASK_REWRITES[idx];
+
+      for(var key in rule.conditions){
+        if(rule.conditions[key].indexOf(task[key]) === -1){
+          apply = false;
+          break;
         }
       }
 
-      return template;
-    };
-
-    this.rewrite_task = function(TASK_REWRITES, task){
-      if(!TASK_REWRITES || !TASK_REWRITES.length){
-        return;
-      }
-
-      for(var idx in TASK_REWRITES){
-        var apply = true;
-        var rule = TASK_REWRITES[idx];
-
-        for(var key in rule.conditions){
-          if(rule.conditions[key].indexOf(task[key]) === -1){
-            apply = false;
-            break;
-          }
-        }
-
-        if(apply){
-          for(var key in rule.actions){
-            task[key] = rule.actions[key];
-          }
+      if(apply){
+        for(var key in rule.actions){
+          task[key] = rule.actions[key];
         }
       }
-    };
+    }
+  };
 
     // this class helps extract the value
     this.Extractor = function(issue){
@@ -180,6 +180,23 @@
     this.task_sorter_timespent = function(a, b){
       return b.timespent - a.timespent;
     };
+
+    this.getQueryString = function(){
+      var qs = window.location.search.substr(1).split('&');
+      if(qs === ''){
+        return {};
+      }
+      var result = {};
+      for (var i = 0; i < qs.length; ++i) {
+        var p = qs[i].split('=', 2);
+        if (p.length == 1){
+          result[p[0]] = "";
+        }else{
+          result[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
+        }
+      }
+      return result;
+    }
   };
 
   window.Utils = Utils;
