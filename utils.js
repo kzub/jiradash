@@ -11,6 +11,35 @@
     'Normal'   : 4
   };
 
+  function jiraCondition(template, variable, values){
+    var prop_name = variable.slice(1, variable.length - 1);
+
+    if(values instanceof Array){
+      var jira_query_part = '';
+
+      for(var idx in values){
+        var value = values[idx];
+
+        if(jira_query_part){
+          jira_query_part += (value[0] === '!' ? ' AND ' : ' OR ');
+        }
+
+        if(value[0] === '!'){
+          jira_query_part += (prop_name + " != '" + value.slice(1)) + "'";
+        }
+        else{
+          jira_query_part += (prop_name + " = '" + value + "'");
+        }
+      }
+      return template.replace(variable, jira_query_part);
+    }
+    else if(values){
+      return template.replace(variable, values);
+    }
+
+    return template.replace(variable, '');
+  }
+
   function Utils(OPTIONS){
     this.prepareURL = function(template, data){
       if(!template) {
@@ -45,58 +74,58 @@
                 statusQuery += ("status != '" + status.slice(1)) + "'";
               }
               else{
-               statusQuery += ("status = '" + status + "'");
-             }
-           }
-           template = template.replace(variable, statusQuery);
-           continue;
-         }
-         else if(data.statuses){
-          template = template.replace(variable, data.statuses);
+                statusQuery += ("status = '" + status + "'");
+              }
+            }
+            template = template.replace(variable, statusQuery);
+            continue;
+          }
+          else if(data.statuses){
+            template = template.replace(variable, data.statuses);
+            continue;
+          }
+          /* no filter */
+          template = template.replace(variable, 'createdDate < endOfYear()');
           continue;
         }
-        /* no filter */
-        template = template.replace(variable, 'createdDate < endOfYear()');
-        continue;
-      }
 
-      if(variable === '{key}'){
-        template = template.replace(variable, data.key || '');
-        continue;
-      }
+        if(variable === '{key}'){
+          template = template.replace(variable, data.key || '');
+          continue;
+        }
 
-      if(variable === '{project}'){
-        template = template.replace(variable, data.project || '');
-        continue;
-      }
-    }
-
-    return template;
-  };
-
-  this.rewrite_task = function(TASK_REWRITES, task){
-    if(!TASK_REWRITES || !TASK_REWRITES.length){
-      return;
-    }
-
-    for(var idx in TASK_REWRITES){
-      var apply = true;
-      var rule = TASK_REWRITES[idx];
-
-      for(var key in rule.conditions){
-        if(rule.conditions[key].indexOf(task[key]) === -1){
-          apply = false;
-          break;
+        if(variable === '{project}'){
+          template = template.replace(variable, data.projects ? data.projects.join(',') : '');
+          continue;
         }
       }
 
-      if(apply){
-        for(var key in rule.actions){
-          task[key] = rule.actions[key];
+      return template;
+    };
+
+    this.rewrite_task = function(TASK_REWRITES, task){
+      if(!TASK_REWRITES || !TASK_REWRITES.length){
+        return;
+      }
+
+      for(var idx in TASK_REWRITES){
+        var apply = true;
+        var rule = TASK_REWRITES[idx];
+
+        for(var key in rule.conditions){
+          if(rule.conditions[key].indexOf(task[key]) === -1){
+            apply = false;
+            break;
+          }
+        }
+
+        if(apply){
+          for(var key in rule.actions){
+            task[key] = rule.actions[key];
+          }
         }
       }
-    }
-  };
+    };
 
     // this class helps extract the value
     this.Extractor = function(issue){

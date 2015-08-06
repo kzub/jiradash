@@ -5,21 +5,21 @@
   var DEVTEAM  = [
     'alexey.sutiagin','aleksandr.gladkikh','renat.abdusalamov','alexander.litvinov','alexander.neyasov','Yury.Kocharyan','h3x3d',
     'ek','andrey.ivanov','anton.ipatov','andrey.plotnikov',
-    'fedor.shumov','ivan.hilkov','Ango','andrey.iliopulo','marina.severyanova',
+    'fedor.shumov','ivan.hilkov','Ango','andrey.iliopulo',
     'konstantin.kalinin', 'andrey.lakotko','anastasia.oblomova'
   ];
 
   var BLOCKS_TODO = [
     {
       title : 'To Do',
-      project : 'OTT',
+      projects : ['OTT', 'AH', 'AC'],
       statuses : ['Open'],
       limit : 23,
       title_link : 'https://onetwotripdev.atlassian.net/issues/?jql=project IN({project}) AND ({statuses}) AND assignee is Empty ORDER BY priority,rank',
       task_links : TASK_LINK
     },{
       title : 'Bugs',
-      project : 'OTT',
+      projects : ['OTT', 'AH', 'AC'],
       statuses : ['To Do'],
       limit : 23,
       title_link : 'https://onetwotripdev.atlassian.net/issues/?jql=project IN({project}) AND ({statuses}) AND assignee is Empty ORDER BY priority,rank',
@@ -30,7 +30,7 @@
   var BLOCKS_DONE= [
     {
       title : 'Recently done',
-      project : 'OTT',
+      projects : ['OTT', 'AH', 'AC'],
       statuses : ['Done', 'Closed'],
       limit : 25,
       title_link : 'https://onetwotripdev.atlassian.net/issues/?jql=project IN({project}) and ({statuses}) ORDER BY priority,updated',
@@ -47,12 +47,12 @@
     SCREEN_WIDTH : '50%',
     LOAD_BY_PRIORITY : 'updated',
     LOAD_LIMIT : 50,
-    LOAD_PROJECTS : ['OTT']
+    LOAD_PROJECTS : ['OTT', 'AH', 'AC']
   };
 
   var OPTIONS_TODO = {
     SCREEN_WIDTH : '50%',
-    LOAD_PROJECTS : ['OTT']
+    LOAD_PROJECTS : ['OTT', 'AH', 'AC']
   };
 
   var utils  = new window.Utils();
@@ -66,7 +66,7 @@
   // MAIN LOOP =>
   (function loadData(){
     timespent.process(function(){
-      setTimeout(loadData, 5*60*1000);
+      setTimeout(loadData, 5.1*60*1000);
     });
     todo.process([], ['!Closed', '!Done' , '!Rejected'], function(){});
     done.process(DEVTEAM, ['Closed', 'Done'], function(){});

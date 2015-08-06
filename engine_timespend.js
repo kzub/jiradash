@@ -4,12 +4,12 @@
   */
   // constants
   var URL_ICON_LOADING = 'https://s3.eu-central-1.amazonaws.com/ott-static/images/jira/ajax-loader.gif';
-  var JIRA_QUERY = '/jira/api/2/search?maxResults=2000' +
+  var JIRA_QUERY = '/monitor/jira/api/2/search?maxResults=2000' +
     '&fields=key,description,project,priority,worklog,summary,timespent,updated' +
     '&jql=(worklogDate >= -%DAYS_TO_ANALIZE%d) AND worklogAuthor IN (%DEVTEAM%) ORDER BY updated';
 
   var TASK_LINK = 'https://onetwotripdev.atlassian.net/browse/{key}';
-  var WORKLOG_QUERY = '/jira/api/2/issue/{key}/worklog';
+  var WORKLOG_QUERY = '/monitor/jira/api/2/issue/{key}/worklog';
 
   function ENGINE(DEVTEAM, DAYS_TO_ANALIZE, MAIN_CONTAINER, OPTIONS){
     var self = this;

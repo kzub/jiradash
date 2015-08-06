@@ -4,7 +4,7 @@
   */
   // constants
   var url_icon_loading = 'https://s3.eu-central-1.amazonaws.com/ott-static/images/jira/ajax-loader.gif';
-  var subtask_query = '/jira/api/2/issue/{key}?fields=timespent';
+  var subtask_query = '/monitor/jira/api/2/issue/{key}?fields=timespent';
 
   // this class helps extract the value
   function ISSUE(issue){

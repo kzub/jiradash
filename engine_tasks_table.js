@@ -4,8 +4,8 @@
   */
   // constants
   var URL_ICON_LOADING = 'https://s3.eu-central-1.amazonaws.com/ott-static/images/jira/ajax-loader.gif';
-  var SUBTASK_QUERY = '/jira/api/2/issue/{key}?fields=timespent';
-  var JIRA_QUERY = '/jira/api/2/search?maxResults=%LOAD_LIMIT%' +
+  var SUBTASK_QUERY = '/monitor/jira/api/2/issue/{key}?fields=timespent';
+  var JIRA_QUERY = '/monitor/jira/api/2/search?maxResults=%LOAD_LIMIT%' +
     '&fields=customfield_10300,key,assignee,description,status,priority,project,subtasks,summary,timespent,updated,issuetype' +
     '&jql=(%STATUSES%) AND assignee %DEVTEAM% %PROJECT% ORDER BY %ORDERBY%';
 

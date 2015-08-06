@@ -64,7 +64,7 @@
     var filtered_tasks = [];
     var login          = filter_options.login;
     var statuses       = filter_options.statuses;
-    var project        = filter_options.project;
+    var projects       = filter_options.projects;
     var task_sorter    = filter_options.task_sorter;
     var subtasks       = filter_options.subtasks;
     var group          = filter_options.group;
@@ -85,9 +85,14 @@
         }
       }
 
-      // filter by project
-      if(project){
-        if(project !== task.project){
+      // filter by projects
+      if(projects){
+        if(projects instanceof Array){
+          if(projects.indexOf(task.project) === -1){
+            continue;
+          }
+        }
+        else if(projects !== task.project){
           continue;
         }
       }
