@@ -16,7 +16,7 @@
     {
       conditions : {
         login  : ['ivan.hilkov', 'Ango', 'andrey.iliopulo', 'marina.severyanova'],
-        status : ['Code Review']
+        status : ['Code Review', 'Resolved']
       },
       actions : {
         login : 'fedor.shumov'
@@ -25,7 +25,7 @@
     {
       conditions : {
         login  : ['aleksandr.gladkikh', 'renat.abdusalamov', 'alexander.litvinov', 'alexander.neyasov', 'Yury.Kocharyan', 'h3x3d'],
-        status : ['Code Review']
+        status : ['Code Review', 'Resolved']
       },
       actions : {
         login : 'alexey.sutiagin'
@@ -34,7 +34,7 @@
     {
       conditions : {
         login  : ['andrey.ivanov', 'anton.ipatov', 'andrey.plotnikov'],
-        status : ['Code Review']
+        status : ['Code Review', 'Resolved']
       },
       actions : {
         login : 'ek'

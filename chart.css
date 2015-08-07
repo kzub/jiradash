@@ -21,7 +21,15 @@
   /*fill : red;*/
 }
 
-.code_review {
+.update_l10n {
+  fill : orange;
+}
+
+.reopened {
+  fill : lightblue;
+}
+
+.code_review, .resolved{
   fill : yellow;
 }
 .in_progress {
