@@ -25,6 +25,10 @@
   fill : orange;
 }
 
+.text-more {
+  font-weight: bold;
+}
+
 .reopened {
   fill : lightblue;
 }
@@ -38,6 +42,10 @@
 
 .merge_ready {
   /*fill : orange;*/
+}
+
+.merge_failed {
+  fill : red;
 }
 
 .subtasks {

@@ -215,7 +215,7 @@
 
           if(i > block.limit - 1){
             if(left){
-              paper.text(0, y + 18, left + ' more ...', title_url);
+              paper.text(134, y + 18, left + ' more ...', title_url).setAttribute('class', 'text-more')
             }
             break;
           }
