@@ -66,7 +66,7 @@
   { login : 'alexander.neyasov', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
   { skip : 1 },
   { skip : 1 },
-  { projects : ['OTT','AC', 'AH'], statuses : ['In Release', 'Merge Failed'], title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Release Tasks'},
+  { projects : ['OTT','AC', 'AH'], statuses : ['In Release', 'Merge Failed', 'Contains Bugs'], title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Release Tasks'},
 
   { login : 'Yury.Kocharyan', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
   { login : 'konstantin.kalinin', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},

@@ -48,6 +48,10 @@
   fill : red;
 }
 
+.contains_bugs {
+  fill : red;
+}
+
 .subtasks {
   /*fill: #00FfFf !important;*/
 }
