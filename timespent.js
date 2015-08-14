@@ -60,16 +60,16 @@
   var time_to_look   = +params.timespent || 14;
 
   var timespent = new window.TaskTimespend(DEVTEAM, time_to_look, document.getElementById('timespend-left'), OPTIONS_TIMESPENT);
-  var todo = new window.TaskTable(BLOCKS_TODO, document.getElementById('timespend-right'), OPTIONS_TODO);
-  var done = new window.TaskTable(BLOCKS_DONE, document.getElementById('timespend-bottom'), OPTIONS_DONE);
+  var todo = new window.TaskTable([], BLOCKS_TODO, ['!Closed', '!Done' , '!Rejected'], document.getElementById('timespend-right'), OPTIONS_TODO);
+  var done = new window.TaskTable(DEVTEAM, BLOCKS_DONE, ['Closed', 'Done'], document.getElementById('timespend-bottom'), OPTIONS_DONE);
 
   // MAIN LOOP =>
   (function loadData(){
     timespent.process(function(){
       setTimeout(loadData, 5.1*60*1000);
     });
-    todo.process([], ['!Closed', '!Done' , '!Rejected'], function(){});
-    done.process(DEVTEAM, ['Closed', 'Done'], function(){});
+    todo.process(function(){});
+    done.process(function(){});
   })();
 })();
 
