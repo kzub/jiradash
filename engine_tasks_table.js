@@ -3,13 +3,8 @@
   * Main program
   */
   // constants
-  var URL_ICON_LOADING = 'https://s3.eu-central-1.amazonaws.com/ott-static/images/jira/ajax-loader.gif';
-  var SUBTASK_QUERY = '/monitor/jira/api/2/issue/{key}?fields=timespent';
-  var JIRA_QUERY = '/monitor/jira/api/2/search?maxResults=%LOAD_LIMIT%' +
-    '&fields=customfield_10300,key,assignee,description,status,priority,project,subtasks,summary,timespent,updated,issuetype' +
-    '&jql=(%STATUSES%) AND assignee %DEVTEAM% %PROJECT% ORDER BY %ORDERBY%';
 
-  function ENGINE(BLOCKS, MAIN_CONTAINER, OPTIONS){
+  function ENGINE(DEVTEAM, BLOCKS, STATUSES_TO_LOAD, MAIN_CONTAINER, OPTIONS){
     var self = this;
     var initialized;
     var storage = new window.TaskStorage();
@@ -22,13 +17,59 @@
       BLOCKS.sort(utils['task_sorter_' + OPTIONS.MOBILE_BLOCKS_SORTER]);
     }
 
-    var processResults= function(data){
+    var URL_ICON_LOADING = 'https://s3.eu-central-1.amazonaws.com/ott-static/images/jira/ajax-loader.gif';
+    var SUBTASK_QUERY = '/monitor/jira/api/2/issue/{key}?fields=timespent';
+    var JIRA_QUERY = '/monitor/jira/api/2/search?maxResults={LOAD_LIMIT}' +
+      '&fields=customfield_10300,key,{ASSIGNEE},description,status,priority,project,subtasks,summary,timespent,updated,issuetype' +
+      '&jql=({STATUSES}) AND {ASSIGNEE} {DEVTEAM} {PROJECT} ORDER BY {ORDERBY}';
+
+    var statuses_have_status_not  = false;
+    var statuses = STATUSES_TO_LOAD.map(function(s){
+      if(s[0] === '!'){
+        statuses_have_status_not = true;
+        return 'status != ' + s.slice(1);
+      }
+      return 'status = ' + s;
+    });
+
+    statuses = statuses.join(statuses_have_status_not ? ' AND ' : ' OR ');
+
+    var orderby = 'priority,rank';
+    if(OPTIONS.LOAD_BY_PRIORITY){
+      orderby = OPTIONS.LOAD_BY_PRIORITY;
+    }
+
+    var devteam = 'is Empty';
+    if(DEVTEAM.length){
+      devteam = ['IN (', ')'].join(DEVTEAM.join(','));
+    }
+
+    var project = '';
+    if(OPTIONS.LOAD_PROJECTS){
+      project = ['AND project IN (', ')'].join(OPTIONS.LOAD_PROJECTS.join(','));
+    }
+
+    var assignee_field_string = OPTIONS.LOGIN_KEY_FIELDNAME || 'assignee';
+    var assignee_conditions_string = OPTIONS.LOGIN_KEY_CONDTIONS || 'assignee';
+
+    // replace vars in templae
+    var query = JIRA_QUERY
+      .replace('{DEVTEAM}', devteam)
+      .replace('{STATUSES}', statuses)
+      .replace('{ORDERBY}', orderby)
+      .replace('{LOAD_LIMIT}', OPTIONS.LOAD_LIMIT || 2000)
+      .replace('{PROJECT}', project)
+      .replace('{ASSIGNEE}', assignee_field_string)
+      .replace('{ASSIGNEE}', assignee_conditions_string)
+
+
+    var processResults = function(data){
       for(var idx = 0; idx < data.issues.length; idx++){
         var issue = new utils.Extractor(data.issues[idx]);
 
-        var displayName = issue.get('fields.assignee.displayName');
-        var login       = issue.get('fields.assignee.name');
-        var avatar      = issue.get('fields.assignee.avatarUrls.48x48');
+        var displayName = issue.get('fields.' + assignee_field_string + '.displayName');
+        var login       = issue.get('fields.' + assignee_field_string + '.name');
+        var avatar      = issue.get('fields.' + assignee_field_string + '.avatarUrls.48x48');
 
         storage.addPerson(login, displayName, avatar);
 
@@ -250,44 +291,10 @@
       container.innerHTML = text;
     };
 
-    this.process = function(DEVTEAM, STATUSES_TO_LOAD, callback){
+    this.process = function(callback){
       if(!initialized){
         self.drawMsg('loading...');
       }
-
-      var statuses_have_status_not  = false;
-      var statuses = STATUSES_TO_LOAD.map(function(s){
-        if(s[0] === '!'){
-          statuses_have_status_not = true;
-          return 'status != ' + s.slice(1);
-        }
-        return 'status = ' + s;
-      });
-
-      statuses = statuses.join(statuses_have_status_not ? ' AND ' : ' OR ');
-
-      var orderby = 'priority,rank';
-      if(OPTIONS.LOAD_BY_PRIORITY){
-        orderby = OPTIONS.LOAD_BY_PRIORITY;
-      }
-
-      var devteam = 'is Empty';
-      if(DEVTEAM.length){
-        devteam = ['IN (', ')'].join(DEVTEAM.join(','));
-      }
-
-      var project = '';
-      if(OPTIONS.LOAD_PROJECTS){
-        project = ['AND project IN (', ')'].join(OPTIONS.LOAD_PROJECTS.join(','));
-      }
-
-      // replace vars in templae
-      var query = JIRA_QUERY
-        .replace('%DEVTEAM%', devteam)
-        .replace('%STATUSES%', statuses)
-        .replace('%ORDERBY%', orderby)
-        .replace('%LOAD_LIMIT%', OPTIONS.LOAD_LIMIT || 2000)
-        .replace('%PROJECT%', project)
 
       network.load([query], function(err, data){
         self.clearScreen();
