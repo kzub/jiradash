@@ -168,6 +168,20 @@
       return value;
     };
 
+    this.stringToDate = function(date){
+      if(!date){
+        return;
+      }
+      return new Date(date);
+    };
+
+    this.formatShortDate = function(date){
+      if(!date){
+        return;
+      }
+      return date.toUTCString().slice(5,11);
+    };
+
     this.PRIORITY_RANK = function(r){
       if(isFinite(PRIORITY_RANK[r])){
         return PRIORITY_RANK[r];

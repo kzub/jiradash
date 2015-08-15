@@ -20,7 +20,7 @@
     var URL_ICON_LOADING = 'https://s3.eu-central-1.amazonaws.com/ott-static/images/jira/ajax-loader.gif';
     var SUBTASK_QUERY = '/monitor/jira/api/2/issue/{key}?fields=timespent';
     var JIRA_QUERY = '/monitor/jira/api/2/search?maxResults={LOAD_LIMIT}' +
-      '&fields=customfield_10300,key,{ASSIGNEE},description,status,priority,project,subtasks,summary,timespent,updated,issuetype' +
+      '&fields=customfield_10300,key,{ASSIGNEE},description,status,priority,project,subtasks,summary,timespent,updated,issuetype,duedate' +
       '&jql=({STATUSES}) AND {ASSIGNEE} {DEVTEAM} {PROJECT} ORDER BY {ORDERBY}';
 
     var statuses_have_status_not  = false;
@@ -62,7 +62,6 @@
       .replace('{ASSIGNEE}', assignee_field_string)
       .replace('{ASSIGNEE}', assignee_conditions_string)
 
-
     var processResults = function(data){
       for(var idx = 0; idx < data.issues.length; idx++){
         var issue = new utils.Extractor(data.issues[idx]);
@@ -86,14 +85,15 @@
           project       : issue.get('fields.project.key'),
           timespent     : utils.timespentToHours(issue.get('fields.timespent')),
           updated       : new Date(issue.get('fields.updated')),
-          type          : issue.get('fields.issuetype.name')
+          type          : issue.get('fields.issuetype.name'),
+          duedate       : utils.stringToDate(issue.get('fields.duedate'))
         };
 
         utils.rewrite_task(OPTIONS.TASK_REWRITE_RULES, task);
 
         // laod all the data associated with task
         var subtasks = issue.get('fields.subtasks');
-        if(subtasks && subtasks.length){
+        if(subtasks && subtasks.length && !OPTIONS.SHOW_DUEDATE_INSTEAD_TIMESPEND){
           // load task data
           var urls = [utils.prepareURL(SUBTASK_QUERY, task)];
           // prepare url for subtasks loading
@@ -124,6 +124,10 @@
       };
     };
 
+    var lineSchemeTimespent = [25, 27, 46, 134];
+    var lineSchemeDueDate   = [50, 54, 74, 164];
+    var lineScheme = OPTIONS.SHOW_DUEDATE_INSTEAD_TIMESPEND ? lineSchemeDueDate : lineSchemeTimespent;
+
     var drawLineTextFromTask = function(block, task, paper, y, update_elms){
       //  mark tasks with subtasks
       var css_name = task.status.replace(/ /g, '_').toLowerCase();
@@ -147,21 +151,31 @@
       // save elements to have pointer to them on update ^^
       var elements = [];
       var text_element;
+      var css_hours = ' text-hours';
 
-      // timespent
-      text_element = paper.text(25, y-1, utils.timespentFormater(timespent), task_url, task_url_title);
-      text_element.setAttribute('class', css_name + ' text-hours');
+      if(OPTIONS.SHOW_DUEDATE_INSTEAD_TIMESPEND){
+        // duedate
+        text_element = paper.text(lineScheme[0], y-1, utils.formatShortDate(task.duedate), task_url, task_url_title);
+        if(task.duedate && task.duedate < new Date()){
+          css_hours = ' duedate-missed';
+        }
+      }else{
+        // timespent
+        text_element = paper.text(lineScheme[0], y-1, utils.timespentFormater(timespent), task_url, task_url_title);
+      }
+
+      text_element.setAttribute('class', css_name + css_hours);
       elements.push(text_element);
 
       // priority icon or loading symbol...
       if(task.timespent === '*'){
-        elements.push(paper.img(27, y-14, 16, 16, URL_ICON_LOADING));
+        elements.push(paper.img(lineScheme[1], y-14, 16, 16, URL_ICON_LOADING));
       }else{
-        elements.push(paper.img(27, y-14, 16, 16, task.priorityIcon));
+        elements.push(paper.img(lineScheme[1], y-14, 16, 16, task.priorityIcon));
       }
 
       // task key
-      text_element = paper.text(46, y, task.key, task_url, task_url_title);
+      text_element = paper.text(lineScheme[2], y, task.key, task_url, task_url_title);
       text_element.setAttribute('class', css_name + ' text-task-number');
       text_element.setAttributeNS("http://www.w3.org/XML/1998/namespace", 'textLength', '3');
       elements.push(text_element);
@@ -175,7 +189,7 @@
       }
 
       // task summary
-      text_element = paper.text(134, y, summary, task_url, task_url_title);
+      text_element = paper.text(lineScheme[3], y, summary, task_url, task_url_title);
       text_element.setAttribute('class', css_name + ' text-summary');
       elements.push(text_element);
 
@@ -229,7 +243,7 @@
         }else{
           // or separator line
           var y =  layout.getLine(0);
-          var line = paper.line(46, y, layout.getBlockWidth() - 10, y);
+          var line = paper.line(lineScheme[3], y, layout.getBlockWidth() - 10, y);
           line.setAttribute('class', 'subtask-separator');
         }
 
@@ -256,7 +270,7 @@
 
           if(i > block.limit - 1){
             if(left){
-              paper.text(134, y + 18, left + ' more ...', title_url).setAttribute('class', 'text-more')
+              paper.text(lineScheme[3], y + 18, left + ' more ...', title_url).setAttribute('class', 'text-more')
             }
             break;
           }

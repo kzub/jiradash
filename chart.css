@@ -74,6 +74,12 @@ text {
   -webkit-font-smoothing: antialiased;
 }
 
+.duedate-missed {
+  fill : red !important;
+  text-anchor: end;
+  font-size: 16px;
+}
+
 .text-hours {
   fill: #666 !important;
   text-anchor: end;

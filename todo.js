@@ -126,29 +126,28 @@
   }
   else if(team === 'pm'){
     var VIEWTEAM  = ['evgeny.bush', 'rostislav.palchun', 'leonid.riaboshtan', 'nikolay.malikov', 'armen.dzhanumov', 'alexander.bezhan', 'konstantin.zubkov', 'konstantin.mamonov', 'timur.danilov', 'vadim.kudelko', 'alexey.lyashchenko'];
-    var PMLIMIT   = 10
+    var PMLIMIT   = Infinity;
 
     BLOCKS = [
     { login : 'evgeny.bush', title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
     { login : 'rostislav.palchun', title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
+    { login : 'timur.danilov', title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
+    { login : 'alexander.bezhan', title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
+    { login : 'armen.dzhanumov', title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
     { login : 'leonid.riaboshtan', title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
     { login : 'nikolay.malikov', title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
-    { login : 'armen.dzhanumov', title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
-    { login : 'alexander.bezhan', title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
-    { login : 'konstantin.zubkov', title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
-    { login : 'konstantin.mamonov', title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
-    { login : 'timur.danilov', title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
     { login : 'vadim.kudelko', title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
     { login : 'alexey.lyashchenko', title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT}
     ];
 
     var STATUSES_TO_LOAD = ['!Closed', '!Rejected'];
     var OPTIONS = {
-      COLUMNS : 3,
+      COLUMNS : 2,
       MOBILE_COLUMNS : 1,
-      MOBILE_BLOCKS_SORTER : 'project_attribute',
+      MOBILE_BLOCKS_SORTER: 'project_attribute',
       LOGIN_KEY_FIELDNAME : 'customfield_10201',
-      LOGIN_KEY_CONDTIONS : 'PM'
+      LOGIN_KEY_CONDTIONS : 'PM',
+      SHOW_DUEDATE_INSTEAD_TIMESPEND : true
     };
   }
   else{
