@@ -20,7 +20,7 @@
     var URL_ICON_LOADING = 'https://s3.eu-central-1.amazonaws.com/ott-static/images/jira/ajax-loader.gif';
     var SUBTASK_QUERY = '/monitor/jira/api/2/issue/{key}?fields=timespent';
     var JIRA_QUERY = '/monitor/jira/api/2/search?maxResults={LOAD_LIMIT}' +
-      '&fields=customfield_10300,key,{ASSIGNEE},description,status,priority,project,subtasks,summary,timespent,updated,issuetype,duedate' +
+      '&fields=customfield_10300,customfield_10024,key,{ASSIGNEE},description,status,priority,project,subtasks,summary,timespent,updated,issuetype,duedate' +
       '&jql=({STATUSES}) AND {ASSIGNEE} {DEVTEAM} {PROJECT} ORDER BY {ORDERBY}';
 
     var statuses_have_status_not  = false;
@@ -78,6 +78,7 @@
           priorityIcon  : issue.get('fields.priority.iconUrl'),
           priority      : utils.PRIORITY_RANK(issue.get('fields.priority.name')),
           rank          : issue.get('fields.customfield_10300'),
+          reviewEngineer: issue.get('fields.customfield_10024.name'),
           key           : issue.get('key'),
           subtasks      : issue.get('fields.subtasks.length'),
           summary       : issue.get('fields.summary'),

@@ -18,47 +18,62 @@
   if(team === 'avia'){
     var AVIATEAM  = ['alexey.sutiagin','ek','fedor.shumov','aleksandr.gladkikh','andrey.ivanov','ivan.hilkov','renat.abdusalamov','anton.ipatov',
                      'Ango','alexander.litvinov','andrey.plotnikov','andrey.iliopulo','alexander.neyasov','marina.severyanova','Yury.Kocharyan',
-                     'konstantin.kalinin','konstantin.zubkov','h3x3d','andrey.lakotko','anastasia.oblomova',
-                     'leonid.riaboshtan', 'konstantin.zubkov'];
-    var VIEWTEAM  = ['dmitrii.loskutov'].concat(AVIATEAM);
+                     'konstantin.kalinin','h3x3d','leonid.riaboshtan', 'konstantin.zubkov'];
+    var VIEWTEAM  = ['dmitrii.loskutov', 'andrey.lakotko', 'anastasia.oblomova'].concat(AVIATEAM);
     var LEADLIMIT = 15;
-    var DEVLIMIT  = 5;
+    var DEVLIMIT  = 7;
 
     var TASK_REWRITE_RULES = [
       {
-        conditions : {
-          login  : ['ivan.hilkov', 'Ango', 'andrey.iliopulo', 'marina.severyanova'],
+        fields : {
+          login  : ['ivan.hilkov', 'Ango', 'andrey.iliopulo'],
           status : ['Code Review', 'Resolved']
         },
-        actions : {
-          login : 'fedor.shumov'
+        change_fields : {
+          login : {
+            source_field : 'reviewEngineer',
+            source_field_allowed_values : AVIATEAM,
+            default : 'fedor.shumov'
+          }
         }
       },
       {
-        conditions : {
+        fields : {
           login  : ['aleksandr.gladkikh', 'renat.abdusalamov', 'alexander.neyasov', 'Yury.Kocharyan', 'h3x3d'],
           status : ['Code Review', 'Resolved']
         },
-        actions : {
-          login : 'alexey.sutiagin'
+        change_fields : {
+          login : {
+            source_field : 'reviewEngineer',
+            source_field_allowed_values : AVIATEAM,
+            default : 'alexey.sutiagin'
+          }
         }
       },
       {
-        conditions : {
+        fields : {
           login  : ['alexander.litvinov'],
           status : ['Code Review', 'Resolved']
         },
-        actions : {
-          login : 'leonid.riaboshtan'
+        change_fields : {
+          login : {
+            source_field : 'reviewEngineer',
+            source_field_allowed_values : AVIATEAM,
+            default : 'leonid.riaboshtan'
+          }
         }
       },
       {
-        conditions : {
+        fields : {
           login  : ['andrey.ivanov', 'anton.ipatov', 'andrey.plotnikov'],
           status : ['Code Review', 'Resolved']
         },
-        actions : {
-          login : 'ek'
+        change_fields : {
+          login : {
+            source_field : 'reviewEngineer',
+            source_field_allowed_values : AVIATEAM,
+            default : 'ek'
+          }
         }
       },
     ];

@@ -112,16 +112,28 @@
         var apply = true;
         var rule = TASK_REWRITES[idx];
 
-        for(var key in rule.conditions){
-          if(rule.conditions[key].indexOf(task[key]) === -1){
+        for(var key in rule.fields){
+          if(rule.fields[key].indexOf(task[key]) === -1){
             apply = false;
             break;
           }
         }
 
         if(apply){
-          for(var key in rule.actions){
-            task[key] = rule.actions[key];
+          for(var key in rule.change_fields){
+            var new_value = rule.change_fields[key];
+            if(new_value && new_value.source_field){
+              // rewrite destination field  by specified field
+              if(task[new_value.source_field] &&
+                (new_value.source_field_allowed_values === undefined ||
+                (new_value.source_field_allowed_values && new_value.source_field_allowed_values.indexOf(task[new_value.source_field]) > -1))){
+                task[key] = task[new_value.source_field];
+              }else{
+                task[key] = new_value.default;
+              }
+            }else{
+              task[key] = new_value;
+            }
           }
         }
       }
