@@ -47,12 +47,12 @@
     SCREEN_WIDTH : '50%',
     LOAD_BY_PRIORITY : 'updated',
     LOAD_LIMIT : 50,
-    LOAD_PROJECTS : ['OTT', 'AH', 'AC', 'PM']
+    LOAD_PROJECTS : ['OTT', 'AH', 'AC', 'PM', 'QA']
   };
 
   var OPTIONS_TODO = {
     SCREEN_WIDTH : '50%',
-    LOAD_PROJECTS : ['OTT', 'AH', 'AC', 'PM']
+    LOAD_PROJECTS : ['OTT', 'AH', 'AC', 'PM', 'QA']
   };
 
   var utils  = new window.Utils();
