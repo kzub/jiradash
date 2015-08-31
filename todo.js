@@ -17,14 +17,25 @@
 
   if(team === 'avia'){
     var AVIATEAM  = ['alexey.sutiagin','ek','fedor.shumov','aleksandr.gladkikh','andrey.ivanov','ivan.hilkov','renat.abdusalamov','anton.ipatov',
-                     'Ango','alexander.litvinov','andrey.plotnikov','andrey.iliopulo','alexander.neyasov','marina.severyanova','Yury.Kocharyan',
-                     'konstantin.kalinin','h3x3d','leonid.riaboshtan', 'konstantin.zubkov', 'valentin.lapchevskiy'];
-    var VIEWTEAM  = ['dmitrii.loskutov', 'andrey.lakotko', 'anastasia.oblomova'].concat(AVIATEAM);
+                     'Ango','alexander.litvinov','andrey.plotnikov','andrey.iliopulo','alexander.neyasov','Yury.Kocharyan',
+                     'konstantin.kalinin','h3x3d','leonid.riaboshtan','valentin.lapchevskiy'];
+    var VIEWTEAM  = ['dmitrii.loskutov', 'andrey.lakotko', 'anastasia.oblomova', 'konstantin.zubkov','marina.severyanova'].concat(AVIATEAM);
 
     var LEADLIMIT = 20;
     var DEVLIMIT  = 7;
 
     var TASK_REWRITE_RULES = [
+      { // without team
+        fields : {
+          status : ['Code Review', 'Resolved']
+        },
+        change_fields : {
+          login : {
+            source_field : 'reviewEngineer',
+            source_field_allowed_values : AVIATEAM
+          }
+        }
+      },
       {
         fields : {
           login  : ['ivan.hilkov', 'Ango', 'andrey.iliopulo'],

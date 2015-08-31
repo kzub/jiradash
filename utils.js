@@ -131,8 +131,10 @@
                 (new_value.source_field_allowed_values === undefined ||
                 (new_value.source_field_allowed_values && new_value.source_field_allowed_values.indexOf(task[new_value.source_field]) > -1))){
                 task[key] = task[new_value.source_field];
-              }else{
+              }else if(new_value.default){
                 task[key] = new_value.default;
+              }else{
+                // ---- no change ----
               }
             }else{
               task[key] = new_value;

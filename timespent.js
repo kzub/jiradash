@@ -27,7 +27,7 @@
     }
   ];
 
-  var BLOCKS_DONE= [
+  var BLOCKS_DONE = [
     {
       title : 'Recently done',
       projects : ['OTT', 'AH', 'AC', 'PM'],
