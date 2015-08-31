@@ -4,7 +4,7 @@
   var QA_TASK_STATUSES  = ['!Closed', '!Done', '!Rejected', '!Merge ready', '!In Release'];
   var PM_TASK_STATUSES  = ['!Closed', '!Done', '!Rejected'];
 
-  var USER_LINK = 'https://onetwotripdev.atlassian.net/issues/?jql=assignee IN ({login}) and ({statuses}) ORDER BY priority,updated';
+  var USER_LINK = 'https://onetwotripdev.atlassian.net/issues/?jql=((assignee = {login} OR Reviewer = {login}) AND ({statuses})) ORDER BY priority,updated';
   var TASK_LINK = 'https://onetwotripdev.atlassian.net/browse/{key}';
   var STATUS_LINK = 'https://onetwotripdev.atlassian.net/issues/?jql=project IN({project}) and ({statuses}) ORDER BY priority,updated';
   var team = 'avia';
@@ -20,7 +20,8 @@
                      'Ango','alexander.litvinov','andrey.plotnikov','andrey.iliopulo','alexander.neyasov','marina.severyanova','Yury.Kocharyan',
                      'konstantin.kalinin','h3x3d','leonid.riaboshtan', 'konstantin.zubkov', 'valentin.lapchevskiy'];
     var VIEWTEAM  = ['dmitrii.loskutov', 'andrey.lakotko', 'anastasia.oblomova'].concat(AVIATEAM);
-    var LEADLIMIT = 15;
+
+    var LEADLIMIT = 20;
     var DEVLIMIT  = 7;
 
     var TASK_REWRITE_RULES = [
@@ -123,11 +124,12 @@
       TASK_REWRITE_RULES : TASK_REWRITE_RULES,
       COLUMNS : 4,
       MOBILE_COLUMNS : 1,
-      MOBILE_BLOCKS_SORTER : 'project_attribute'
+      MOBILE_BLOCKS_SORTER : 'project_attribute',
+      REVIEWERS : AVIATEAM
     };
   }
   else if(team === 'devops'){
-    var VIEWTEAM  = ['melnik', 'eth', 'marina.ilina', 'VadZay'];
+    var VIEWTEAM  = ['melnik', 'eth', 'marina.ilina'];
     var LEADLIMIT = 20;
     var DEVLIMIT  = 10;
 
@@ -141,11 +143,11 @@
     { login : 'marina.ilina', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
     { projects : ['SRV'], statuses : ['Merge ready'], title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Merge Ready'},
 
-    { login : 'VadZay', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
+    { skip : 1},
     { projects : ['SRV'], statuses : ['Done'], title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Done', sort_by : 'updated', limit : 25 },
     ];
 
-    var STATUSES_TO_LOAD = ['!Closed', '!Rejected', '!Done'];
+    var STATUSES_TO_LOAD = ['!Closed', '!Rejected'];
     var OPTIONS = {
       COLUMNS : 2,
       MOBILE_COLUMNS : 1,

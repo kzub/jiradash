@@ -21,7 +21,7 @@
     var SUBTASK_QUERY = '/monitor/jira/api/2/issue/{key}?fields=timespent';
     var JIRA_QUERY = '/monitor/jira/api/2/search?maxResults={LOAD_LIMIT}' +
       '&fields=customfield_10300,customfield_10024,key,{ASSIGNEE},description,status,priority,project,subtasks,summary,timespent,updated,issuetype,duedate' +
-      '&jql=({STATUSES}) AND {ASSIGNEE} {DEVTEAM} {PROJECT} ORDER BY {ORDERBY}';
+      '&jql=({STATUSES}) AND {ASSIGNEES} {PROJECT} ORDER BY {ORDERBY}';
 
     var statuses_have_status_not  = false;
     var statuses = STATUSES_TO_LOAD.map(function(s){
@@ -39,11 +39,6 @@
       orderby = OPTIONS.LOAD_BY_PRIORITY;
     }
 
-    var devteam = 'is Empty';
-    if(DEVTEAM.length){
-      devteam = ['IN (', ')'].join(DEVTEAM.join(','));
-    }
-
     var project = '';
     if(OPTIONS.LOAD_PROJECTS){
       project = ['AND project IN (', ')'].join(OPTIONS.LOAD_PROJECTS.join(','));
@@ -51,6 +46,17 @@
 
     var assignee_field_string = OPTIONS.LOGIN_KEY_FIELDNAME || 'assignee';
     var assignee_conditions_string = OPTIONS.LOGIN_KEY_CONDTIONS || 'assignee';
+    var devteam = ' is Empty';
+    if(DEVTEAM.length){
+      devteam = [' IN (', ')'].join(DEVTEAM.join(','));
+    }
+    var reviewrs = '';
+
+    if(OPTIONS.REVIEWERS){
+      reviewrs = [' OR Reviewer IN (', ')'].join(OPTIONS.REVIEWERS.join(','));
+    }
+
+    var assigness = '(' + assignee_conditions_string + devteam + reviewrs + ')';
 
     // replace vars in templae
     var query = JIRA_QUERY
@@ -60,7 +66,7 @@
       .replace('{LOAD_LIMIT}', OPTIONS.LOAD_LIMIT || 2000)
       .replace('{PROJECT}', project)
       .replace('{ASSIGNEE}', assignee_field_string)
-      .replace('{ASSIGNEE}', assignee_conditions_string)
+      .replace('{ASSIGNEES}', assigness)
 
     var processResults = function(data){
       for(var idx = 0; idx < data.issues.length; idx++){

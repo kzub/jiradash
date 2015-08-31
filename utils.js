@@ -51,7 +51,9 @@
         var variable = vars[idx];
 
         if(variable === '{login}'){
-          template = template.replace(variable, data.login || '');
+          var condition = new RegExp(variable);
+          condition.global = true;
+          template = template.replace(condition, data.login || '');
           continue;
         }
 
@@ -99,6 +101,7 @@
           continue;
         }
       }
+
 
       return template;
     };
