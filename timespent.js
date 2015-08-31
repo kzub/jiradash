@@ -6,7 +6,7 @@
     'alexey.sutiagin','aleksandr.gladkikh','renat.abdusalamov','alexander.litvinov','alexander.neyasov','Yury.Kocharyan','h3x3d',
     'ek','andrey.ivanov','anton.ipatov','andrey.plotnikov',
     'fedor.shumov','ivan.hilkov','Ango','andrey.iliopulo',
-    'konstantin.kalinin', 'andrey.lakotko','anastasia.oblomova'
+    'konstantin.kalinin', 'andrey.lakotko','anastasia.oblomova', 'valentin.lapchevskiy'
   ];
 
   var BLOCKS_TODO = [

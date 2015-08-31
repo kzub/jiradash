@@ -18,7 +18,7 @@
   if(team === 'avia'){
     var AVIATEAM  = ['alexey.sutiagin','ek','fedor.shumov','aleksandr.gladkikh','andrey.ivanov','ivan.hilkov','renat.abdusalamov','anton.ipatov',
                      'Ango','alexander.litvinov','andrey.plotnikov','andrey.iliopulo','alexander.neyasov','marina.severyanova','Yury.Kocharyan',
-                     'konstantin.kalinin','h3x3d','leonid.riaboshtan', 'konstantin.zubkov'];
+                     'konstantin.kalinin','h3x3d','leonid.riaboshtan', 'konstantin.zubkov', 'valentin.lapchevskiy'];
     var VIEWTEAM  = ['dmitrii.loskutov', 'andrey.lakotko', 'anastasia.oblomova'].concat(AVIATEAM);
     var LEADLIMIT = 15;
     var DEVLIMIT  = 7;
@@ -39,7 +39,7 @@
       },
       {
         fields : {
-          login  : ['aleksandr.gladkikh', 'renat.abdusalamov', 'alexander.neyasov', 'Yury.Kocharyan', 'h3x3d'],
+          login  : ['aleksandr.gladkikh', 'renat.abdusalamov', 'alexander.neyasov', 'Yury.Kocharyan', 'h3x3d', 'valentin.lapchevskiy'],
           status : ['Code Review', 'Resolved']
         },
         change_fields : {
@@ -99,19 +99,23 @@
     { login : 'andrey.iliopulo', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
     { projects : ['OTT', 'AH', 'AC', 'PM'], types : ['Release'], title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Release', title_extras : ['status']},
 
-    { login : 'h3x3d', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
+    { login : 'valentin.lapchevskiy', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
     { skip : 1 },
     { skip : 1 },
     { projects : ['OTT','AC', 'AH'], statuses : ['In Release', 'Merge Failed', 'Contains Bugs'], title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Release Tasks'},
 
-    { login : 'Yury.Kocharyan', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
+    { login : 'h3x3d', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
     { login : 'leonid.riaboshtan', statuses : TASK_STATUSES, title_link : USER_LINK, task_links : TASK_LINK, limit : LEADLIMIT},
     { skip : 1 },
     { skip : 1 },
 
-    { login : 'alexander.litvinov', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
     { skip : 1 },
-    { login : 'konstantin.kalinin', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT}
+    { login : 'alexander.litvinov', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
+    { login : 'konstantin.kalinin', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
+    { skip : 1 },
+
+    { skip : 1 },
+    { login : 'Yury.Kocharyan', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT}
     ];
 
     var STATUSES_TO_LOAD = ['!Closed', '!Done' , '!Rejected'];
@@ -149,7 +153,7 @@
     };
   }
   else if(team === 'pm'){
-    var VIEWTEAM  = ['evgeny.bush', 'rostislav.palchun', 'leonid.riaboshtan',
+    var VIEWTEAM  = ['evgeny.bush', 'rostislav.palchun', 'valentin.kachanov', 'leonid.riaboshtan',
       'nikolay.malikov', 'armen.dzhanumov', 'alexander.bezhan', 'konstantin.zubkov',
       'konstantin.mamonov', 'timur.danilov', 'vadim.kudelko', 'alexey.lyashchenko',
       'sergey.mashkov', 'alexey.sutiagin', 'ek', 'fedor.shumov'];
@@ -160,6 +164,7 @@
     { login : 'evgeny.bush', title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
     { login : 'rostislav.palchun', title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
     { login : 'timur.danilov', title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
+    { login : 'valentin.kachanov', title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
     { login : 'alexander.bezhan', title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
     { login : 'armen.dzhanumov', title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
     { login : 'leonid.riaboshtan', title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
