@@ -21,7 +21,7 @@
     var SUBTASK_QUERY = '/monitor/jira/api/2/issue/{key}?fields=timespent';
     var JIRA_QUERY = '/monitor/jira/api/2/search?maxResults={LOAD_LIMIT}' +
       '&fields=customfield_10300,customfield_10024,key,{ASSIGNEE},description,status,priority,project,subtasks,summary,timespent,updated,issuetype,duedate' +
-      '&jql=({STATUSES}) AND {ASSIGNEES} {PROJECT} ORDER BY {ORDERBY}';
+      '&jql=({STATUSES}) AND {ASSIGNEES} {PROJECT} {LABELS} ORDER BY {ORDERBY}';
 
     var statuses_have_status_not  = false;
     var statuses = STATUSES_TO_LOAD.map(function(s){
@@ -58,6 +58,11 @@
 
     var assigness = '(' + assignee_conditions_string + devteam + reviewrs + ')';
 
+    var labels = '';
+    if(OPTIONS.LABELS_TO_LOAD){
+      labels = ' AND labels in (' + OPTIONS.LABELS_TO_LOAD.join(',') + ') ';
+    }
+
     // replace vars in templae
     var query = JIRA_QUERY
       .replace('{DEVTEAM}', devteam)
@@ -67,6 +72,7 @@
       .replace('{PROJECT}', project)
       .replace('{ASSIGNEE}', assignee_field_string)
       .replace('{ASSIGNEES}', assigness)
+      .replace('{LABELS}', labels)
 
     var processResults = function(data){
       for(var idx = 0; idx < data.issues.length; idx++){

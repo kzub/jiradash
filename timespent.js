@@ -12,16 +12,9 @@
   var BLOCKS_TODO = [
     {
       title : 'To Do',
-      projects : ['OTT', 'AH', 'AC', 'PM'],
-      statuses : ['Open'],
-      limit : 23,
-      title_link : 'https://onetwotripdev.atlassian.net/issues/?jql=project IN({project}) AND ({statuses}) AND assignee is Empty ORDER BY priority,rank',
-      task_links : TASK_LINK
-    },{
-      title : 'Bugs',
-      projects : ['OTT', 'AH', 'AC', 'PM'],
-      statuses : ['To Do'],
-      limit : 23,
+      projects : ['OTT', 'AH', 'AC'],
+      statuses : ['Open', 'To Do'],
+      limit : 49,
       title_link : 'https://onetwotripdev.atlassian.net/issues/?jql=project IN({project}) AND ({statuses}) AND assignee is Empty ORDER BY priority,rank',
       task_links : TASK_LINK
     }
@@ -30,7 +23,7 @@
   var BLOCKS_DONE = [
     {
       title : 'Recently done',
-      projects : ['OTT', 'AH', 'AC', 'PM'],
+      projects : ['OTT', 'AH', 'AC'],
       statuses : ['Done', 'Closed'],
       limit : 25,
       title_link : 'https://onetwotripdev.atlassian.net/issues/?jql=project IN({project}) and ({statuses}) ORDER BY priority,updated',
@@ -47,12 +40,14 @@
     SCREEN_WIDTH : '50%',
     LOAD_BY_PRIORITY : 'updated',
     LOAD_LIMIT : 50,
-    LOAD_PROJECTS : ['OTT', 'AH', 'AC', 'PM', 'QA']
+    LOAD_PROJECTS : ['OTT', 'AH', 'AC']
   };
 
   var OPTIONS_TODO = {
     SCREEN_WIDTH : '50%',
-    LOAD_PROJECTS : ['OTT', 'AH', 'AC', 'PM', 'QA']
+    LOAD_PROJECTS : ['OTT', 'AH', 'AC'],
+    LABELS_TO_LOAD : ['Planned'],
+    LOAD_LIMIT : 500,
   };
 
   var utils  = new window.Utils();
