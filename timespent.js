@@ -15,7 +15,7 @@
       projects : ['OTT', 'AH', 'AC'],
       statuses : ['Open', 'To Do'],
       limit : 49,
-      title_link : 'https://onetwotripdev.atlassian.net/issues/?jql=project IN({project}) AND ({statuses}) AND assignee is Empty ORDER BY priority,rank',
+      title_link : 'https://onetwotripdev.atlassian.net/issues/?jql=project IN({project}) AND ({statuses}) AND (LABELS = Planned) AND assignee is Empty ORDER BY priority,rank',
       task_links : TASK_LINK
     }
   ];
