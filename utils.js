@@ -229,6 +229,14 @@
       return b.updated - a.updated;
     };
 
+    this.task_sorter_created = function(a, b){
+      return b.created - a.created;
+    };
+
+    this.task_sorter_created_reverse = function(a, b){
+      return a.created - b.created;
+    };
+
     this.task_sorter_updated_reverse = function(a, b){
       return a.updated - b.updated;
     };

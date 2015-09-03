@@ -20,7 +20,7 @@
     var URL_ICON_LOADING = 'https://s3.eu-central-1.amazonaws.com/ott-static/images/jira/ajax-loader.gif';
     var SUBTASK_QUERY = '/monitor/jira/api/2/issue/{key}?fields=timespent';
     var JIRA_QUERY = '/monitor/jira/api/2/search?maxResults={LOAD_LIMIT}' +
-      '&fields=customfield_10300,customfield_10024,key,{ASSIGNEE},description,status,priority,project,subtasks,summary,timespent,updated,issuetype,duedate' +
+      '&fields=customfield_10300,customfield_10024,key,{ASSIGNEE},description,status,priority,project,subtasks,summary,timespent,updated,created,issuetype,duedate' +
       '&jql=({STATUSES}) AND {ASSIGNEES} {PROJECT} {LABELS} ORDER BY {ORDERBY}';
 
     var statuses_have_status_not  = false;
@@ -98,6 +98,7 @@
           project       : issue.get('fields.project.key'),
           timespent     : utils.timespentToHours(issue.get('fields.timespent')),
           updated       : new Date(issue.get('fields.updated')),
+          created       : new Date(issue.get('fields.created')),
           type          : issue.get('fields.issuetype.name'),
           duedate       : utils.stringToDate(issue.get('fields.duedate'))
         };
