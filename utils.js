@@ -194,7 +194,7 @@
 
     this.formatShortDate = function(date){
       if(!date){
-        return;
+        return '';
       }
       return date.toUTCString().slice(5,11);
     };
