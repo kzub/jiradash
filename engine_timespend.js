@@ -112,8 +112,8 @@
         if(person.color_counter === undefined){
           person.color_counter = 30;
           person.color_step = 360 / person.tasks.length;
-          if(person.color_step > 10){
-            person.color_step = 10;
+          if(person.color_step > 20){
+            person.color_step = 20;
           }
           person.task_keys = {};
         }
@@ -121,6 +121,9 @@
         if(!person.task_keys[task.key]){
           person.task_keys[task.key] = d3.hsl(person.color_counter, 0.9, 0.5);
           person.color_counter += person.color_step;
+          if(person.color_counter > 360){
+            person.color_counter = 0;
+          }
         }
 
         return person.task_keys[task.key];

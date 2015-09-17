@@ -53,7 +53,7 @@
 
   var utils  = new window.Utils();
   var params = utils.getQueryString();
-  var time_to_look   = +params.timespent || 14;
+  var time_to_look   = +params.timespent || 7;
 
   var timespent = new window.TaskTimespend(DEVTEAM, time_to_look, document.getElementById('timespend-left'), OPTIONS_TIMESPENT);
   var todo = new window.TaskTable([], BLOCKS_TODO, ['!Closed', '!Done' , '!Rejected'], document.getElementById('timespend-right'), OPTIONS_TODO);

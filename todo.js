@@ -171,7 +171,7 @@
   }
   else if(team === 'pm'){
     var VIEWTEAM  = ['evgeny.bush', 'rostislav.palchun', 'valentin.kachanov', 'leonid.riaboshtan',
-      'nikolay.malikov', 'armen.dzhanumov', 'alexander.bezhan',
+      'nikolay.malikov', 'armen.dzhanumov', 'alexander.bezhan', 'timur.danilov',
       'sergey.mashkov', 'alexey.sutiagin', 'ek', 'fedor.shumov'];
 
     var PMLIMIT   = Infinity;
@@ -184,6 +184,7 @@
     { login : 'armen.dzhanumov',    title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
     { login : 'leonid.riaboshtan',  title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
     { login : 'nikolay.malikov',    title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
+    { login : 'timur.danilov',      title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
     { login : 'sergey.mashkov',     title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
     { login : 'alexey.sutiagin',    title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
     { login : 'ek',                 title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
