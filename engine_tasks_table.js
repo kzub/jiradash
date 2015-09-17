@@ -20,7 +20,7 @@
     var URL_ICON_LOADING = 'https://s3.eu-central-1.amazonaws.com/ott-static/images/jira/ajax-loader.gif';
     var SUBTASK_QUERY = '/monitor/jira/api/2/issue/{key}?fields=timespent';
     var JIRA_QUERY = '/monitor/jira/api/2/search?maxResults={LOAD_LIMIT}' +
-      '&fields=customfield_10300,customfield_10024,key,{ASSIGNEE},description,status,priority,project,subtasks,summary,timespent,updated,created,issuetype,duedate' +
+      '&fields=customfield_10300,customfield_10024,key,{ASSIGNEE},description,status,labels,priority,project,subtasks,summary,timespent,updated,created,issuetype,duedate' +
       '&jql=({STATUSES}) AND {ASSIGNEES} {PROJECT} {LABELS} ORDER BY {ORDERBY}';
 
     var statuses_have_status_not  = false;
@@ -60,7 +60,8 @@
 
     var labels = '';
     if(OPTIONS.LABELS_TO_LOAD){
-      labels = ' AND labels in (' + OPTIONS.LABELS_TO_LOAD.join(',') + ') ';
+      var labels_mode = OPTIONS.LABELS_MODE || 'AND';
+      labels = ' ' + labels_mode + ' labels in (' + OPTIONS.LABELS_TO_LOAD.join(',') + ') ';
     }
 
     // replace vars in templae
@@ -100,7 +101,8 @@
           updated       : new Date(issue.get('fields.updated')),
           created       : new Date(issue.get('fields.created')),
           type          : issue.get('fields.issuetype.name'),
-          duedate       : utils.stringToDate(issue.get('fields.duedate'))
+          duedate       : utils.stringToDate(issue.get('fields.duedate')),
+          labels        : issue.get('fields.labels')
         };
 
         utils.rewrite_task(OPTIONS.TASK_REWRITE_RULES, task);

@@ -69,6 +69,7 @@
     var subtasks       = filter_options.subtasks;
     var group          = filter_options.group;
     var issue_types    = filter_options.types;
+    var labels         = filter_options.labels;
 
     for(var i = 0; i < this.tasks.length; i++){
       var task = this.tasks[i];
@@ -100,6 +101,23 @@
       // filter by issue
       if(issue_types){
         if(issue_types.indexOf(task.type) === -1){
+          continue;
+        }
+      }
+
+      // filter by lables
+      if(labels){
+        if(!task.labels || !task.labels.length){
+          continue;
+        }
+        var found = false;
+        for(var idx in labels){
+          if(~task.labels.indexOf(labels[idx])){
+            found = true;
+          }
+        }
+
+        if(!found){
           continue;
         }
       }

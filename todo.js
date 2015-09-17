@@ -12,6 +12,8 @@
 
   if(~document.location.href.indexOf('devops')){
     team = 'devops';
+  }else if(~document.location.href.indexOf('pm2')){
+    team = 'pm2';
   }else if(~document.location.href.indexOf('pm')){
     team = 'pm';
   }else if(~document.location.href.indexOf('roadmap')){
@@ -130,7 +132,6 @@
     { login : 'konstantin.kalinin',   title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
     { skip : 1 },
 
-    { skip : 1 },
     { login : 'Yury.Kocharyan',       title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT}
     ];
 
@@ -199,6 +200,42 @@
       LOGIN_KEY_FIELDNAME : 'customfield_10201',
       LOGIN_KEY_CONDTIONS : 'PM',
       SHOW_DUEDATE_INSTEAD_TIMESPEND : true
+    };
+  }
+  else if(team === 'pm2'){
+    var VIEWTEAM  = [ // 'evgeny.bush', 'rostislav.palchun', 'valentin.kachanov', 'leonid.riaboshtan',
+      'nikolay.malikov', //'armen.dzhanumov', 'alexander.bezhan', 'timur.danilov',
+      //'sergey.mashkov', 'alexey.sutiagin', 'ek', 'fedor.shumov'
+    ];
+
+    var PMLIMIT   = Infinity;
+
+    BLOCKS = [
+    // { login : 'evgeny.bush',        title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
+    // { login : 'rostislav.palchun',  title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
+    // { login : 'valentin.kachanov',  title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
+    // { login : 'alexander.bezhan',   title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
+    // { login : 'armen.dzhanumov',    title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
+    // { login : 'leonid.riaboshtan',  title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
+    { login : 'nikolay.malikov',    title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
+    // { login : 'timur.danilov',      title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
+    // { login : 'sergey.mashkov',     title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
+    // { login : 'alexey.sutiagin',    title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
+    // { login : 'ek',                 title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
+    // { login : 'fedor.shumov',       title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT}
+    { title : 'Peter Kutis', labels : ['PK'], title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT}
+    ];
+
+    var STATUSES_TO_LOAD = ['!Closed', '!Rejected', '!Done'];
+    var OPTIONS = {
+      COLUMNS : 2,
+      MOBILE_COLUMNS : 1,
+      MOBILE_BLOCKS_SORTER: 'project_attribute',
+      LOGIN_KEY_FIELDNAME : 'customfield_10200',
+      LOGIN_KEY_CONDTIONS : 'Stakeholder',
+      SHOW_DUEDATE_INSTEAD_TIMESPEND : true,
+      LABELS_TO_LOAD : ['PK'],
+      LABELS_MODE : 'OR'
     };
   }
   else if(team === 'roadmap'){
