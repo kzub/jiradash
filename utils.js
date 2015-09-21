@@ -237,6 +237,13 @@
       return a.created - b.created;
     };
 
+    this.task_sorter_created_reverse_priority = function(a, b){
+      if(a.priority === b.priority){
+        return a.created - b.created;
+      }
+      return a.priority - b.priority;
+    };
+
     this.task_sorter_updated_reverse = function(a, b){
       return a.updated - b.updated;
     };
