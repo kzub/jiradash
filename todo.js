@@ -8,6 +8,7 @@
   var USER_LINK = 'https://onetwotripdev.atlassian.net/issues/?jql=((assignee = {login} OR Reviewer = {login}) AND ({statuses})) ORDER BY priority,created ASC';
   var TASK_LINK = 'https://onetwotripdev.atlassian.net/browse/{key}';
   var STATUS_LINK = 'https://onetwotripdev.atlassian.net/issues/?jql=project IN({project}) and ({statuses}) ORDER BY priority,created ASC';
+  var LABELS_LINK = 'https://onetwotripdev.atlassian.net/issues/?jql=({labels}) and ({statuses}) ORDER BY priority,created ASC';
   var team = 'avia';
 
   if(~document.location.href.indexOf('devops')){
@@ -191,7 +192,7 @@
     { login : 'dmitry.rumyantsev',  title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
     { login : 'sergey.mashkov',     title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT},
 
-    { title : 'TODO', labels : ['PM-Planned'], title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT }
+    { title : 'TODO', labels : ['PM-Planned'], title_link : LABELS_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT }
     ];
 
     var STATUSES_TO_LOAD = ['!Closed', '!Rejected', '!Done'];
@@ -212,7 +213,7 @@
 
     BLOCKS = [
     { login : 'nikolay.malikov',  title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT },
-    { title : 'Peter Kutis', labels : ['PK'], title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT }
+    { title : 'Peter Kutis', labels : ['PK'], title_link : LABELS_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT }
     ];
 
     var STATUSES_TO_LOAD = ['!Closed', '!Rejected', '!Done'];

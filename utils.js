@@ -91,6 +91,35 @@
           continue;
         }
 
+        if(variable === '{labels}'){
+          if(data.labels instanceof Array){
+            var statusQuery = '';
+            for(var idx in data.labels){
+              var status = data.labels[idx];
+
+              if(statusQuery){
+                statusQuery += (status[0] === '!' ? ' AND ' : ' OR ');
+              }
+
+              if(status[0] === '!'){
+                statusQuery += ("labels not in ('" + status.slice(1)) + "')";
+              }
+              else{
+                statusQuery += ("labels in ('" + status + "')");
+              }
+            }
+            template = template.replace(variable, statusQuery);
+            continue;
+          }
+          else if(data.labels){
+            template = template.replace(variable, data.labels);
+            continue;
+          }
+          /* no filter */
+          template = template.replace(variable, 'createdDate < endOfYear()');
+          continue;
+        }
+
         if(variable === '{key}'){
           template = template.replace(variable, data.key || '');
           continue;
