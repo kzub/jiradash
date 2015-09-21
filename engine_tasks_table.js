@@ -34,7 +34,7 @@
 
     statuses = statuses.join(statuses_have_status_not ? ' AND ' : ' OR ');
 
-    var orderby = 'priority,rank';
+    var orderby = 'priority,created';
     if(OPTIONS.LOAD_BY_PRIORITY){
       orderby = OPTIONS.LOAD_BY_PRIORITY;
     }
@@ -102,7 +102,7 @@
           created       : new Date(issue.get('fields.created')),
           type          : issue.get('fields.issuetype.name'),
           duedate       : utils.stringToDate(issue.get('fields.duedate')),
-          labels        : issue.get('fields.labels')
+          labels        : issue.get('fields.labels').map(function(e){ return e&&e.toLowerCase();})
         };
 
         utils.rewrite_task(OPTIONS.TASK_REWRITE_RULES, task);

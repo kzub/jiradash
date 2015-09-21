@@ -112,7 +112,7 @@
         }
         var found = false;
         for(var idx in labels){
-          if(~task.labels.indexOf(labels[idx])){
+          if(~task.labels.indexOf(labels[idx].toLowerCase())){
             found = true;
           }
         }
