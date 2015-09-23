@@ -3,7 +3,7 @@
   * Page layout definition
   */
   function Layout(OPTIONS){
-    var columns = 1;
+    var columns;
     var ratio = window.devicePixelRatio || 1;
     var screen_width = screen.width;
     var screen_height = screen.height;
@@ -18,10 +18,10 @@
     }
 
     if(OPTIONS && OPTIONS.COLUMNS){
-      columns = OPTIONS.COLUMNS;
+      columns = OPTIONS.COLUMNS || 1;
     }
-    if(isMobile() && OPTIONS.MOBILE_COLUMNS){
-      columns = OPTIONS.MOBILE_COLUMNS;
+    if(isMobile()){
+      columns = OPTIONS.MOBILE_COLUMNS || 1;
       screen_width *= ratio;
       screen_height *= ratio;
     }
