@@ -3,7 +3,7 @@
   * Page layout definition
   */
   function Layout(OPTIONS){
-    var columns;
+    var columns = 1;
     var ratio = window.devicePixelRatio || 1;
     var screen_width = screen.width;
     var screen_height = screen.height;
