@@ -25,7 +25,7 @@
   if(team === 'avia'){
     var AVIATEAM  = ['alexey.sutiagin','ek','fedor.shumov','aleksandr.gladkikh','andrey.ivanov','ivan.hilkov','renat.abdusalamov','anton.ipatov',
                      'Ango','alexander.litvinov','andrey.plotnikov','andrey.iliopulo','alexander.neyasov','Yury.Kocharyan',
-                     'konstantin.kalinin','h3x3d','leonid.riaboshtan','valentin.lapchevskiy'];
+                     'konstantin.kalinin','leonid.riaboshtan','valentin.lapchevskiy'];
     var VIEWTEAM  = ['dmitrii.loskutov', 'andrey.lakotko', 'anastasia.oblomova', 'konstantin.zubkov','marina.severyanova'].concat(AVIATEAM);
 
     var LEADLIMIT = 20;
@@ -58,7 +58,7 @@
       },
       {
         fields : {
-          login  : ['aleksandr.gladkikh', 'renat.abdusalamov', 'alexander.neyasov', 'Yury.Kocharyan', 'h3x3d', 'valentin.lapchevskiy'],
+          login  : ['aleksandr.gladkikh', 'renat.abdusalamov', 'alexander.neyasov', 'Yury.Kocharyan', 'alexander.litvinov', 'valentin.lapchevskiy'],
           status : ['Code Review', 'Resolved']
         },
         change_fields : {
@@ -66,19 +66,6 @@
             source_field : 'reviewEngineer',
             source_field_allowed_values : AVIATEAM,
             default : 'alexey.sutiagin'
-          }
-        }
-      },
-      {
-        fields : {
-          login  : ['alexander.litvinov'],
-          status : ['Code Review', 'Resolved']
-        },
-        change_fields : {
-          login : {
-            source_field : 'reviewEngineer',
-            source_field_allowed_values : AVIATEAM,
-            default : 'leonid.riaboshtan'
           }
         }
       },
@@ -125,8 +112,8 @@
     { skip : 1 },
     { projects : ['OTT','AC', 'AH'], statuses : ['In Release', 'Merge Failed', 'Contains Bugs'], title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Release Tasks', sort_by : sorting_order},
 
-    { login : 'h3x3d', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order},
-    { login : 'leonid.riaboshtan',    title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : LEADLIMIT, sort_by : sorting_order},
+    { skip : 1 },
+    { login : 'leonid.riaboshtan',    title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order},
     { skip : 1 },
     { skip : 1 },
 

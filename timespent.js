@@ -3,7 +3,7 @@
   var TASK_LINK = 'https://onetwotripdev.atlassian.net/browse/{key}';
 
   var DEVTEAM  = [
-    'alexey.sutiagin','aleksandr.gladkikh','renat.abdusalamov','alexander.litvinov','alexander.neyasov','Yury.Kocharyan','h3x3d',
+    'alexey.sutiagin','aleksandr.gladkikh','renat.abdusalamov','alexander.litvinov','alexander.neyasov','Yury.Kocharyan',
     'ek','andrey.ivanov','anton.ipatov','andrey.plotnikov',
     'fedor.shumov','ivan.hilkov','Ango','andrey.iliopulo',
     'konstantin.kalinin', 'andrey.lakotko','anastasia.oblomova', 'valentin.lapchevskiy'
@@ -34,7 +34,7 @@
   ];
 
   var OPTIONS_TIMESPENT = {
-    SCREEN_WIDTH : '50%'
+    SCREEN_WIDTH : '100%'
   };
 
   var OPTIONS_DONE = {

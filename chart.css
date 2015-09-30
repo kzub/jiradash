@@ -127,7 +127,7 @@ text {
 .axis path,
 .axis line {
   fill: none;
-  stroke: #fff;
+  stroke: #666;
   shape-rendering: crispEdges;
 }
 
@@ -136,7 +136,7 @@ text {
 }
 
 .man-timespent-background{
-  fill : white;
+  fill : #1E1E1E;
 }
 
 .text-timespent-names {
@@ -157,7 +157,9 @@ text {
 
 .timespend-split-screen {
   /*float: left;*/
+  display: -webkit-box;
 }
 .timespend-view {
-  display: -webkit-box;
+  /*display: -webkit-box;*/
+  display: block;
 }

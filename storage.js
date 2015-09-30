@@ -68,6 +68,7 @@
     var task_sorter    = filter_options.task_sorter;
     var subtasks       = filter_options.subtasks;
     var group          = filter_options.group;
+    var modifiers      = filter_options.modifiers;
     var issue_types    = filter_options.types;
     var labels         = filter_options.labels;
 
@@ -164,20 +165,30 @@
       else if(statuses === task.status || (statuses[0] === '!' && statuses.slice(1) !== task.status)){
         filtered_tasks.push(task);
       }
+
+      if(modifiers instanceof Object){
+        for(var idx in modifiers){
+          var modifier = modifiers[idx];
+          if(modifier instanceof Function){
+            modifier(task);
+          }
+        }
+      }
     }
 
+    // post action
     if(group instanceof Object){
       var keys = group.keys;
       var aggs = group.aggregates;
       var grouped = {};
 
       for(var i in filtered_tasks){
-        var task = filtered_tasks[i];
+        var flt_task = filtered_tasks[i];
         // build task key
-        var key = keys.map(function(k){ return task[k]}).join();
+        var key = keys.map(function(k){ return flt_task[k]}).join();
         // add first element
         if(!grouped[key]){
-          grouped[key] = task;
+          grouped[key] = JSON.parse(JSON.stringify(flt_task));
           grouped[key].grouped_elements = 1;
           continue;
         }
@@ -189,10 +200,17 @@
           if(ag.name === 'sum'){
             for(var i3 in ag.values){
               var value = ag.values[i3];
-              grouped[key][value] += task[value];
+              if(!grouped[key][value]){
+                grouped[key][value] = 0;
+              }
+              grouped[key][value] += flt_task[value];
             }
           }
         }
+      }
+
+      if(filter_options.resultFormat === 'group_object'){
+        return grouped;
       }
 
       // build new array from grouped tasks

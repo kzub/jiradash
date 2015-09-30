@@ -20,9 +20,11 @@
     var utils   = new window.Utils(OPTIONS);
     var drawlib = new window.DrawLib();
     var loading_queue = 0;
+    var startDate = Date.now() - (DAYS_TO_ANALIZE)*1000*60*60*24;
 
     var processResults= function(data, callback){
-      var timeLimit = new Date() - DAYS_TO_ANALIZE*1000*60*60*24;
+
+      var timeLimit = utils.getDayEndMs(startDate);
 
       for(var idx = 0; idx < data.issues.length; idx++){
         var issue = new utils.Extractor(data.issues[idx]);
@@ -70,7 +72,8 @@
             description   : issue.get('fields.description'),
             project       : issue.get('fields.project.key'),
             updated       : new Date(issue.get('fields.updated')),
-            timespent      : utils.timespentToHours(worklog.get('timeSpentSeconds'))
+            timespent     : worklog.get('timeSpentSeconds')*1000 /* in miliseconds */,
+            time          : time
           };
 
           utils.rewrite_task(OPTIONS.TASK_REWRITE_RULES, task);
@@ -87,67 +90,82 @@
     var drawBlocksTable = function(){
       var people = storage.getPersons(DEVTEAM);
 
-      var people_info = {};
+      var task_day_offset = {};
 
       var bar_height = 18;
-      var bar_margin = 4;
-      var top_margin = 30;
-      var bottom_margin = 10;
+      var bar_margin = 2.5;
+      var top_margin = 22;
+      var bottom_margin = 4;
       var left_margin = 160;
-      var right_margin = 00;
+      var right_margin = 0;
       var max_time = 8 /* 5 work days in a week */ * (DAYS_TO_ANALIZE - (2*(DAYS_TO_ANALIZE/7|0)));
-      var TIME_TO_SHOW_UP_TASK_NAME = 16;
+      var DAY_PERCENT_TO_SHOW_UP_TASK_NAME = 70;
+      var HOUR = 3600000;
+      var shrug_koef = 0.8;
+      var dates_x_shift = 60;
+
+      var ts_max = utils.getDayEndMs();
+      var ts_min = utils.getDayEndMs(startDate);
 
       var width = layout.getBlockWidth();
       var height = people.length * (bar_height + bar_margin);
 
+      // info about total time spent on task. Used for coloring
+      var task_spent_info = storage.getTasks({
+        group : {
+          keys : ['login', 'key'],
+          aggregates : [{ name : 'sum', values : ['timespent']}]
+        },
+        modifiers : [function(t){
+          t.time = utils.getDayStartMs(t.time, 'date');
+        }],
+        resultFormat : 'group_object'
+      });
+
+      var task_coloring_helper = d3.scale.linear()
+        .domain([HOUR, 16*HOUR, 40*HOUR])
+        .range(['green', 'orange', 'red']);
+
+      var person_color2 = function(task){
+        return task_coloring_helper(task_spent_info[[task.login, task.key].join()].timespent);
+      };
+
+      var task_workday_percent = function(task){
+        return 100*(task.timespent)/(8*HOUR);
+      };
+
+      var task_get_summary = function(task){
+        return [task.key, task.summary, utils.timestampToHours(task.timespent, 'round') + 'h'].join(' ');
+      };
+
+      var x_v2 = d3.scale.linear()
+          .range([0, width - left_margin])
+          .domain([ts_min, ts_max]);
+
+      var y = d3.scale.linear()
+          .range([height, 0])
+          .domain([0, people.length]);
+
+      // Draw timeline axis
+      var xAxis = d3.svg.axis()
+          .scale(x_v2)
+          .orient("bottom")
+          .tickSize(0)
+          .tickValues(d3.time.days(ts_min, ts_max))
+          .tickFormat(function(d){
+            return new Date(d).toDateString().slice(4, 10);
+          });
+
+      // CREATE PLACE TO DRAW
       var svg = d3.select(MAIN_CONTAINER).append("svg")
         .attr("width", width + right_margin)
         .attr("height", height + top_margin + bottom_margin)
         .append("g")
         .attr("transform", "translate(" + left_margin + "," + top_margin+ ")");
 
-      // build color line from red to violet per each man
-      var person_color = function(person, task){
-        if(person.color_counter === undefined){
-          person.color_counter = 30;
-          person.color_step = 360 / person.tasks.length;
-          if(person.color_step > 20){
-            person.color_step = 20;
-          }
-          person.task_keys = {};
-        }
-
-        if(!person.task_keys[task.key]){
-          person.task_keys[task.key] = d3.hsl(person.color_counter, 0.9, 0.5);
-          person.color_counter += person.color_step;
-          if(person.color_counter > 360){
-            person.color_counter = 0;
-          }
-        }
-
-        return person.task_keys[task.key];
-      }
-
-      var x = d3.scale.linear()
-          .range([0, width - left_margin])
-          .domain([0, max_time*1.05])
-
-      var y = d3.scale.linear()
-          .range([height, 0])
-          .domain([0, people.length])
-
-      var xAxis = d3.svg.axis()
-          .scale(x)
-          .orient("bottom")
-          .ticks(10)
-          .tickFormat(function(d){
-            return d+'h';
-          })
-
       svg.append("g")
           .attr("class", "x axis")
-          .attr("transform", "translate(0," + -top_margin + ")")
+          .attr("transform", "translate("+dates_x_shift+"," + -top_margin + ")")
           .call(xAxis);
 
       // DRAW NAMES
@@ -172,7 +190,7 @@
           .data(people)
         .enter().append("g")
 
-      // background BIG WHITE BAR
+      // BACKGROUND BIG GRAY BAR
       man_line.append('rect')
         .attr("x", 0)
         .attr("y", function(person, i) {
@@ -180,69 +198,73 @@
         })
         .attr("height", bar_height)
         .attr("width", function(person){
-          var person_timespent = d3.sum(person.tasks, function(t){
-            return t.timespent;
-          })
-          return x(person_timespent);
+          return x_v2(ts_max);
         })
         .attr('class', 'man-timespent-background')
 
-      // lines with tasks (TIMESPEND)
+      // TASK BARS (TIMESPEND)
       man_line = man_line.selectAll(".tasks")
         .data(function(person){
           // get tasks by person
           return storage.applyTasksFilter(person.tasks, {
-            group: {
-              keys : ['login', 'key'],
-              aggregates : [{ name : 'sum', values : ['timespent']}]
-            },
+            modifiers : [function(t){
+              t.time = utils.getDayStartMs(t.time, 'date');
+            }],
             task_sorter : utils.task_sorter_updated_reverse
           });
         })
-      .enter().append("g")
+      .enter().append("g");
 
       man_line.append("a")
         .attr("xlink:href", function(task){
           return utils.prepareURL(TASK_LINK, task);
         })
         .attr('target', '_blank')
-        .attr('xlink:title', function(task){
-          return [task.key, task.summary, Math.round(10*task.timespent)/10 + 'h'].join(' ');
-        })
+        .attr('xlink:title', task_get_summary)
         .append('rect')
         .attr("class", "bar")
         .attr("width", function(task, i, p){
           var timespent = task.timespent;
 
-          if(!people_info[p]){
-            people_info[p] = {
-              offset : 0,
-              tasks  : people[p].tasks
-            };
-          }
-          task.offset = people_info[p].offset;
-          people_info[p].offset += timespent;
-
-          var bar_width = x(timespent) - 1;
+          var bar_width = x_v2(ts_min + timespent)*(3*shrug_koef);
           if(bar_width < 1){
             bar_width = 1;
           }
+
+          // -> for grouping one day tasks to
+          if(!task_day_offset[p]){
+            task_day_offset[p] = {};
+          }
+          // for grouping tasks per day
+          if(!task_day_offset[p][task.time]){
+            task_day_offset[p][task.time] = 0;
+          }
+          task.offset = task_day_offset[p][task.time];
+          task_day_offset[p][task.time] += bar_width;
+
           return bar_width;
         })
         .attr("x", function(task, i, p){
-          return x(task.offset) /* block shift */;
+          return x_v2(task.time) + task.offset;
         })
         .attr("y", function(d, i, p) {
           return height - y(p);
         })
         .attr("height", bar_height)
         .attr('fill', function(task, i, p){
-          return person_color(people_info[p], task);
+          return person_color2(task);
         })
+
       // TASKS KEY (OTT-XXXX)
-      man_line.append('text')
+      man_line.append('a')
+        .attr("xlink:href", function(task){
+          return utils.prepareURL(TASK_LINK, task);
+        })
+        .attr('target', '_blank')
+        .attr('xlink:title', task_get_summary)
+        .append('text')
         .attr("x", function(task, i, p){
-          return x(task.offset) /* block shift */;
+          return x_v2(task.time) + task.offset;
         })
         .attr("y", function(d, i, p) {
           return height - y(p);
@@ -252,19 +274,33 @@
         })
         .attr('class', 'text-task-keys')
         .style('visibility', function(task){
-          return task.timespent < TIME_TO_SHOW_UP_TASK_NAME ? 'hidden' : '';
+          return task_workday_percent(task) > DAY_PERCENT_TO_SHOW_UP_TASK_NAME ? '' : 'hidden';
         })
 
-      // NORMAIL AMOUNT OF WORK
+      // NORMAL AMOUNT OF WORK (VERTICAL LINES)
       var yAxis = d3.svg.axis()
         .scale(y)
-        .orient("left")
-        .ticks(0)
+        .orient("right")
+        .ticks(0);
 
-      svg.append("g")
-        .attr("transform", "translate(" + x(max_time) + ", 0)")
+      var yAxis2 = d3.svg.axis()
+        .scale(y)
+        .orient("left")
+        .ticks(0);
+
+      svg.selectAll('vlines').data(d3.range(DAYS_TO_ANALIZE)).enter().append("g")
+        .attr("transform", function(d, i){
+          return "translate(" + x_v2(ts_min + HOUR*24)*i + ", 0)";
+        })
         .attr("class", "y axis")
-        .call(yAxis)
+        .call(yAxis);
+
+      svg.selectAll('vlines2').data(d3.range(DAYS_TO_ANALIZE)).enter().append("g")
+        .attr("transform", function(d, i){
+          return "translate(" + x_v2(ts_min + HOUR*24)*(shrug_koef + i) + ", 0)";
+        })
+        .attr("class", "y axis")
+        .call(yAxis2);
     };
 
     this.clearScreen = function(){

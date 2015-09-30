@@ -190,6 +190,16 @@
       };
     };
 
+    this.timestampToHours = function(timestamp, round){
+      if(!timestamp){
+        return 0;
+      }
+      if(round){
+        return Math.round(timestamp/360000)/10;
+      }
+      return timestamp/3600000;
+    };
+
     this.timespentToHours = function(timespent){
       if(!timespent){
         return 0;
@@ -300,7 +310,33 @@
         }
       }
       return result;
-    }
+    };
+
+    this.getDayStartMs = function(date, native){
+      var timeLimit;
+      if(date instanceof Date){
+        timeLimit = date;
+      }else if(date){
+        timeLimit = new Date(date);
+      }else{
+        timeLimit = new Date();
+      }
+      timeLimit.setHours(0); timeLimit.setMinutes(0); timeLimit.setSeconds(0);
+      return native ? timeLimit : timeLimit.valueOf();
+    };
+
+    this.getDayEndMs = function(date, native){
+      var now;
+      if(date instanceof Date){
+        now = date;
+      }else if(date){
+        now = new Date(date);
+      }else{
+        now = new Date();
+      }
+      now.setHours(23); now.setMinutes(59); now.setSeconds(59);
+      return native ? now : now.valueOf() ;
+    };
   };
 
   window.Utils = Utils;
