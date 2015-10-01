@@ -33,6 +33,10 @@
   fill : lightblue;
 }
 
+.wtf {
+  fill : lightblue;
+}
+
 .code_review, .resolved{
   fill : yellow;
 }
