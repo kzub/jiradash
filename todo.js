@@ -25,8 +25,8 @@
   if(team === 'avia'){
     var AVIATEAM  = ['alexey.sutiagin','ek','fedor.shumov','aleksandr.gladkikh','andrey.ivanov','ivan.hilkov','renat.abdusalamov','anton.ipatov',
                      'Ango','alexander.litvinov','andrey.plotnikov','andrey.iliopulo','alexander.neyasov','Yury.Kocharyan',
-                     'konstantin.kalinin','leonid.riaboshtan','valentin.lapchevskiy'];
-    var VIEWTEAM  = ['dmitrii.loskutov', 'andrey.lakotko', 'anastasia.oblomova', 'konstantin.zubkov','marina.severyanova'].concat(AVIATEAM);
+                     'konstantin.kalinin','valentin.lapchevskiy'];
+    var VIEWTEAM  = ['dmitrii.loskutov', 'andrey.lakotko', 'anastasia.oblomova', 'konstantin.zubkov','marina.severyanova', 'leonid.riaboshtan'].concat(AVIATEAM);
 
     var LEADLIMIT = 20;
     var DEVLIMIT  = 7;
@@ -113,7 +113,7 @@
     { projects : ['OTT','AC', 'AH'], statuses : ['In Release', 'Merge Failed', 'Contains Bugs'], title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Release Tasks', sort_by : sorting_order},
 
     { skip : 1 },
-    { login : 'leonid.riaboshtan',    title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order},
+    { skip : 1},
     { skip : 1 },
     { skip : 1 },
 
