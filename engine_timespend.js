@@ -102,13 +102,13 @@
       var DAY_PERCENT_TO_SHOW_UP_TASK_NAME = 70;
       var HOUR = 3600000;
       var shrug_koef = 0.8;
-      var dates_x_shift = 60;
 
       var ts_max = utils.getDayEndMs();
       var ts_min = utils.getDayEndMs(startDate);
 
       var width = layout.getBlockWidth();
       var height = people.length * (bar_height + bar_margin);
+      var dates_x_shift = (width / DAYS_TO_ANALIZE)/3;
 
       // info about total time spent on task. Used for coloring
       var task_spent_info = storage.getTasks({
@@ -278,29 +278,29 @@
         })
 
       // NORMAL AMOUNT OF WORK (VERTICAL LINES)
-      var yAxis = d3.svg.axis()
-        .scale(y)
-        .orient("right")
-        .ticks(0);
+      // var yAxis = d3.svg.axis()
+      //   .scale(y)
+      //   .orient("right")
+      //   .ticks(0);
 
-      var yAxis2 = d3.svg.axis()
-        .scale(y)
-        .orient("left")
-        .ticks(0);
+      // var yAxis2 = d3.svg.axis()
+      //   .scale(y)
+      //   .orient("left")
+      //   .ticks(0);
 
-      svg.selectAll('vlines').data(d3.range(DAYS_TO_ANALIZE)).enter().append("g")
-        .attr("transform", function(d, i){
-          return "translate(" + x_v2(ts_min + HOUR*24)*i + ", 0)";
-        })
-        .attr("class", "y axis")
-        .call(yAxis);
+      // svg.selectAll('vlines').data(d3.range(DAYS_TO_ANALIZE)).enter().append("g")
+      //   .attr("transform", function(d, i){
+      //     return "translate(" + x_v2(ts_min + HOUR*24)*i + ", 0)";
+      //   })
+      //   .attr("class", "y axis")
+      //   .call(yAxis);
 
-      svg.selectAll('vlines2').data(d3.range(DAYS_TO_ANALIZE)).enter().append("g")
-        .attr("transform", function(d, i){
-          return "translate(" + x_v2(ts_min + HOUR*24)*(shrug_koef + i) + ", 0)";
-        })
-        .attr("class", "y axis")
-        .call(yAxis2);
+      // svg.selectAll('vlines2').data(d3.range(DAYS_TO_ANALIZE)).enter().append("g")
+      //   .attr("transform", function(d, i){
+      //     return "translate(" + x_v2(ts_min + HOUR*24)*(shrug_koef + i) + ", 0)";
+      //   })
+      //   .attr("class", "y axis")
+      //   .call(yAxis2);
     };
 
     this.clearScreen = function(){
