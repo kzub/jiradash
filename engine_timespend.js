@@ -20,10 +20,10 @@
     var utils   = new window.Utils(OPTIONS);
     var drawlib = new window.DrawLib();
     var loading_queue = 0;
-    var startDate = Date.now() - (DAYS_TO_ANALIZE)*1000*60*60*24;
+    var startDate;
 
     var processResults= function(data, callback){
-
+      startDate = Date.now() - (DAYS_TO_ANALIZE)*1000*60*60*24;
       var timeLimit = utils.getDayEndMs(startDate);
 
       for(var idx = 0; idx < data.issues.length; idx++){
@@ -194,13 +194,13 @@
       man_line.append('rect')
         .attr("x", 0)
         .attr("y", function(person, i) {
-          return height - y(i);
+          return height - y(i) + bar_height/2;
         })
-        .attr("height", bar_height)
-        .attr("width", function(person){
-          return x_v2(ts_max);
+        .attr("height", 2/*bar_height*/)
+        .attr("width", x_v2(ts_max))
+        .attr('class', function(d, i){
+          return i % 2 === 0 ? 'man-timespent-background' : 'man-timespent-background2';
         })
-        .attr('class', 'man-timespent-background')
 
       // TASK BARS (TIMESPEND)
       man_line = man_line.selectAll(".tasks")

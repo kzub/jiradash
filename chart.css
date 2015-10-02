@@ -146,6 +146,10 @@ text {
   display: none;
 }
 
+.man-timespent-background2 {
+    fill : gray;
+}
+
 .man-timespent-background{
   fill : #1E1E1E;
 }
