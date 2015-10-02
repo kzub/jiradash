@@ -17,29 +17,36 @@
   background-color: #CAF1FF;
 }
 
+.text-more {
+  font-weight: bold;
+}
+
+/* STATUSES */
+
 .test_ready {
   /*fill : red;*/
 }
 
 .update_l10n {
-  fill : orange;
-}
-
-.text-more {
-  font-weight: bold;
+  fill : #FF8D00;
 }
 
 .reopened {
-  fill : lightblue;
+  fill : #FF00FF;
 }
 
 .wtf {
-  fill : lightblue;
+  fill : #FF00FF;
+}
+
+.wbs {
+  fill : #00FFFF;
 }
 
 .code_review, .resolved{
   fill : yellow;
 }
+
 .in_progress {
   fill: #3CD216;
 }
