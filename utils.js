@@ -231,11 +231,12 @@
       return new Date(date);
     };
 
+    var months = ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'];
     this.formatShortDate = function(date){
       if(!date){
         return '';
       }
-      return date.toUTCString().slice(5,11);
+      return date.getDate() + ' ' + months[date.getMonth()];
     };
 
     this.PRIORITY_RANK = function(r){

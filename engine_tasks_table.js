@@ -141,8 +141,16 @@
     };
 
     var lineSchemeTimespent = [25, 27, 46, 134];
-    var lineSchemeDueDate   = [50, 54, 74, 164];
-    var lineScheme = OPTIONS.SHOW_DUEDATE_INSTEAD_TIMESPEND ? lineSchemeDueDate : lineSchemeTimespent;
+    var lineSchemeDueDate   = [53, 54, 73, 164];
+    var lineSchemeDueDateTimespent = [50, 54, 74, 106, 196];
+
+    var lineScheme = lineSchemeTimespent;
+    if(OPTIONS.SHOW_DUEDATE_INSTEAD_TIMESPEND){
+      lineScheme = lineSchemeDueDate;
+    }
+    else if(OPTIONS.SHOW_DUEDATE_PLUS_TIMESPEND){
+      lineScheme = lineSchemeDueDateTimespent;
+    }
 
     var drawLineTextFromTask = function(block, task, paper, y, update_elms){
       //  mark tasks with subtasks
@@ -158,7 +166,7 @@
       // when update data is done and update() is called
       if(update_elms){
         // update timespent
-        update_elms[0].changeText(utils.timespentFormater(timespent));
+        update_elms[OPTIONS.SHOW_DUEDATE_PLUS_TIMESPEND ? 2 : 0].changeText(utils.timespentFormater(timespent));
         // update prioirty icon
         update_elms[1].changeImage(task.priorityIcon);
         return;
@@ -168,16 +176,23 @@
       var elements = [];
       var text_element;
       var css_hours = ' text-hours';
+      var xpos = 0;
 
       if(OPTIONS.SHOW_DUEDATE_INSTEAD_TIMESPEND){
         // duedate
-        text_element = paper.text(lineScheme[0], y-1, utils.formatShortDate(task.duedate), task_url, task_url_title);
+        text_element = paper.text(lineScheme[xpos++], y-1, utils.formatShortDate(task.duedate), task_url, task_url_title);
+        if(task.duedate && task.duedate < new Date()){
+          css_hours = ' duedate-missed';
+        }
+      }else if(OPTIONS.SHOW_DUEDATE_PLUS_TIMESPEND){
+        // duedate + timestamp
+        text_element = paper.text(lineScheme[xpos++], y-1, utils.formatShortDate(task.duedate), task_url, task_url_title);
         if(task.duedate && task.duedate < new Date()){
           css_hours = ' duedate-missed';
         }
       }else{
         // timespent
-        text_element = paper.text(lineScheme[0], y-1, utils.timespentFormater(timespent), task_url, task_url_title);
+        text_element = paper.text(lineScheme[xpos++], y-1, utils.timespentFormater(timespent), task_url, task_url_title);
       }
 
       text_element.setAttribute('class', css_name + css_hours);
@@ -185,13 +200,20 @@
 
       // priority icon or loading symbol...
       if(task.timespent === '*'){
-        elements.push(paper.img(lineScheme[1], y-14, 16, 16, URL_ICON_LOADING));
+        elements.push(paper.img(lineScheme[xpos++], y-14, 16, 16, URL_ICON_LOADING));
       }else{
-        elements.push(paper.img(lineScheme[1], y-14, 16, 16, task.priorityIcon));
+        elements.push(paper.img(lineScheme[xpos++], y-14, 16, 16, task.priorityIcon));
+      }
+
+      if(OPTIONS.SHOW_DUEDATE_PLUS_TIMESPEND){
+        // timespent
+        text_element = paper.text(lineScheme[xpos++], y-1, utils.timespentFormater(timespent), task_url, task_url_title);
+        text_element.setAttribute('class', css_name + css_hours + ' text-hours-normal-anchor');
+        elements.push(text_element);
       }
 
       // task key
-      text_element = paper.text(lineScheme[2], y, task.key, task_url, task_url_title);
+      text_element = paper.text(lineScheme[xpos++], y, task.key, task_url, task_url_title);
       text_element.setAttribute('class', css_name + ' text-task-number');
       text_element.setAttributeNS("http://www.w3.org/XML/1998/namespace", 'textLength', '3');
       elements.push(text_element);
@@ -205,7 +227,7 @@
       }
 
       // task summary
-      text_element = paper.text(lineScheme[3], y, summary, task_url, task_url_title);
+      text_element = paper.text(lineScheme[xpos++], y, summary, task_url, task_url_title);
       text_element.setAttribute('class', css_name + ' text-summary');
       elements.push(text_element);
 
@@ -256,11 +278,6 @@
           var title_url = utils.prepareURL(block['title_link'], block);
           // add names
           paper.text(0, layout.getLine(1), block_data_title, title_url).setAttribute('class', 'man_name');
-        }else{
-          // or separator line
-          var y =  layout.getLine(0);
-          var line = paper.line(lineScheme[3], y, layout.getBlockWidth() - 10, y);
-          line.setAttribute('class', 'subtask-separator');
         }
 
         var tasks_to_display = 2;
@@ -286,7 +303,7 @@
 
           if(i > block.limit - 1){
             if(left){
-              paper.text(lineScheme[3], y + 18, left + ' more ...', title_url).setAttribute('class', 'text-more')
+              paper.text(lineScheme[lineScheme.length-1], y + 18, left + ' more ...', title_url).setAttribute('class', 'text-more')
             }
             break;
           }
