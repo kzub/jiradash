@@ -322,7 +322,7 @@
       }else{
         timeLimit = new Date();
       }
-      timeLimit.setHours(0); timeLimit.setMinutes(0); timeLimit.setSeconds(0);
+      timeLimit.setHours(0); timeLimit.setMinutes(0); timeLimit.setSeconds(0); timeLimit.setMilliseconds(0);
       return native ? timeLimit : timeLimit.valueOf();
     };
 
@@ -335,7 +335,7 @@
       }else{
         now = new Date();
       }
-      now.setHours(23); now.setMinutes(59); now.setSeconds(59);
+      now.setHours(23); now.setMinutes(59); now.setSeconds(59); now.setMilliseconds(999);
       return native ? now : now.valueOf() ;
     };
   };

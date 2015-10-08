@@ -41,7 +41,8 @@
     SCREEN_WIDTH : '50%',
     LOAD_BY_PRIORITY : 'updated',
     LOAD_LIMIT : 50,
-    LOAD_PROJECTS : ['OTT', 'AH', 'AC']
+    LOAD_PROJECTS : ['OTT', 'AH', 'AC'],
+    SHOW_DUEDATE_PLUS_TIMESPEND : true
   };
 
   var OPTIONS_TODO = {

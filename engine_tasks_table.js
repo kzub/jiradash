@@ -152,6 +152,15 @@
       lineScheme = lineSchemeDueDateTimespent;
     }
 
+    var taskDueDateStatus = function(task){
+      if(task.duedate && utils.getDayStartMs(task.duedate) == utils.getDayStartMs()){
+        return ' duedate-missed-soon';
+      }
+      else if(task.duedate && task.duedate < utils.getDayEndMs()){
+        return ' duedate-missed';
+      }
+    };
+
     var drawLineTextFromTask = function(block, task, paper, y, update_elms){
       //  mark tasks with subtasks
       var css_name = task.status.replace(/ /g, '_').toLowerCase();
@@ -181,15 +190,11 @@
       if(OPTIONS.SHOW_DUEDATE_INSTEAD_TIMESPEND){
         // duedate
         text_element = paper.text(lineScheme[xpos++], y-1, utils.formatShortDate(task.duedate), task_url, task_url_title);
-        if(task.duedate && task.duedate < new Date()){
-          css_hours = ' duedate-missed';
-        }
+        css_hours = taskDueDateStatus(task) || css_hours;
       }else if(OPTIONS.SHOW_DUEDATE_PLUS_TIMESPEND){
         // duedate + timestamp
         text_element = paper.text(lineScheme[xpos++], y-1, utils.formatShortDate(task.duedate), task_url, task_url_title);
-        if(task.duedate && task.duedate < new Date()){
-          css_hours = ' duedate-missed';
-        }
+        css_hours = taskDueDateStatus(task) || css_hours;
       }else{
         // timespent
         text_element = paper.text(lineScheme[xpos++], y-1, utils.timespentFormater(timespent), task_url, task_url_title);
