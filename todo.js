@@ -110,7 +110,7 @@
     { login : 'valentin.lapchevskiy', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order},
     { skip : 1 },
     { skip : 1 },
-    { projects : ['OTT','AC', 'AH'], statuses : ['In Release', 'Merge Failed', 'Contains Bugs'], title_link : STATUS_LINK, task_links : TASK_LINK,  sort_by : sorting_order},
+    { projects : ['OTT','AC', 'AH'], statuses : ['In Release', 'Merge Failed', 'Contains Bugs'], title : 'In Release', title_link : STATUS_LINK, task_links : TASK_LINK,  sort_by : sorting_order},
 
     { skip : 1 },
     { skip : 1},
