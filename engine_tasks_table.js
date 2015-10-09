@@ -13,8 +13,41 @@
     var utils   = new window.Utils(OPTIONS);
     var drawlib = new window.DrawLib();
 
-    if(layout.isMobile() && OPTIONS.MOBILE_BLOCKS_SORTER){
+    if(layout.isMobile() && OPTIONS && OPTIONS.MOBILE_BLOCKS_SORTER){
       BLOCKS.sort(utils['task_sorter_' + OPTIONS.MOBILE_BLOCKS_SORTER]);
+    }
+
+    if((layout.isMobile() && OPTIONS && OPTIONS.MOBILE_BLOCKS_SORTER) ||
+      (layout.isLaptop() && OPTIONS && OPTIONS.LAPTOP_BLOCKS_SORTER)){
+
+      var order = layout.isMobile() ? OPTIONS.MOBILE_BLOCKS_SORTER : OPTIONS.LAPTOP_BLOCKS_SORTER;
+
+      if(order instanceof Array){
+        var order = order.slice();
+        var newBLOCKS = [];
+        var newBLOCKStail = [];
+
+        for(var idx in BLOCKS){
+          var block = BLOCKS[idx];
+          var position = order.indexOf(block.login || block.title || +idx);
+          if(position >= 0){
+            newBLOCKS[position] = block;
+            delete order[position];
+          }else if(!block.skip){
+            newBLOCKStail.push(block);
+          }
+        }
+
+        // add empty places in variables not found at previous stage
+        for(var idx in order){
+          if(order[idx]){
+            newBLOCKS[idx] = { skip : 1 };
+          }
+        }
+        BLOCKS = newBLOCKS.concat(newBLOCKStail);
+      }else{
+        BLOCKS.sort(utils['task_sorter_' + order]);
+      }
     }
 
     var URL_ICON_LOADING = 'https://s3.eu-central-1.amazonaws.com/ott-static/images/jira/ajax-loader.gif';

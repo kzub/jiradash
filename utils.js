@@ -310,7 +310,7 @@
     };
 
     this.task_sorter_project_attribute = function(a, b){
-      return !!a.project - !!b.project;
+      return !!a.projects - !!b.projects;
     };
 
     this.task_sorter_timespent = function(a, b){

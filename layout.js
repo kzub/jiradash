@@ -5,8 +5,8 @@
   function Layout(OPTIONS){
     var columns = 1;
     var ratio = window.devicePixelRatio || 1;
-    var screen_width = screen.width;
-    var screen_height = screen.height;
+    var screen_width = window.innerWidth * 0.98;
+    var screen_height = window.innerHeight;
 
     if(OPTIONS && OPTIONS.SCREEN_WIDTH){
       var lastchar = OPTIONS.SCREEN_WIDTH.length - 1;
@@ -19,6 +19,9 @@
 
     if(OPTIONS && OPTIONS.COLUMNS){
       columns = OPTIONS.COLUMNS || 1;
+    }
+    if(isLaptop() && OPTIONS && OPTIONS.LAPTOP_COLUMNS){
+      columns = OPTIONS.LAPTOP_COLUMNS || 1;
     }
     if(isMobile()){
       columns = OPTIONS.MOBILE_COLUMNS || 1;
@@ -42,6 +45,11 @@
       return typeof window.orientation !== 'undefined';
     };
     this.isMobile = isMobile;
+
+    function isLaptop(){
+      return screen.width < 1920;
+    }
+    this.isLaptop = isLaptop;
 
     this.getBlockWidth = function(){
       return Math.floor(screen_width / columns) - block_margin_x;

@@ -23,7 +23,7 @@
 
 
   if(team === 'avia'){
-    var AVIATEAM  = ['alexey.sutiagin','ek','fedor.shumov','aleksandr.gladkikh','andrey.ivanov','ivan.hilkov','renat.abdusalamov','anton.ipatov',
+    var AVIATEAM  = ['alexey.sutiagin','ek','fedor.shumov','aleksandr.gladkikh','andrey.ivanov','renat.abdusalamov','anton.ipatov',
                      'Ango','alexander.litvinov','andrey.plotnikov','andrey.iliopulo','alexander.neyasov','Yury.Kocharyan',
                      'konstantin.kalinin','valentin.lapchevskiy'];
     var VIEWTEAM  = ['dmitrii.loskutov', 'andrey.lakotko', 'anastasia.oblomova', 'konstantin.zubkov','marina.severyanova', 'leonid.riaboshtan'].concat(AVIATEAM);
@@ -45,7 +45,7 @@
       },
       {
         fields : {
-          login  : ['ivan.hilkov', 'Ango', 'andrey.iliopulo'],
+          login  : ['Ango', 'andrey.iliopulo'],
           status : ['Code Review', 'Resolved']
         },
         change_fields : {
@@ -94,7 +94,7 @@
 
     { login : 'renat.abdusalamov',    title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order},
     { login : 'andrey.ivanov',        title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order},
-    { login : 'ivan.hilkov',          title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order},
+    { skip : 1 },
     { projects : ['OTT', 'AH', 'AC', 'PM'], statuses : ['Test ready'], title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Test Ready', sort_by : sorting_order},
 
     { login : 'aleksandr.gladkikh',   title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order},
@@ -113,11 +113,6 @@
     { projects : ['OTT','AC', 'AH'], statuses : ['In Release', 'Merge Failed', 'Contains Bugs'], title : 'In Release', title_link : STATUS_LINK, task_links : TASK_LINK,  sort_by : sorting_order},
 
     { skip : 1 },
-    { skip : 1},
-    { skip : 1 },
-    { skip : 1 },
-
-    { skip : 1 },
     { login : 'alexander.litvinov',   title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order},
     { login : 'konstantin.kalinin',   title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order},
     { skip : 1 },
@@ -130,7 +125,45 @@
       TASK_REWRITE_RULES : TASK_REWRITE_RULES,
       COLUMNS : 4,
       MOBILE_COLUMNS : 1,
-      MOBILE_BLOCKS_SORTER : 'project_attribute',
+      LAPTOP_COLUMNS : 2,
+      MOBILE_BLOCKS_SORTER : [
+        'alexey.sutiagin',
+        'renat.abdusalamov',
+        'Yury.Kocharyan',
+        'alexander.litvinov',
+        'valentin.lapchevskiy',
+        'alexander.neyasov',
+        'aleksandr.gladkikh',
+
+        'ek',
+        'andrey.ivanov',
+        'anton.ipatov',
+        'andrey.plotnikov',
+        'konstantin.kalinin',
+
+         'fedor.shumov',
+         'Ango',
+          'andrey.iliopulo',
+
+          'Test Ready',
+          'Merge Ready',
+          'Release',
+          'In Release'
+      ],
+      LAPTOP_BLOCKS_SORTER : [
+        'alexey.sutiagin',    'ek',
+        'renat.abdusalamov',  'andrey.ivanov',
+        'Yury.Kocharyan',     'anton.ipatov',
+        'alexander.litvinov', 'andrey.plotnikov',
+        'valentin.lapchevskiy','konstantin.kalinin',
+        'alexander.neyasov', 'fedor.shumov',
+        'aleksandr.gladkikh', 'Ango',
+        '-', 'andrey.iliopulo',
+        'Test Ready', '-',
+        'Merge Ready', '-',
+        'Release', '-',
+        'In Release', '-'
+      ],
       SHOW_DUEDATE_PLUS_TIMESPEND : true,
       REVIEWERS : AVIATEAM
     };
