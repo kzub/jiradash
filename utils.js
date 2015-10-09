@@ -284,6 +284,27 @@
       return a.priority - b.priority;
     };
 
+    var is_task_a_older_than_b = function(a, b){
+      if(a.duedate && b.duedate){
+        return a.duedate - b.duedate;
+      }
+      if(b.duedate){
+        return 1;
+      }
+      if(a.duedate){
+        return -1;
+      }
+
+      return 0;
+    };
+    this.task_sorter_duedate_priority = function(a, b){
+      if(a.priority === b.priority){
+        return is_task_a_older_than_b(a, b);
+      }
+
+      return is_task_a_older_than_b(a, b);
+    };
+
     this.task_sorter_updated_reverse = function(a, b){
       return a.updated - b.updated;
     };

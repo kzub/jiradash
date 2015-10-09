@@ -9,8 +9,8 @@
   var TASK_LINK = 'https://onetwotripdev.atlassian.net/browse/{key}';
   var STATUS_LINK = 'https://onetwotripdev.atlassian.net/issues/?jql=project IN({project}) and ({statuses}) ORDER BY priority,created ASC';
   var LABELS_LINK = 'https://onetwotripdev.atlassian.net/issues/?jql=({labels}) and ({statuses}) ORDER BY priority,created ASC';
-  var team = 'avia';
 
+  var team = 'avia';
   if(~document.location.href.indexOf('devops')){
     team = 'devops';
   }else if(~document.location.href.indexOf('pm2')){
@@ -84,7 +84,7 @@
       },
     ];
 
-    var sorting_order = 'created_reverse_priority';
+    var sorting_order = 'duedate_priority';
 
     var BLOCKS = [
     { login : 'alexey.sutiagin',      title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : LEADLIMIT, sort_by : sorting_order },
