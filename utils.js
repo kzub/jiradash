@@ -359,6 +359,10 @@
       now.setHours(23); now.setMinutes(59); now.setSeconds(59); now.setMilliseconds(999);
       return native ? now : now.valueOf() ;
     };
+
+    this.getTimeFormat = function(tf){
+      return new Date(tf.replace('+', ''));
+    }
   };
 
   window.Utils = Utils;

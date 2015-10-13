@@ -55,8 +55,7 @@
           var displayName = worklog.get('author.displayName');
           var login       = worklog.get('author.name');
           var avatar      = worklog.get('author.avatarUrls.48x48');
-          var time        = new Date(worklog.get('started')); // could be used 'started' ot 'created'
-
+          var time        = utils.getTimeFormat(worklog.get('started')); // could be used 'started' ot 'created'
           // skip old work log tracks
           if(time < timeLimit){
             continue;
@@ -71,7 +70,7 @@
             summary       : issue.get('fields.summary'),
             description   : issue.get('fields.description'),
             project       : issue.get('fields.project.key'),
-            updated       : new Date(issue.get('fields.updated')),
+            updated       : utils.getTimeFormat(issue.get('fields.updated')),
             timespent     : worklog.get('timeSpentSeconds')*1000 /* in miliseconds */,
             time          : time
           };
