@@ -216,7 +216,7 @@
     { title : 'TODO', labels : ['PM-Planned'], title_link : LABELS_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT }
     ];
 
-    var STATUSES_TO_LOAD = ['!Closed', '!Rejected', '!Done'];
+    var STATUSES_TO_LOAD = ['!Closed', '!Rejected', '!Done', '!Finished'];
     var OPTIONS = {
       COLUMNS : 2,
       MOBILE_COLUMNS : 1,

@@ -92,14 +92,14 @@
 
       var task_day_offset = {};
 
-      var bar_height = 18;
-      var bar_margin = 2.5;
+      var bar_height = OPTIONS.BAR_HEIGHT || 18;
+      var bar_margin = bar_height / 7;
       var top_margin = 22;
       var bottom_margin = 4;
-      var left_margin = 160;
+      var left_margin = 9 * DEVTEAM.reduce(function(a, b){ return a.length >= b.length ? a.length : b.length; }); // max name length
       var right_margin = 0;
       var max_time = 8 /* 5 work days in a week */ * (DAYS_TO_ANALIZE - (2*(DAYS_TO_ANALIZE/7|0)));
-      var DAY_PERCENT_TO_SHOW_UP_TASK_NAME = 70;
+      var DAY_PERCENT_TO_SHOW_UP_TASK_NAME = 67;
       var HOUR = 3600000;
       var shrug_koef = 0.8;
 
