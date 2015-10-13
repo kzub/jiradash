@@ -24,7 +24,7 @@
         limit : 49,
         title_link : 'https://onetwotripdev.atlassian.net/issues/?jql=project IN({project}) AND ({statuses}) ORDER BY priority,rank',
         task_links : TASK_LINK,
-        sort_by : 'created_reverse'
+        sort_by : 'duedate_priority'
       }
     ];
     var OPTIONS_TODO = {
@@ -118,7 +118,7 @@
 
   var utils  = new window.Utils();
   var params = utils.getQueryString();
-  var time_to_look   = +params.timespent || 7;
+  var time_to_look   = +params.timespent || +params.timespent_mobile || 7;
 
   var timespent = new window.TaskTimespend(DEVTEAM, time_to_look, document.getElementById('timespend-left'), OPTIONS_TIMESPENT);
   var todo = new window.TaskTable(DEVTEAM_TODO, BLOCKS_TODO, STATUSES_TO_LOAD_TODO, document.getElementById('timespend-bottom'), OPTIONS_TODO);
