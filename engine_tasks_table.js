@@ -134,6 +134,7 @@
           updated       : new Date(issue.get('fields.updated')),
           created       : new Date(issue.get('fields.created')),
           type          : issue.get('fields.issuetype.name'),
+          typeIcon      : issue.get('fields.issuetype.iconUrl'),
           duedate       : utils.stringToDate(issue.get('fields.duedate')),
           labels        : issue.get('fields.labels').map(function(e){ return e&&e.toLowerCase();})
         };
@@ -210,7 +211,7 @@
         // update timespent
         update_elms[OPTIONS.SHOW_DUEDATE_PLUS_TIMESPEND ? 2 : 0].changeText(utils.timespentFormater(timespent));
         // update prioirty icon
-        update_elms[1].changeImage(task.priorityIcon);
+        update_elms[1].changeImage(task[OPTIONS.TASK_ICON || 'priorityIcon']);
         return;
       }
 
@@ -240,7 +241,7 @@
       if(task.timespent === '*'){
         elements.push(paper.img(lineScheme[xpos++], y-14, 16, 16, URL_ICON_LOADING));
       }else{
-        elements.push(paper.img(lineScheme[xpos++], y-14, 16, 16, task.priorityIcon));
+        elements.push(paper.img(lineScheme[xpos++], y-14, 16, 16, task[OPTIONS.TASK_ICON || 'priorityIcon']));
       }
 
       if(OPTIONS.SHOW_DUEDATE_PLUS_TIMESPEND){

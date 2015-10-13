@@ -33,7 +33,8 @@
       LOGIN_KEY_FIELDNAME : 'customfield_10201',
       LOGIN_KEY_CONDTIONS : 'PM',
       LOAD_LIMIT : 500,
-      SHOW_DUEDATE_PLUS_TIMESPEND : true
+      SHOW_DUEDATE_PLUS_TIMESPEND : true,
+      TASK_ICON : 'typeIcon'
     };
 
     var STATUSES_TO_LOAD_DONE = ['Finished'];
@@ -53,7 +54,7 @@
       LOAD_BY_PRIORITY : 'updated',
       LOAD_LIMIT : 50,
       LOAD_PROJECTS : ['MOB', 'IOS', 'ADR'],
-      // SHOW_DUEDATE_PLUS_TIMESPEND : true
+      TASK_ICON : 'typeIcon'
     };
 
     var OPTIONS_TIMESPENT = {
