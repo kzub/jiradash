@@ -16,7 +16,7 @@
 
     var DEVTEAM_TODO = ['sergey.mashkov'];
 
-    var STATUSES_TO_LOAD_TODO = ['!Closed', '!Rejected', '!Done', '!Finished'];
+    var STATUSES_TO_LOAD_TODO = ['!Closed', '!Rejected', '!Done'];
     var BLOCKS_TODO = [
       {
         title : 'To Do',
