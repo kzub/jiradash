@@ -361,7 +361,23 @@
     };
 
     this.getTimeFormat = function(tf){
-      return new Date(tf.replace('+', ''));
+      var pos = tf.indexOf('+');
+      var tz_sign = -1;
+
+      if(pos === -1){
+        pos = tf.indexOf('-');
+        tz_sign = +1;
+      }
+
+      if(pos > -1){
+        var data = tf.slice(0, pos);
+        var hours = +tf.slice(pos, pos + 3);
+        var minutes = +tf.slice(pos + 3, pos + 5);
+        var date = new Date(new Date(data + 'Z').valueOf() + tz_sign*hours*3600000 + tz_sign*minutes*60000);
+        return date;
+      }
+
+      return new Date(tf);
     }
   };
 
