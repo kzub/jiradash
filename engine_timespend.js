@@ -157,7 +157,7 @@
 
       // CREATE PLACE TO DRAW
       var svg = d3.select(MAIN_CONTAINER).append("svg")
-        .attr("width", width + right_margin)
+        .attr("width", width)
         .attr("height", height + top_margin + bottom_margin)
         .append("g")
         .attr("transform", "translate(" + left_margin + "," + top_margin+ ")");
