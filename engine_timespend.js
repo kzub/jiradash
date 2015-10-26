@@ -95,8 +95,8 @@
       var bar_margin = bar_height / 7;
       var top_margin = 22;
       var bottom_margin = 4;
-      var left_margin = 9 * DEVTEAM.reduce(function(a, b){ return a.length >= b.length ? a.length : b.length; }); // max name length
-      var right_margin = 0;
+      var left_margin = 8 * DEVTEAM.reduce(function(a, b){ return a.length >= b.length ? a.length : b.length; }); // max name length
+      var right_margin = left_margin;
       var max_time = 8 /* 5 work days in a week */ * (DAYS_TO_ANALIZE - (2*(DAYS_TO_ANALIZE/7|0)));
       var DAY_PERCENT_TO_SHOW_UP_TASK_NAME = 67;
       var HOUR = 3600000;
@@ -138,7 +138,7 @@
       };
 
       var x_v2 = d3.scale.linear()
-          .range([0, width - left_margin])
+          .range([0, width - left_margin - right_margin])
           .domain([ts_min, ts_max]);
 
       var y = d3.scale.linear()
@@ -167,22 +167,41 @@
           .attr("transform", "translate("+dates_x_shift+"," + -top_margin + ")")
           .call(xAxis);
 
-      // DRAW NAMES
+      // DRAW NAMES (left)
       svg.append("g")
         .attr("transform", "translate(-10, 0)")
         .selectAll(".names")
         .data(people)
-      .enter().append("text")
-      .attr("x", function(task, i, p){
-        return 0;
-      })
-      .attr("y", function(d, i, p) {
-        return height - y(i);
-      })
-      .text(function(p){
-        return p.displayName
-      })
-      .attr('class', 'text-timespent-names')
+        .enter()
+      .append("text")
+        .attr("x", function(task, i, p){
+          return 0;
+        })
+        .attr("y", function(d, i, p) {
+          return height - y(i);
+        })
+        .text(function(p){
+          return p.displayName
+        })
+        .attr('class', 'text-timespent-names');
+
+      // DRAW NAMES (right)
+      svg.append("g")
+        .attr("transform", "translate(-10, 0)")
+        .selectAll(".names")
+        .data(people)
+        .enter()
+      .append("text")
+        .attr("x", function(task, i, p){
+          return x_v2(ts_max) + 20;
+        })
+        .attr("y", function(d, i, p) {
+          return height - y(i);
+        })
+        .text(function(p){
+          return p.displayName
+        })
+        .attr('class', 'text-timespent-names-right')
 
       // DRAW SPENTLINE
       var man_line = svg.selectAll(".bar-back")

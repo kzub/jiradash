@@ -176,6 +176,12 @@ text {
   /*font-weight : bold;*/
 }
 
+.text-timespent-names-right {
+  alignment-baseline: before-edge;
+  fill: white;
+  font-size : 16px;
+}
+
 .text-task-keys {
   text-anchor: start;
   alignment-baseline: before-edge;
