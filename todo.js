@@ -25,7 +25,7 @@
   if(team === 'avia'){
     var AVIATEAM  = ['alexey.sutiagin','ek','fedor.shumov','aleksandr.gladkikh','andrey.ivanov','anton.ipatov',
                      'Ango','alexander.litvinov','andrey.plotnikov','andrey.iliopulo','alexander.neyasov','Yury.Kocharyan',
-                     'konstantin.kalinin','valentin.lapchevskiy', 'dmitry.zharsky'];
+                     'konstantin.kalinin','valentin.lapchevskiy', 'dmitry.zharsky', 'alexander.ryzhikov'];
     var VIEWTEAM  = ['dmitrii.loskutov', 'andrey.lakotko', 'anastasia.oblomova', 'konstantin.zubkov', 'leonid.riaboshtan'].concat(AVIATEAM);
 
     var LEADLIMIT = 20;
@@ -45,7 +45,7 @@
       },
       {
         fields : {
-          login  : ['Ango', 'andrey.iliopulo', 'dmitry.zharsky'],
+          login  : ['Ango', 'andrey.iliopulo', 'dmitry.zharsky', 'alexander.ryzhikov'],
           status : ['Code Review', 'Resolved']
         },
         change_fields : {
@@ -114,8 +114,12 @@
 
     { login : 'alexander.litvinov',   title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order},
     { login : 'konstantin.kalinin',   title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order},
-    { login : 'dmitry.zharsky',   title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order }
+    { login : 'dmitry.zharsky',   title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order },
+    { skip : 1 },
 
+    { skip : 1 },
+    { skip : 1 },
+    { login : 'alexander.ryzhikov',   title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order }
     ];
 
     var STATUSES_TO_LOAD = ['!Closed', '!Done' , '!Rejected'];
