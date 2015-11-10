@@ -41,6 +41,8 @@
   }
 
   function Utils(OPTIONS){
+    var self = this;
+
     this.prepareURL = function(template, data){
       if(!template) {
         return;
@@ -284,8 +286,11 @@
       return a.priority - b.priority;
     };
 
-    var is_task_a_older_than_b = function(a, b){
+    var is_task_a_duedate_older_than_b = function(a, b){
       if(a.duedate && b.duedate){
+        if(a.duedate == b.duedate){
+          return self.task_sorter_created_reverse(a, b);
+        }
         return a.duedate - b.duedate;
       }
       if(b.duedate){
@@ -295,14 +300,15 @@
         return -1;
       }
 
-      return 0;
+      return self.task_sorter_created_reverse_priority(a, b);
     };
+
     this.task_sorter_duedate_priority = function(a, b){
       if(a.priority === b.priority){
-        return is_task_a_older_than_b(a, b);
+        return is_task_a_duedate_older_than_b(a, b);
       }
 
-      return is_task_a_older_than_b(a, b);
+      return is_task_a_duedate_older_than_b(a, b);
     };
 
     this.task_sorter_updated_reverse = function(a, b){
