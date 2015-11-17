@@ -25,7 +25,7 @@
   if(team === 'avia'){
     var AVIATEAM  = ['alexey.sutiagin','ek','fedor.shumov','aleksandr.gladkikh','andrey.ivanov','anton.ipatov',
                      'Ango','alexander.litvinov','andrey.plotnikov','andrey.iliopulo','alexander.neyasov','Yury.Kocharyan',
-                     'konstantin.kalinin','danila.dergachev', 'dmitry.zharsky', 'alexander.ryzhikov'];
+                     'konstantin.kalinin','danila.dergachev', 'dmitry.zharsky', 'alexander.ryzhikov', 'pavel.kilin'];
     var VIEWTEAM  = ['dmitrii.loskutov', 'andrey.lakotko', 'anastasia.oblomova', 'konstantin.zubkov', 'leonid.riaboshtan'].concat(AVIATEAM);
 
     var LEADLIMIT = 20;
@@ -118,7 +118,7 @@
     { skip : 1 },
 
     { skip : 1 },
-    { skip : 1 },
+    { login : 'pavel.kilin',   title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order},
     { login : 'alexander.ryzhikov',   title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order }
     ];
 

@@ -67,7 +67,7 @@
       'alexey.sutiagin','aleksandr.gladkikh','alexander.litvinov','alexander.neyasov','Yury.Kocharyan', 'danila.dergachev',
       'ek','andrey.ivanov','anton.ipatov','andrey.plotnikov',
       'fedor.shumov','Ango','andrey.iliopulo', 'dmitry.zharsky', 'alexander.ryzhikov',
-      'konstantin.kalinin', 'andrey.lakotko','anastasia.oblomova', 'pavel.vlasov'
+      'konstantin.kalinin', 'pavel.kilin', 'andrey.lakotko','anastasia.oblomova', 'pavel.vlasov'
     ];
     var DEVTEAM_TODO = [];
 

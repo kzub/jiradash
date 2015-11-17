@@ -95,7 +95,7 @@
       var bar_margin = bar_height / 7;
       var top_margin = 22;
       var bottom_margin = 4;
-      var left_margin = 8 * DEVTEAM.reduce(function(a, b){ return a.length >= b.length ? a.length : b.length; }); // max name length
+      var left_margin = 13 * DEVTEAM.reduce(function(a, b){ return a.length >= b.length ? a.length : b.length; }); // max name length
       var right_margin = left_margin;
       var max_time = 8 /* 5 work days in a week */ * (DAYS_TO_ANALIZE - (2*(DAYS_TO_ANALIZE/7|0)));
       var DAY_PERCENT_TO_SHOW_UP_TASK_NAME = 67;
