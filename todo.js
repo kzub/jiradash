@@ -82,6 +82,19 @@
           }
         }
       },
+      {
+        fields : {
+          login  : ['pavel.kilin',],
+          status : ['Code Review', 'Resolved']
+        },
+        change_fields : {
+          login : {
+            source_field : 'reviewEngineer',
+            source_field_allowed_values : AVIATEAM,
+            default : 'konstantin.kalinin'
+          }
+        }
+      }
     ];
 
     var sorting_order = 'duedate_priority';
