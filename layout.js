@@ -5,7 +5,7 @@
   function Layout(OPTIONS){
     var columns = 1;
     var ratio = window.devicePixelRatio || 1;
-    var screen_width = window.innerWidth * 1;
+    var screen_width = window.innerWidth - 5;
     var screen_height = window.innerHeight;
 
     if(OPTIONS && OPTIONS.SCREEN_WIDTH){

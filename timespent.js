@@ -77,7 +77,7 @@
         title : 'To Do',
         projects : ['OTT', 'AH', 'AC'],
         statuses : ['Open', 'To Do'],
-        limit : 49,
+        limit : 28,
         title_link : 'https://onetwotripdev.atlassian.net/issues/?jql=project IN({project}) AND ({statuses}) AND (LABELS = Planned) AND assignee is Empty ORDER BY priority,rank',
         task_links : TASK_LINK,
         sort_by:'created_reverse'
@@ -96,7 +96,7 @@
         title : 'Recently done',
         projects : ['OTT', 'AH', 'AC'],
         statuses : ['Done', 'Closed'],
-        limit : 25,
+        limit : 28,
         title_link : 'https://onetwotripdev.atlassian.net/issues/?jql=project IN({project}) and ({statuses}) ORDER BY priority,updated',
         task_links : TASK_LINK,
         sort_by:'updated'
