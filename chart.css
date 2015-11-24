@@ -47,7 +47,7 @@
   fill : orange;
 }
 
-.code_review, .resolved{
+.code_review, .resolved, .translated{
   fill : yellow;
 }
 
