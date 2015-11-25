@@ -269,7 +269,7 @@
     };
   }
   else if(team === 'roadmap'){
-    var VIEWTEAM  = ['mikhail.sokolov', 'konstantin.mamonov', 'timur.usmanov', 'leonid.riaboshtan', 'konstantin.zubkov', 'kim', 'max.karaush'];
+    var VIEWTEAM  = ['mikhail.sokolov', 'konstantin.mamonov', 'timur.usmanov', 'leonid.riaboshtan', 'konstantin.zubkov', 'kim', 'max.karaush', 'dmitry.balanin'];
 
     var SVLIMIT   = Infinity;
     var sorting_order = 'duedate_priority';
@@ -282,6 +282,7 @@
     { login : 'kim',               title_link : USER_LINK, task_links : TASK_LINK, statuses : SV_TASK_STATUSES, limit : SVLIMIT, sort_by : sorting_order },
     { login : 'max.karaush',       title_link : USER_LINK, task_links : TASK_LINK, statuses : SV_TASK_STATUSES, limit : SVLIMIT, sort_by : sorting_order },
     { login : 'konstantin.zubkov', title_link : USER_LINK, task_links : TASK_LINK, statuses : SV_TASK_STATUSES, limit : SVLIMIT, sort_by : sorting_order },
+    { login : 'dmitry.balanin',    title_link : USER_LINK, task_links : TASK_LINK, statuses : SV_TASK_STATUSES, limit : SVLIMIT, sort_by : sorting_order }
     ];
 
     var STATUSES_TO_LOAD = ['!Closed', '!Rejected', '!Done'];
