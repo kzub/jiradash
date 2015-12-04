@@ -271,7 +271,7 @@
     };
   }
   else if(team === 'roadmap'){
-    var VIEWTEAM  = ['mikhail.sokolov', 'konstantin.mamonov', 'timur.usmanov', 'leonid.riaboshtan', 'konstantin.zubkov', 'kim', 'max.karaush', 'dmitry.kayutin', 'alexey.lyashchenko', 'vadim.kudelko'];
+    var VIEWTEAM  = ['mikhail.sokolov', 'konstantin.mamonov', 'leonid.riaboshtan', 'konstantin.zubkov', 'kim', 'max.karaush', 'dmitry.kayutin', 'alexey.lyashchenko', 'vadim.kudelko'];
 
     var SVLIMIT   = Infinity;
     var sorting_order = 'duedate_priority';
@@ -279,11 +279,10 @@
     BLOCKS = [
     { login : 'mikhail.sokolov',   title_link : USER_LINK, task_links : TASK_LINK, statuses : SV_TASK_STATUSES, limit : SVLIMIT, sort_by : sorting_order },
     { login : 'konstantin.mamonov',title_link : USER_LINK, task_links : TASK_LINK, statuses : SV_TASK_STATUSES, limit : SVLIMIT, sort_by : sorting_order },
-    { login : 'timur.usmanov',     title_link : USER_LINK, task_links : TASK_LINK, statuses : SV_TASK_STATUSES, limit : SVLIMIT, sort_by : sorting_order },
     { login : 'leonid.riaboshtan', title_link : USER_LINK, task_links : TASK_LINK, statuses : SV_TASK_STATUSES, limit : SVLIMIT, sort_by : sorting_order },
+    { login : 'konstantin.zubkov', title_link : USER_LINK, task_links : TASK_LINK, statuses : SV_TASK_STATUSES, limit : SVLIMIT, sort_by : sorting_order },
     { login : 'kim',               title_link : USER_LINK, task_links : TASK_LINK, statuses : SV_TASK_STATUSES, limit : SVLIMIT, sort_by : sorting_order },
     { login : 'max.karaush',       title_link : USER_LINK, task_links : TASK_LINK, statuses : SV_TASK_STATUSES, limit : SVLIMIT, sort_by : sorting_order },
-    { login : 'konstantin.zubkov', title_link : USER_LINK, task_links : TASK_LINK, statuses : SV_TASK_STATUSES, limit : SVLIMIT, sort_by : sorting_order },
     { login : 'dmitry.kayutin',    title_link : USER_LINK, task_links : TASK_LINK, statuses : SV_TASK_STATUSES, limit : SVLIMIT, sort_by : sorting_order },
     { login : 'alexey.lyashchenko',title_link : USER_LINK, task_links : TASK_LINK, statuses : SV_TASK_STATUSES, limit : SVLIMIT, sort_by : sorting_order },
     { login : 'vadim.kudelko',     title_link : USER_LINK, task_links : TASK_LINK, statuses : SV_TASK_STATUSES, limit : SVLIMIT, sort_by : sorting_order }
