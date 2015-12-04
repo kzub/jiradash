@@ -217,13 +217,12 @@
   else if(team === 'pm'){
     var VIEWTEAM  = ['evgeny.bush', 'rostislav.palchun', 'valentin.kachanov', 'leonid.riaboshtan',
       'nikolay.malikov', 'armen.dzhanumov', 'alexander.bezhan', 'timur.danilov', 'dmitry.rumyantsev',
-      'sergey.mashkov', 'alexey.sutiagin', 'ek', 'fedor.shumov'];
+      'sergey.mashkov', 'maxim.azarov', 'andrey.ivanov'];
 
     var PMLIMIT   = Infinity;
     var sorting_order = 'duedate_priority';
 
     BLOCKS = [
-    { login : 'evgeny.bush',        title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
     { login : 'rostislav.palchun',  title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
     { login : 'valentin.kachanov',  title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
     { login : 'alexander.bezhan',   title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
@@ -233,6 +232,8 @@
     { login : 'timur.danilov',      title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
     { login : 'dmitry.rumyantsev',  title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
     { login : 'sergey.mashkov',     title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
+    { login : 'maxim.azarov',       title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
+    { login : 'andrey.ivanov',      title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
     { title : 'TODO', labels : ['PM-Planned'], title_link : LABELS_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order }
     ];
 
