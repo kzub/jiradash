@@ -76,7 +76,7 @@
     var BLOCKS_TODO = [
       {
         title : 'To Do',
-        projects : ['OTT', 'AH', 'AC'],
+        projects : ['OTT', 'AH', 'AC', 'PM', 'SEO'],
         statuses : ['Open', 'To Do'],
         limit : 28,
         title_link : 'https://onetwotripdev.atlassian.net/issues/?jql=project IN({project}) AND ({statuses}) AND (LABELS = Planned) AND assignee is Empty ORDER BY priority,rank',
@@ -86,7 +86,7 @@
     ];
     var OPTIONS_TODO = {
       SCREEN_WIDTH : '50%',
-      LOAD_PROJECTS : ['OTT', 'AH', 'AC'],
+      LOAD_PROJECTS : ['OTT', 'AH', 'AC', 'PM', 'SEO'],
       LABELS_TO_LOAD : ['Planned'],
       LOAD_LIMIT : 500,
     };
@@ -95,7 +95,7 @@
     var BLOCKS_DONE = [
       {
         title : 'Recently done',
-        projects : ['OTT', 'AH', 'AC'],
+        projects : ['OTT', 'AH', 'AC', 'PM', 'SEO'],
         statuses : ['Done', 'Closed'],
         limit : 28,
         title_link : 'https://onetwotripdev.atlassian.net/issues/?jql=project IN({project}) and ({statuses}) ORDER BY priority,updated',
@@ -107,7 +107,7 @@
       SCREEN_WIDTH : '50%',
       LOAD_BY_PRIORITY : 'updated',
       LOAD_LIMIT : 50,
-      LOAD_PROJECTS : ['OTT', 'AH', 'AC'],
+      LOAD_PROJECTS : ['OTT', 'AH', 'AC', 'PM', 'SEO'],
       SHOW_DUEDATE_PLUS_TIMESPEND : true
     };
 
