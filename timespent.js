@@ -3,7 +3,7 @@
   var TASK_LINK = 'https://onetwotripdev.atlassian.net/browse/{key}';
 
   if(~document.location.href.indexOf('mobile')){
-    var DEVTEAM  = [
+    var DEVTEAM = DEVTEAM_DONE = [
       'sergey.glotov',
       'pavel.akhrameev',
       'nikolay.serebrennikov',
@@ -64,15 +64,15 @@
     };
 
   }else /* AVIA TEAM */ {
+    var DEVTEAM_TODO = DEVTEAM_DONE =[];
     var DEVTEAM  = [
       'alexey.sutiagin','aleksandr.gladkikh','alexander.litvinov','alexander.neyasov','Yury.Kocharyan', 'danila.dergachev', 'ruslan.ismagilov',
       'ek','andrey.ivanov','anton.ipatov','andrey.plotnikov',
       'fedor.shumov','Ango','andrey.iliopulo', 'dmitry.zharsky', 'alexander.ryzhikov',
       'konstantin.kalinin', 'pavel.kilin', 'andrey.lakotko','anastasia.oblomova', 'pavel.vlasov'
     ];
-    var DEVTEAM_TODO = [];
 
-    var STATUSES_TO_LOAD_TODO = ['!Closed', '!Done' , '!Rejected'];
+    var STATUSES_TO_LOAD_TODO = STATUSES_TO_LOAD_DONE =['!Closed', '!Done' , '!Rejected'];
     var BLOCKS_TODO = [
       {
         title : 'To Do',
@@ -84,33 +84,18 @@
         sort_by:'created_reverse'
       }
     ];
-    var OPTIONS_TODO = {
+
+    BLOCKS_DONE = JSON.parse(JSON.stringify(BLOCKS_TODO));
+    BLOCKS_DONE[0].limitFrom = BLOCKS_TODO[0].limit;
+    BLOCKS_DONE[0].limit     = BLOCKS_TODO[0].limit*2;
+    BLOCKS_TODO[0].hideMoreLink = true;
+
+    var OPTIONS_TODO = OPTIONS_DONE = {
       SCREEN_WIDTH : '50%',
       LOAD_PROJECTS : ['OTT', 'AH', 'AC', 'PM', 'SEO'],
       LABELS_TO_LOAD : ['Planned'],
       LOAD_LIMIT : 500,
     };
-
-    var STATUSES_TO_LOAD_DONE = ['Closed', 'Done'];
-    var BLOCKS_DONE = [
-      {
-        title : 'Recently done',
-        projects : ['OTT', 'AH', 'AC', 'PM', 'SEO'],
-        statuses : ['Done', 'Closed'],
-        limit : 26,
-        title_link : 'https://onetwotripdev.atlassian.net/issues/?jql=project IN({project}) and ({statuses}) ORDER BY priority,updated',
-        task_links : TASK_LINK,
-        sort_by:'updated'
-      }
-    ];
-    var OPTIONS_DONE = {
-      SCREEN_WIDTH : '50%',
-      LOAD_BY_PRIORITY : 'updated',
-      LOAD_LIMIT : 50,
-      LOAD_PROJECTS : ['OTT', 'AH', 'AC', 'PM', 'SEO'],
-      SHOW_DUEDATE_PLUS_TIMESPEND : true
-    };
-
 
     var OPTIONS_TIMESPENT = {
       SCREEN_WIDTH : '100%'
@@ -124,7 +109,7 @@
 
   var timespent = new window.TaskTimespend(DEVTEAM, time_to_look, document.getElementById('timespend-left'), OPTIONS_TIMESPENT);
   var todo = new window.TaskTable(DEVTEAM_TODO, BLOCKS_TODO, STATUSES_TO_LOAD_TODO, document.getElementById('timespend-bottom'), OPTIONS_TODO);
-  var done = new window.TaskTable(DEVTEAM, BLOCKS_DONE, STATUSES_TO_LOAD_DONE, document.getElementById('timespend-right'), OPTIONS_DONE);
+  var done = new window.TaskTable(DEVTEAM_DONE, BLOCKS_DONE, STATUSES_TO_LOAD_DONE, document.getElementById('timespend-right'), OPTIONS_DONE);
 
   // MAIN LOOP =>
   (function loadData(){

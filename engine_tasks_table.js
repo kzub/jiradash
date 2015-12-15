@@ -322,6 +322,9 @@
         var tasks_to_display = 2;
         // add tasks
         for(var i in block_data_tasks){
+          if(block.limitFrom && i <= block.limitFrom){
+            continue;
+          }
           var task = block_data_tasks[i];
 
           var y = layout.getLine();
@@ -341,7 +344,7 @@
           }
 
           if(i > block.limit - 1){
-            if(left){
+            if(left && !block.hideMoreLink){
               paper.text(lineScheme[lineScheme.length-1], y + 18, left + ' more ...', title_url).setAttribute('class', 'text-more')
             }
             break;
