@@ -25,7 +25,7 @@
   if(team === 'avia'){
     var AVIATEAM  = ['alexey.sutiagin','ek','fedor.shumov','aleksandr.gladkikh','andrey.ivanov','anton.ipatov',
                      'Ango','alexander.litvinov','andrey.plotnikov','andrey.iliopulo','alexander.neyasov','Yury.Kocharyan',
-                     'konstantin.kalinin','danila.dergachev', 'dmitry.zharsky', 'alexander.ryzhikov', 'pavel.kilin'];
+                     'konstantin.kalinin','danila.dergachev', 'dmitry.zharsky', 'alexander.ryzhikov', 'pavel.kilin', 'ruslan.ismagilov'];
     var VIEWTEAM  = ['dmitrii.loskutov', 'andrey.lakotko', 'anastasia.oblomova', 'konstantin.zubkov', 'leonid.riaboshtan'].concat(AVIATEAM);
 
     var LEADLIMIT = 20;
@@ -58,7 +58,7 @@
       },
       {
         fields : {
-          login  : ['aleksandr.gladkikh', 'alexander.neyasov', 'Yury.Kocharyan', 'alexander.litvinov', 'danila.dergachev'],
+          login  : ['aleksandr.gladkikh', 'alexander.neyasov', 'Yury.Kocharyan', 'alexander.litvinov', 'danila.dergachev', 'ruslan.ismagilov'],
           status : ['Code Review', 'Resolved']
         },
         change_fields : {
@@ -115,22 +115,22 @@
     { login : 'Ango',                 title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order},
     { projects : ['OTT', 'AH', 'AC', 'PM', 'SEO'], statuses : ['Merge ready'], title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Merge Ready', sort_by : sorting_order},
 
-    { login : 'aleksandr.gladkikh',   title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order},
+    { login : 'ruslan.ismagilov',     title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order},
     { login : 'andrey.plotnikov',     title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order},
     { login : 'andrey.iliopulo',      title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order},
     { projects : ['OTT', 'AH', 'AC', 'PM', 'SEO'], types : ['Release'], title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Release', title_extras : ['status'], sort_by : sorting_order},
 
-    { login : 'alexander.neyasov',    title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order},
+    { login : 'aleksandr.gladkikh',   title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order},
     { skip : 1 },
     { skip : 1 },
     { projects : ['OTT', 'AH', 'AC', 'PM', 'SEO'], statuses : ['In Release', 'Merge Failed', 'Contains Bugs'], title : 'In Release', title_link : STATUS_LINK, task_links : TASK_LINK,  sort_by : sorting_order},
 
-    { login : 'alexander.litvinov',   title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order},
+    { login : 'alexander.neyasov',    title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order},
     { login : 'konstantin.kalinin',   title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : LEADLIMIT, sort_by : sorting_order},
     { login : 'dmitry.zharsky',   title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order },
     { skip : 1 },
 
-    { skip : 1 },
+    { login : 'alexander.litvinov',   title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order},
     { login : 'pavel.kilin',   title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order},
     { login : 'alexander.ryzhikov',   title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order }
     ];
@@ -146,6 +146,7 @@
         'Yury.Kocharyan',
         'alexander.litvinov',
         'danila.dergachev',
+        'ruslan.ismagilov',
         'alexander.neyasov',
         'aleksandr.gladkikh',
 
@@ -172,7 +173,8 @@
         '-',  'andrey.ivanov',
         'Yury.Kocharyan',     'anton.ipatov',
         'alexander.litvinov', 'andrey.plotnikov',
-        'danila.dergachev', 'konstantin.kalinin',
+        'danila.dergachev', '-',
+        'ruslan.ismagilov', 'konstantin.kalinin',
         'alexander.neyasov', 'pavel.kilin',
         'aleksandr.gladkikh', 'fedor.shumov',
         '-', 'Ango',
