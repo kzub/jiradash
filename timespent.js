@@ -11,7 +11,6 @@
       'marat.tolegenov',
       'sergey.bay',
       'max.kotov',
-      'alexander.skvortsov',
       'mikhail.froimson'
     ];
 
