@@ -67,8 +67,8 @@
     var DEVTEAM  = [
       'alexey.sutiagin','aleksandr.gladkikh','alexander.litvinov','alexander.neyasov','Yury.Kocharyan', 'danila.dergachev', 'ruslan.ismagilov',
       'ek','andrey.ivanov','anton.ipatov','andrey.plotnikov',
-      'fedor.shumov','Ango','andrey.iliopulo', 'dmitry.zharsky', 'alexander.ryzhikov',
-      'konstantin.kalinin', 'pavel.kilin', 'andrey.lakotko','anastasia.oblomova', 'pavel.vlasov'
+      'fedor.shumov','Ango','andrey.iliopulo', 'dmitry.zharsky', 'alexander.ryzhikov', 'vadim.kudryavtsev',
+      'konstantin.kalinin', 'pavel.kilin', 'andrey.lakotko', 'pavel.vlasov'
     ];
 
     var STATUSES_TO_LOAD_TODO = STATUSES_TO_LOAD_DONE =['!Closed', '!Done' , '!Rejected'];

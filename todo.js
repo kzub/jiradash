@@ -25,8 +25,8 @@
   if(team === 'avia'){
     var AVIATEAM  = ['alexey.sutiagin','ek','fedor.shumov','aleksandr.gladkikh','andrey.ivanov','anton.ipatov',
                      'Ango','alexander.litvinov','andrey.plotnikov','andrey.iliopulo','alexander.neyasov','Yury.Kocharyan',
-                     'konstantin.kalinin','danila.dergachev', 'dmitry.zharsky', 'alexander.ryzhikov', 'pavel.kilin', 'ruslan.ismagilov'];
-    var VIEWTEAM  = ['dmitrii.loskutov', 'andrey.lakotko', 'anastasia.oblomova', 'konstantin.zubkov', 'leonid.riaboshtan'].concat(AVIATEAM);
+                     'konstantin.kalinin','danila.dergachev', 'dmitry.zharsky', 'alexander.ryzhikov', 'vadim.kudryavtsev', 'pavel.kilin', 'ruslan.ismagilov'];
+    var VIEWTEAM  = ['dmitrii.loskutov', 'andrey.lakotko', 'konstantin.zubkov', 'leonid.riaboshtan'].concat(AVIATEAM);
 
     var LEADLIMIT = 20;
     var DEVLIMIT  = 7;
@@ -45,7 +45,7 @@
       },
       {
         fields : {
-          login  : ['Ango', 'andrey.iliopulo', 'dmitry.zharsky', 'alexander.ryzhikov'],
+          login  : ['Ango', 'andrey.iliopulo', 'dmitry.zharsky', 'alexander.ryzhikov', 'vadim.kudryavtsev'],
           status : ['Code Review', 'Resolved']
         },
         change_fields : {
@@ -132,7 +132,12 @@
 
     { login : 'alexander.litvinov',   title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order},
     { login : 'pavel.kilin',   title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order},
-    { login : 'alexander.ryzhikov',   title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order }
+    { login : 'alexander.ryzhikov',   title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order },
+
+    { skip : 1 },
+    { skip : 1 },
+    { skip : 1 },
+    { login : 'vadim.kudryavtsev',   title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order }
     ];
 
     var STATUSES_TO_LOAD = ['!Closed', '!Done' , '!Rejected'];
@@ -162,6 +167,7 @@
         'andrey.iliopulo',
         'dmitry.zharsky',
         'alexander.ryzhikov',
+        'vadim.kudryavtsev',
 
         'Test Ready',
         'Merge Ready',
@@ -181,6 +187,7 @@
         '-', 'dmitry.zharsky',
         '-', 'alexander.ryzhikov',
         '-', 'andrey.iliopulo',
+        '-', 'vadim.kudryavtsev',
         'Test Ready', '-',
         'Merge Ready', '-',
         'Release', '-',
