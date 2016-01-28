@@ -243,6 +243,7 @@
     { login : 'sergey.mashkov',     title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
     { login : 'maxim.azarov',       title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
     { login : 'andrey.ivanov',      title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
+    { login : 'maria.polikarpova',  title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
     { title : 'TODO', labels : ['PM-Planned'], title_link : LABELS_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order }
     ];
 
