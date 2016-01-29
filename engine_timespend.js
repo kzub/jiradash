@@ -68,6 +68,7 @@
             priorityIcon  : issue.get('fields.priority.iconUrl'),
             key           : issue.get('key'),
             summary       : issue.get('fields.summary'),
+            comment       : worklog.get('comment'),
             description   : issue.get('fields.description'),
             project       : issue.get('fields.project.key'),
             updated       : utils.getTimeFormat(issue.get('fields.updated')),
@@ -134,7 +135,7 @@
       };
 
       var task_get_summary = function(task){
-        return [task.key, task.summary, utils.timestampToHours(task.timespent, 'round') + 'h'].join(' ');
+        return [task.key, task.summary, utils.timestampToHours(task.timespent, 'round') + 'h', '\n' + task.comment].join(' ');
       };
 
       var x_v2 = d3.scale.linear()
