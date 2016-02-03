@@ -11,7 +11,8 @@
       'marat.tolegenov',
       'sergey.bay',
       'max.kotov',
-      'mikhail.froimson'
+      'mikhail.froimson',
+      'dmitry.purtov'
     ];
 
     var DEVTEAM_TODO = ['sergey.mashkov'];
