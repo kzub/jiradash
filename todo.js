@@ -25,11 +25,11 @@
   if(team === 'avia'){
     var AVIATEAM  = ['alexey.sutiagin','ek','fedor.shumov','aleksandr.gladkikh','andrey.ivanov','anton.ipatov',
                      'Ango','alexander.litvinov','andrey.plotnikov','andrey.iliopulo','alexander.neyasov','Yury.Kocharyan',
-                     'konstantin.kalinin','danila.dergachev', 'dmitry.zharsky', 'alexander.ryzhikov', 'vadim.kudryavtsev', 'pavel.kilin', 'ruslan.ismagilov'];
+                     'konstantin.kalinin','danila.dergachev', 'dmitry.zharsky', 'alexander.ryzhikov', 'vadim.kudryavtsev', 'pavel.kilin', 'ruslan.ismagilov', 'pavel.vlasov', 'eduard.gataullin'];
     var VIEWTEAM  = ['dmitrii.loskutov', 'andrey.lakotko', 'konstantin.zubkov', 'leonid.riaboshtan'].concat(AVIATEAM);
 
     var LEADLIMIT = 20;
-    var DEVLIMIT  = 7;
+    var DEVLIMIT  = 5;
 
     var TASK_REWRITE_RULES = [
       { // without team
@@ -84,7 +84,7 @@
       },
       {
         fields : {
-          login  : ['pavel.kilin',],
+          login  : ['pavel.kilin'],
           status : ['Code Review', 'Resolved']
         },
         change_fields : {
@@ -92,6 +92,19 @@
             source_field : 'reviewEngineer',
             source_field_allowed_values : AVIATEAM,
             default : 'konstantin.kalinin'
+          }
+        }
+      },
+      {
+        fields : {
+          login  : ['eduard.gataullin'],
+          status : ['Code Review', 'Resolved']
+        },
+        change_fields : {
+          login : {
+            source_field : 'reviewEngineer',
+            source_field_allowed_values : AVIATEAM,
+            default : 'andrey.plotnikov'
           }
         }
       }
@@ -121,7 +134,7 @@
     { projects : ['OTT', 'AH', 'AC', 'PM', 'SEO'], types : ['Release'], title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Release', title_extras : ['status'], sort_by : sorting_order},
 
     { login : 'aleksandr.gladkikh',   title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order},
-    { skip : 1 },
+    { login : 'eduard.gataullin',     title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order},
     { skip : 1 },
     { projects : ['OTT', 'AH', 'AC', 'PM', 'SEO'], statuses : ['In Release', 'Merge Failed', 'Contains Bugs'], title : 'In Release', title_link : STATUS_LINK, task_links : TASK_LINK,  sort_by : sorting_order},
 
@@ -133,10 +146,11 @@
     { login : 'alexander.litvinov',   title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order},
     { login : 'pavel.kilin',   title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order},
     { login : 'alexander.ryzhikov',   title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order },
+    { skip : 1 },
 
     { skip : 1 },
     { skip : 1 },
-    { skip : 1 },
+    // { login : 'pavel.vlasov',   title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order },
     { login : 'vadim.kudryavtsev',   title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order }
     ];
 
@@ -159,8 +173,10 @@
         'andrey.ivanov',
         'anton.ipatov',
         'andrey.plotnikov',
+        'eduard.gataullin',
         'konstantin.kalinin',
         'pavel.kilin',
+        'pavel.vlasov',
 
         'fedor.shumov',
         'Ango',
@@ -198,7 +214,7 @@
     };
   }
   else if(team === 'devops'){
-    var VIEWTEAM  = ['melnik', 'eth', 'marina.ilina'];
+    var VIEWTEAM  = ['melnik', 'eth', 'dmitry.shmelev'];
     var LEADLIMIT = 20;
     var DEVLIMIT  = 10;
 
@@ -209,7 +225,7 @@
     { login : 'eth', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
     { projects : ['SRV'], statuses : ['Test ready'], title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Test Ready'},
 
-    { login : 'marina.ilina', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
+    { login : 'dmitry.shmelev', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
     { projects : ['SRV'], statuses : ['Merge ready'], title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Merge Ready'},
 
     { skip : 1},

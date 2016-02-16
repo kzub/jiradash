@@ -63,7 +63,61 @@
       BAR_HEIGHT : 20
     };
 
-  }else /* AVIA TEAM */ {
+  }
+  else if(~document.location.href.indexOf('devops')){
+    var DEVTEAM = DEVTEAM_DONE = [
+      'melnik',
+      'eth',
+      'dmitry.shmelev'
+    ];
+
+    var DEVTEAM_TODO = DEVTEAM_DONE;
+
+    var STATUSES_TO_LOAD_TODO = ['!Closed', '!Rejected', '!Done'];
+    var BLOCKS_TODO = [
+      {
+        title : 'To Do',
+        projects : ['SRV'],
+        limit : 49,
+        title_link : 'https://onetwotripdev.atlassian.net/issues/?jql=project IN({project}) AND ({statuses}) ORDER BY priority,rank',
+        task_links : TASK_LINK,
+        sort_by : 'duedate_priority'
+      }
+    ];
+    var OPTIONS_TODO = {
+      SCREEN_WIDTH : '50%',
+      LOAD_PROJECTS : ['SRV'],
+      LOAD_LIMIT : 500,
+      SHOW_DUEDATE_PLUS_TIMESPEND : true,
+      TASK_ICON : 'typeIcon'
+    };
+
+    var STATUSES_TO_LOAD_DONE = ['Done', 'Rejected'];
+    var BLOCKS_DONE = [
+      {
+        title : 'Recently done',
+        projects : ['SRV'],
+        statuses : ['Done', 'Rejected'],
+        limit : 25,
+        title_link : 'https://onetwotripdev.atlassian.net/issues/?jql=project IN({project}) and ({statuses}) ORDER BY priority,updated',
+        task_links : TASK_LINK,
+        sort_by:'updated'
+      }
+    ];
+    var OPTIONS_DONE = {
+      SCREEN_WIDTH : '50%',
+      LOAD_BY_PRIORITY : 'updated',
+      LOAD_LIMIT : 50,
+      LOAD_PROJECTS : ['SRV'],
+      TASK_ICON : 'typeIcon'
+    };
+
+    var OPTIONS_TIMESPENT = {
+      SCREEN_WIDTH : '100%',
+      BAR_HEIGHT : 20
+    };
+  }
+  else /* AVIA TEAM */ {
     var DEVTEAM_TODO = DEVTEAM_DONE =[];
     var DEVTEAM  = [
       'alexey.sutiagin','aleksandr.gladkikh','alexander.litvinov','alexander.neyasov','Yury.Kocharyan', 'danila.dergachev', 'ruslan.ismagilov',
