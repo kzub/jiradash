@@ -311,6 +311,12 @@
       return is_task_a_duedate_older_than_b(a, b);
     };
 
+    this.task_sorter_duedate_priority_reviewer_first = function(a, b){
+      debugger;
+
+      return is_task_a_duedate_older_than_b(a, b);
+    };
+
     this.task_sorter_updated_reverse = function(a, b){
       return a.updated - b.updated;
     };

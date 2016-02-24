@@ -5,7 +5,6 @@
   if(~document.location.href.indexOf('mobile')){
     var DEVTEAM = DEVTEAM_DONE = [
       'sergey.glotov',
-      'pavel.akhrameev',
       'nikolay.serebrennikov',
       'dmitry.kobelev',
       'marat.tolegenov',
