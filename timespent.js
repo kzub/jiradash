@@ -121,7 +121,7 @@
     var DEVTEAM  = [
       'alexey.sutiagin','aleksandr.gladkikh','alexander.litvinov','alexander.neyasov','Yury.Kocharyan', 'danila.dergachev', 'ruslan.ismagilov',
       'ek','andrey.ivanov','anton.ipatov','andrey.plotnikov',
-      'fedor.shumov','Ango','andrey.iliopulo', 'dmitry.zharsky', 'alexander.ryzhikov', 'vadim.kudryavtsev',
+      'fedor.shumov','Ango','andrey.iliopulo', 'dmitry.zharsky', 'alexander.ryzhikov', 'vadim.kudryavtsev', 'vladislav.kolesnikov',
       'konstantin.kalinin', 'pavel.kilin', 'andrey.lakotko', 'pavel.vlasov'
     ];
 

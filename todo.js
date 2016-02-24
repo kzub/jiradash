@@ -25,7 +25,7 @@
   if(team === 'avia'){
     var AVIATEAM  = ['alexey.sutiagin','ek','fedor.shumov','aleksandr.gladkikh','andrey.ivanov','anton.ipatov',
                      'Ango','alexander.litvinov','andrey.plotnikov','andrey.iliopulo','alexander.neyasov','Yury.Kocharyan',
-                     'konstantin.kalinin','danila.dergachev', 'dmitry.zharsky', 'alexander.ryzhikov', 'vadim.kudryavtsev', 'pavel.kilin', 'ruslan.ismagilov', 'pavel.vlasov', 'eduard.gataullin'];
+                     'konstantin.kalinin','danila.dergachev', 'dmitry.zharsky', 'alexander.ryzhikov', 'vadim.kudryavtsev', 'pavel.kilin', 'ruslan.ismagilov', 'pavel.vlasov', 'eduard.gataullin', 'vladislav.kolesnikov'];
     var VIEWTEAM  = ['dmitrii.loskutov', 'andrey.lakotko', 'konstantin.zubkov', 'leonid.riaboshtan'].concat(AVIATEAM);
 
     var LEADLIMIT = 20;
@@ -45,7 +45,7 @@
       },
       {
         fields : {
-          login  : ['Ango', 'andrey.iliopulo', 'dmitry.zharsky', 'alexander.ryzhikov', 'vadim.kudryavtsev'],
+          login  : ['Ango', 'andrey.iliopulo', 'dmitry.zharsky', 'alexander.ryzhikov', 'vadim.kudryavtsev', 'vladislav.kolesnikov'],
           status : ['Code Review', 'Resolved']
         },
         change_fields : {
@@ -151,7 +151,12 @@
     { skip : 1 },
     { skip : 1 },
     // { login : 'pavel.vlasov',   title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order },
-    { login : 'vadim.kudryavtsev',   title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order }
+    { login : 'vadim.kudryavtsev',   title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order },
+    { skip : 1 },
+
+    { skip : 1 },
+    { skip : 1 },
+    { login : 'vladislav.kolesnikov',   title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order }
     ];
 
     var STATUSES_TO_LOAD = ['!Closed', '!Done' , '!Rejected'];
@@ -183,6 +188,7 @@
         'andrey.iliopulo',
         'dmitry.zharsky',
         'alexander.ryzhikov',
+        'vladislav.kolesnikov',
         'vadim.kudryavtsev',
 
         'Test Ready',
@@ -202,6 +208,7 @@
         '-', 'Ango',
         '-', 'dmitry.zharsky',
         '-', 'alexander.ryzhikov',
+        '-', 'vladislav.kolesnikov',
         '-', 'andrey.iliopulo',
         '-', 'vadim.kudryavtsev',
         'Test Ready', '-',
