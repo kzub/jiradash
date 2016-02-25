@@ -107,6 +107,12 @@ text {
   font-size: 16px;
 }
 
+.text-hours-warn {
+  fill: cyan !important;
+  text-anchor: end;
+  font-size: 16px;
+}
+
 .text-hours-normal-anchor {
   text-anchor: start !important;
 }
@@ -190,7 +196,7 @@ text {
   font-weight : bold;
 }
 
-.timespend-split-screen {
+#timespend-split-screen {
   /*float: left;*/
   display: -webkit-box;
 }

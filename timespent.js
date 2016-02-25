@@ -117,7 +117,6 @@
     };
   }
   else /* AVIA TEAM */ {
-    var DEVTEAM_TODO = DEVTEAM_DONE =[];
     var DEVTEAM  = [
       'alexey.sutiagin','aleksandr.gladkikh','alexander.litvinov','alexander.neyasov','Yury.Kocharyan', 'danila.dergachev', 'ruslan.ismagilov',
       'ek','andrey.ivanov','anton.ipatov','andrey.plotnikov',
@@ -125,34 +124,42 @@
       'konstantin.kalinin', 'pavel.kilin', 'andrey.lakotko', 'pavel.vlasov'
     ];
 
-    var STATUSES_TO_LOAD_TODO = STATUSES_TO_LOAD_DONE =['!Closed', '!Done' , '!Rejected'];
-    var BLOCKS_TODO = [
-      {
-        title : 'To Do',
-        projects : ['OTT', 'AH', 'AC', 'PM', 'SEO'],
-        statuses : ['Open', 'To Do'],
-        limit : 26,
-        title_link : 'https://onetwotripdev.atlassian.net/issues/?jql=project IN({project}) AND ({statuses}) AND (LABELS = Planned) AND assignee is Empty ORDER BY priority,rank',
-        task_links : TASK_LINK,
-        sort_by:'created_reverse'
-      }
+    var TASK_LINK = 'https://onetwotripdev.atlassian.net/browse/{key}';
+    var STATUS_LINK = 'https://onetwotripdev.atlassian.net/issues/?jql=project IN({project}) and ({statuses}) ORDER BY priority,created ASC';
+    var sorting_order = 'review_inprogress_created';
+    var STATUSES_TO_LOAD = ['!Closed', '!Done' , '!Rejected'];
+
+    var BLOCKS = [
+      { projects : ['OTT', 'AH', 'AC', 'PM', 'SEO'], statuses : ['Test ready'],  title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Test Ready', sort_by : sorting_order},
+      { projects : ['OTT', 'AH', 'AC', 'PM', 'SEO'], statuses : ['Merge ready'], title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Merge Ready', sort_by : sorting_order, limit: 24},
+      { projects : ['OTT', 'AH', 'AC', 'PM', 'SEO'], statuses : ['In Release', 'Merge Failed', 'Contains Bugs'], title : 'In Release', title_link : STATUS_LINK, task_links : TASK_LINK,  sort_by : sorting_order, limit:24},
+
+      { projects : ['OTT', 'AH', 'AC', 'PM', 'SEO'], types :    ['Release'],     title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Release', title_extras : ['status'], sort_by : sorting_order},
     ];
 
-    BLOCKS_DONE = JSON.parse(JSON.stringify(BLOCKS_TODO));
-    BLOCKS_DONE[0].limitFrom = BLOCKS_TODO[0].limit;
-    BLOCKS_DONE[0].limit     = BLOCKS_TODO[0].limit*2;
-    BLOCKS_TODO[0].hideMoreLink = true;
-
-    var OPTIONS_TODO = OPTIONS_DONE = {
-      SCREEN_WIDTH : '50%',
-      LOAD_PROJECTS : ['OTT', 'AH', 'AC', 'PM', 'SEO'],
-      LABELS_TO_LOAD : ['Planned'],
-      LOAD_LIMIT : 500,
+    var OPTIONS = {
+      COLUMNS : 3
     };
 
     var OPTIONS_TIMESPENT = {
       SCREEN_WIDTH : '100%'
     };
+
+    var utils  = new window.Utils();
+    var params = utils.getQueryString();
+    var time_to_look = +params.timespent || +params.timespent_mobile || 7;
+
+    var timespent = new window.TaskTimespend(DEVTEAM, time_to_look, document.getElementById('timespend-left'), OPTIONS_TIMESPENT);
+    var todo = new window.TaskTable(DEVTEAM, BLOCKS, STATUSES_TO_LOAD, document.getElementById('timespend-split-screen'), OPTIONS);
+
+    // MAIN LOOP =>
+    (function loadData(){
+      timespent.process(function(){
+        setTimeout(loadData, 5.1*60*1000);
+      });
+      todo.process(function(){});
+    })();
+    return;
   }
 
 

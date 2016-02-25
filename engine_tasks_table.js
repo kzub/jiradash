@@ -177,6 +177,8 @@
     var lineSchemeTimespent = [25, 27, 46, 134];
     var lineSchemeDueDate   = [53, 54, 73, 164];
     var lineSchemeDueDateTimespent = [50, 54, 74, 106, 196];
+    var hoursToWarningEpic = 80;
+    var hoursToWarningTask = 40;
 
     var lineScheme = lineSchemeTimespent;
     if(OPTIONS.SHOW_DUEDATE_INSTEAD_TIMESPEND){
@@ -210,6 +212,9 @@
       if(update_elms){
         // update timespent
         update_elms[OPTIONS.SHOW_DUEDATE_PLUS_TIMESPEND ? 2 : 0].changeText(utils.timespentFormater(timespent));
+        if(timespent > hoursToWarningEpic){
+          update_elms[0].setAttribute('class', 'text-hours-warn');
+        }
         // update prioirty icon
         update_elms[1].changeImage(task[OPTIONS.TASK_ICON || 'priorityIcon']);
         return;
@@ -220,6 +225,10 @@
       var text_element;
       var css_hours = ' text-hours';
       var xpos = 0;
+
+      if(timespent > hoursToWarningTask){
+        css_hours = ' text-hours-warn';
+      }
 
       if(OPTIONS.SHOW_DUEDATE_INSTEAD_TIMESPEND){
         // duedate
@@ -333,6 +342,7 @@
           // define update function (used when subtasks data updated)
           task.update = (function(t, b, e){
             return function(){
+              console.log(t.timespent)
               drawLineTextFromTask(b, t, null, null, e);
             };
           })(task, block, elms);
