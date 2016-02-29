@@ -121,7 +121,7 @@
       'alexey.sutiagin','aleksandr.gladkikh','alexander.litvinov','alexander.neyasov','Yury.Kocharyan', 'danila.dergachev', 'ruslan.ismagilov',
       'ek','andrey.ivanov','anton.ipatov','andrey.plotnikov',
       'fedor.shumov','Ango','andrey.iliopulo', 'dmitry.zharsky', 'alexander.ryzhikov', 'vadim.kudryavtsev', 'vladislav.kolesnikov',
-      'konstantin.kalinin', 'pavel.kilin', 'andrey.lakotko', 'pavel.vlasov'
+      'konstantin.kalinin', 'pavel.kilin', 'andrey.lakotko', 'pavel.vlasov','dmitrii.loskutov', 'andrey.lakotko', 'konstantin.zubkov', 'leonid.riaboshtan'
     ];
 
     var TASK_LINK = 'https://onetwotripdev.atlassian.net/browse/{key}';
