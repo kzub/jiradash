@@ -23,7 +23,7 @@
 
 
   if(team === 'avia'){
-    var AVIATEAM  = ['alexey.sutiagin','ek','fedor.shumov','aleksandr.gladkikh','andrey.ivanov','anton.ipatov',
+    var AVIATEAM  = ['alexey.sutiagin','ek','fedor.shumov','aleksandr.gladkikh','andrey.ivanov','anton.ipatov', 'evgeniy.petrov',
                      'Ango','alexander.litvinov','andrey.plotnikov','andrey.iliopulo','alexander.neyasov','Yury.Kocharyan',
                      'konstantin.kalinin','danila.dergachev', 'dmitry.zharsky', 'alexander.ryzhikov', 'vadim.kudryavtsev', 'pavel.kilin', 'ruslan.ismagilov', 'pavel.vlasov', 'eduard.gataullin', 'vladislav.kolesnikov'];
     var VIEWTEAM  = ['dmitrii.loskutov', 'andrey.lakotko', 'konstantin.zubkov', 'leonid.riaboshtan'].concat(AVIATEAM);
@@ -59,7 +59,7 @@
       },
       {
         fields : {
-          login  : ['aleksandr.gladkikh', 'alexander.neyasov', 'Yury.Kocharyan', 'alexander.litvinov', 'danila.dergachev', 'ruslan.ismagilov'],
+          login  : ['aleksandr.gladkikh', 'alexander.neyasov', 'Yury.Kocharyan', 'alexander.litvinov', 'danila.dergachev', 'ruslan.ismagilov', 'evgeniy.petrov'],
           status : ['Code Review', 'Resolved']
         },
         change_fields : {
@@ -144,7 +144,7 @@
     { skip : 1 },
     { login : 'vladislav.kolesnikov', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order },
 
-    { skip : 1 },
+    { login : 'evgeniy.petrov',       title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT2, sort_by : sorting_order},
     { login : 'alexander.litvinov',   title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT2, sort_by : sorting_order},
     ];
 
@@ -162,6 +162,7 @@
         'ruslan.ismagilov',
         'alexander.neyasov',
         'aleksandr.gladkikh',
+        'evgeniy.petrov',
 
         'ek',
         'andrey.ivanov',
@@ -194,7 +195,7 @@
         'ruslan.ismagilov', 'konstantin.kalinin',
         'alexander.neyasov', 'pavel.kilin',
         'aleksandr.gladkikh', 'fedor.shumov',
-        '-', 'Ango',
+        'evgeniy.petrov', 'Ango',
         '-', 'dmitry.zharsky',
         '-', 'alexander.ryzhikov',
         '-', 'vladislav.kolesnikov',

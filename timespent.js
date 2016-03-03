@@ -118,11 +118,13 @@
   }
   else /* AVIA TEAM */ {
     var DEVTEAM  = [
-      'alexey.sutiagin','aleksandr.gladkikh','alexander.litvinov','alexander.neyasov','Yury.Kocharyan', 'danila.dergachev', 'ruslan.ismagilov',
+      'alexey.sutiagin','aleksandr.gladkikh','alexander.litvinov','alexander.neyasov','Yury.Kocharyan', 'danila.dergachev', 'ruslan.ismagilov', 'evgeniy.petrov',
       'ek','andrey.ivanov','anton.ipatov','andrey.plotnikov',
-      'fedor.shumov','Ango','andrey.iliopulo', 'dmitry.zharsky', 'alexander.ryzhikov', 'vadim.kudryavtsev', 'vladislav.kolesnikov',
-      'konstantin.kalinin', 'pavel.kilin', 'andrey.lakotko', 'pavel.vlasov','dmitrii.loskutov', 'andrey.lakotko', 'konstantin.zubkov', 'leonid.riaboshtan'
+      'fedor.shumov','andrey.iliopulo', 'dmitry.zharsky', 'alexander.ryzhikov', 'vadim.kudryavtsev', 'vladislav.kolesnikov',
+      'konstantin.kalinin', 'pavel.kilin', 'andrey.lakotko', 'pavel.vlasov','dmitrii.loskutov', 'andrey.lakotko'
     ];
+
+    var AVIATEAM = ['konstantin.zubkov', 'leonid.riaboshtan'].concat(DEVTEAM);
 
     var TASK_LINK = 'https://onetwotripdev.atlassian.net/browse/{key}';
     var STATUS_LINK = 'https://onetwotripdev.atlassian.net/issues/?jql=project IN({project}) and ({statuses}) ORDER BY priority,created ASC';
@@ -150,7 +152,7 @@
     var time_to_look = +params.timespent || +params.timespent_mobile || 7;
 
     var timespent = new window.TaskTimespend(DEVTEAM, time_to_look, document.getElementById('timespend-left'), OPTIONS_TIMESPENT);
-    var todo = new window.TaskTable(DEVTEAM, BLOCKS, STATUSES_TO_LOAD, document.getElementById('timespend-split-screen'), OPTIONS);
+    var todo = new window.TaskTable(AVIATEAM, BLOCKS, STATUSES_TO_LOAD, document.getElementById('timespend-split-screen'), OPTIONS);
 
     // MAIN LOOP =>
     (function loadData(){
