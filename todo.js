@@ -135,7 +135,7 @@
     { login : 'Ango',                 title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT2, sort_by : sorting_order},
 
     { login : 'aleksandr.gladkikh',   title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT2, sort_by : sorting_order},
-    { login : 'pavel.vlasov',         projects : ['OTT', 'AH', 'AC', 'PM', 'SEO'], title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT2, sort_by : sorting_order },
+    { login : 'pavel.vlasov',         projects : ['OTT', 'AH', 'AC', 'PM', 'SEO', 'FE'], title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT2, sort_by : sorting_order },
     { login : 'vadim.kudryavtsev',    title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order },
     { skip : 1 },
 

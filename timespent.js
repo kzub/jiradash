@@ -120,7 +120,7 @@
     var DEVTEAM  = [
       'alexey.sutiagin','aleksandr.gladkikh','alexander.litvinov','alexander.neyasov','Yury.Kocharyan', 'danila.dergachev', 'ruslan.ismagilov', 'evgeniy.petrov',
       'ek','andrey.ivanov','anton.ipatov','andrey.plotnikov',
-      'fedor.shumov','andrey.iliopulo', 'dmitry.zharsky', 'alexander.ryzhikov', 'vadim.kudryavtsev', 'vladislav.kolesnikov', 'Ango',
+      'fedor.shumov','andrey.iliopulo', 'dmitry.zharsky', 'alexander.ryzhikov', 'vadim.kudryavtsev', 'vladislav.kolesnikov',
       'konstantin.kalinin', 'pavel.kilin', 'andrey.lakotko', 'pavel.vlasov','dmitrii.loskutov'
     ];
 
@@ -132,11 +132,10 @@
     var STATUSES_TO_LOAD = ['!Closed', '!Done' , '!Rejected'];
 
     var BLOCKS = [
-      { projects : ['OTT', 'AH', 'AC', 'PM', 'SEO'], statuses : ['Test ready'],  title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Test Ready', sort_by : sorting_order},
-      { projects : ['OTT', 'AH', 'AC', 'PM', 'SEO'], statuses : ['Merge ready'], title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Merge Ready', sort_by : sorting_order, limit: 24},
-      { projects : ['OTT', 'AH', 'AC', 'PM', 'SEO'], statuses : ['In Release', 'Merge Failed', 'Contains Bugs'], title : 'In Release', title_link : STATUS_LINK, task_links : TASK_LINK,  sort_by : sorting_order, limit:24},
-
-      { projects : ['OTT', 'AH', 'AC', 'PM', 'SEO'], types :    ['Release'],     title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Release', title_extras : ['status'], sort_by : sorting_order},
+      { projects : ['OTT', 'AH', 'AC', 'PM', 'SEO', 'FE'], statuses : ['Test ready'],  title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Test Ready', sort_by : sorting_order},
+      { projects : ['OTT', 'AH', 'AC', 'PM', 'SEO', 'FE'], statuses : ['Merge ready'], title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Merge Ready', sort_by : sorting_order, limit: 24},
+      { projects : ['OTT', 'AH', 'AC', 'PM', 'SEO', 'FE'], statuses : ['In Release', 'Merge Failed', 'Contains Bugs'], title : 'In Release', title_link : STATUS_LINK, task_links : TASK_LINK,  sort_by : sorting_order, limit:24},
+      { projects : ['OTT', 'AH', 'AC', 'PM', 'SEO', 'FE'], types :    ['Release'],     title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Release', title_extras : ['status'], sort_by : sorting_order},
     ];
 
     var OPTIONS = {
