@@ -5,7 +5,7 @@
 
   var PRIORITY_RANK = {
     'ASAP'     : 0,
-    'Critical' : 1,
+    'Very Very High' : 1,
     'Very High': 2,
     'High'     : 3,
     'Normal'   : 4
@@ -311,20 +311,18 @@
       return is_task_a_duedate_older_than_b(a, b);
     };
 
+    var isTaskOpen = function(task){
+      return ['Open', 'To Do'].indexOf(task.status) > -1;
+    };
+
     var compare_status = function(a, b){
-      if(a.status === b.status){
+      if(isTaskOpen(a) === isTaskOpen(b) && isTaskOpen(b) === true){
         return 0;
       }
-      else if(a.status === 'Open'){
+      else if(isTaskOpen(a)){
         return +1;
       }
-      else if(b.status === 'Open'){
-        return -1;
-      }
-      else if(a.status === 'To Do'){
-        return +1;
-      }
-      else if(b.status === 'To Do'){
+      else if(isTaskOpen(b)){
         return -1;
       }
 

@@ -120,8 +120,8 @@
     var DEVTEAM  = [
       'alexey.sutiagin','aleksandr.gladkikh','alexander.litvinov','alexander.neyasov','Yury.Kocharyan', 'danila.dergachev', 'ruslan.ismagilov', 'evgeniy.petrov',
       'ek','andrey.ivanov','anton.ipatov','andrey.plotnikov',
-      'fedor.shumov','andrey.iliopulo', 'dmitry.zharsky', 'alexander.ryzhikov', 'vadim.kudryavtsev', 'vladislav.kolesnikov',
-      'konstantin.kalinin', 'pavel.kilin', 'andrey.lakotko', 'pavel.vlasov','dmitrii.loskutov', 'andrey.lakotko'
+      'fedor.shumov','andrey.iliopulo', 'dmitry.zharsky', 'alexander.ryzhikov', 'vadim.kudryavtsev', 'vladislav.kolesnikov', 'Ango',
+      'konstantin.kalinin', 'pavel.kilin', 'andrey.lakotko', 'pavel.vlasov','dmitrii.loskutov'
     ];
 
     var AVIATEAM = ['konstantin.zubkov', 'leonid.riaboshtan'].concat(DEVTEAM);
