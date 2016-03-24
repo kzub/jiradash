@@ -239,7 +239,7 @@
   else if(team === 'pm'){
     var VIEWTEAM  = ['evgeny.bush', 'rostislav.palchun', 'valentin.kachanov', 'leonid.riaboshtan',
       'nikolay.malikov', 'armen.dzhanumov', 'alexander.bezhan', 'timur.danilov', 'dmitry.rumyantsev',
-      'sergey.mashkov', 'maxim.azarov', 'andrey.ivanov', 'maria.polikarpova'];
+      'sergey.mashkov', 'maxim.azarov', 'andrey.ivanov', 'maria.polikarpova', 'artur.bolshakov'];
 
     var PMLIMIT   = Infinity;
     var sorting_order = 'duedate_priority';
