@@ -14,7 +14,7 @@
       'dmitry.purtov'
     ];
 
-    var DEVTEAM_TODO = ['sergey.mashkov'];
+    var DEVTEAM_TODO = ['dmitry.panshin'];
 
     var STATUSES_TO_LOAD_TODO = ['!Closed', '!Rejected', '!Done'];
     var BLOCKS_TODO = [

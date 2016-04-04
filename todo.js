@@ -10,19 +10,143 @@
   var STATUS_LINK = 'https://onetwotripdev.atlassian.net/issues/?jql=project IN({project}) and ({statuses}) ORDER BY priority,created ASC';
   var LABELS_LINK = 'https://onetwotripdev.atlassian.net/issues/?jql=({labels}) and ({statuses}) ORDER BY priority,created ASC';
 
-  var team = 'avia';
   if(~document.location.href.indexOf('devops')){
-    team = 'devops';
-  }else if(~document.location.href.indexOf('pm2')){
-    team = 'pm2';
-  }else if(~document.location.href.indexOf('pm')){
-    team = 'pm';
-  }else if(~document.location.href.indexOf('roadmap')){
-    team = 'roadmap';
+    var VIEWTEAM  = ['melnik', 'eth', 'dmitry.shmelev'];
+    var LEADLIMIT = 20;
+    var DEVLIMIT  = 10;
+
+    BLOCKS = [
+    { login : 'melnik', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : LEADLIMIT},
+    { projects : ['SRV'], statuses : ['Code Review'], title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Code Review'},
+
+    { login : 'eth', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
+    { projects : ['SRV'], statuses : ['Test ready'], title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Test Ready'},
+
+    { login : 'dmitry.shmelev', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
+    { projects : ['SRV'], statuses : ['Merge ready'], title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Merge Ready'},
+
+    { skip : 1},
+    { projects : ['SRV'], statuses : ['Done'], title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Done', sort_by : 'updated', limit : 25 },
+    ];
+
+    var STATUSES_TO_LOAD = ['!Closed', '!Rejected'];
+    var OPTIONS = {
+      COLUMNS : 2,
+      MOBILE_COLUMNS : 1,
+      MOBILE_BLOCKS_SORTER : 'project_attribute'
+    };
   }
+  else if(~document.location.href.indexOf('pm')){
+    var VIEWTEAM  = ['evgeny.bush', 'rostislav.palchun', 'valentin.kachanov', 'leonid.riaboshtan',
+      'nikolay.malikov', 'armen.dzhanumov', 'alexander.bezhan', 'timur.danilov', 'dmitry.rumyantsev',
+      'dmitry.panshin', 'maxim.azarov', 'andrey.ivanov', 'maria.polikarpova', 'artur.bolshakov'];
 
+    var PMLIMIT   = Infinity;
+    var sorting_order = 'duedate_priority';
 
-  if(team === 'avia'){
+    BLOCKS = [
+    { login : 'rostislav.palchun',  title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
+    { login : 'valentin.kachanov',  title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
+    { login : 'alexander.bezhan',   title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
+    { login : 'armen.dzhanumov',    title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
+    { login : 'leonid.riaboshtan',  title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
+    { login : 'nikolay.malikov',    title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
+    { login : 'timur.danilov',      title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
+    { login : 'dmitry.rumyantsev',  title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
+    { login : 'dmitry.panshin',     title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
+    { login : 'maxim.azarov',       title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
+    { login : 'andrey.ivanov',      title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
+    { login : 'maria.polikarpova',  title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
+    { login : 'artur.bolshakov',    title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
+    { title : 'TODO', labels : ['PM-Planned'], title_link : LABELS_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order }
+    ];
+
+    var STATUSES_TO_LOAD = ['!Closed', '!Rejected', '!Done'];
+    var OPTIONS = {
+      COLUMNS : 2,
+      MOBILE_COLUMNS : 1,
+      MOBILE_BLOCKS_SORTER: 'project_attribute',
+      LOGIN_KEY_FIELDNAME : 'customfield_10201',
+      LOGIN_KEY_CONDTIONS : 'PM',
+      SHOW_DUEDATE_INSTEAD_TIMESPEND : true,
+      LABELS_TO_LOAD : ['PM-Planned'],
+      LABELS_MODE : 'OR'
+    };
+  }
+  else if(~document.location.href.indexOf('pm2')){
+    var VIEWTEAM  = [ 'nikolay.malikov' ];
+    var PMLIMIT   = Infinity;
+    var sorting_order = 'duedate_priority';
+
+    BLOCKS = [
+    { login : 'nikolay.malikov',  title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
+    { title : 'Peter Kutis', labels : ['PK'], title_link : LABELS_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order }
+    ];
+
+    var STATUSES_TO_LOAD = ['!Closed', '!Rejected', '!Done'];
+    var OPTIONS = {
+      COLUMNS : 2,
+      MOBILE_COLUMNS : 1,
+      MOBILE_BLOCKS_SORTER: 'project_attribute',
+      LOGIN_KEY_FIELDNAME : 'customfield_10200',
+      LOGIN_KEY_CONDTIONS : 'Stakeholder',
+      SHOW_DUEDATE_INSTEAD_TIMESPEND : true,
+      LABELS_TO_LOAD : ['PK'],
+      LABELS_MODE : 'OR'
+    };
+  }
+  else if(~document.location.href.indexOf('roadmap')){
+    var VIEWTEAM  = [
+      'mikhail.sokolov', 'konstantin.mamonov', 'leonid.riaboshtan', 'konstantin.zubkov',
+      'kim', 'max.karaush', 'dmitry.kayutin', 'alexey.lyashchenko', 'vadim.kudelko',
+      'dmitry.panshin', 'alexey.teplov'
+    ];
+
+    var SVLIMIT   = Infinity;
+    var sorting_order = 'duedate_priority';
+
+    BLOCKS = [
+    { login : 'mikhail.sokolov',   title_link : USER_LINK, task_links : TASK_LINK, statuses : SV_TASK_STATUSES, limit : SVLIMIT, sort_by : sorting_order },
+    { login : 'konstantin.mamonov',title_link : USER_LINK, task_links : TASK_LINK, statuses : SV_TASK_STATUSES, limit : SVLIMIT, sort_by : sorting_order },
+    { login : 'leonid.riaboshtan', title_link : USER_LINK, task_links : TASK_LINK, statuses : SV_TASK_STATUSES, limit : SVLIMIT, sort_by : sorting_order },
+    { login : 'dmitry.panshin',    title_link : USER_LINK, task_links : TASK_LINK, statuses : SV_TASK_STATUSES, limit : SVLIMIT, sort_by : sorting_order },
+    { login : 'alexey.teplov',     title_link : USER_LINK, task_links : TASK_LINK, statuses : SV_TASK_STATUSES, limit : SVLIMIT, sort_by : sorting_order },
+    { login : 'dmitry.kayutin',    title_link : USER_LINK, task_links : TASK_LINK, statuses : SV_TASK_STATUSES, limit : SVLIMIT, sort_by : sorting_order },
+    { login : 'kim',               title_link : USER_LINK, task_links : TASK_LINK, statuses : SV_TASK_STATUSES, limit : SVLIMIT, sort_by : sorting_order },
+    { login : 'max.karaush',       title_link : USER_LINK, task_links : TASK_LINK, statuses : SV_TASK_STATUSES, limit : SVLIMIT, sort_by : sorting_order },
+    { login : 'alexey.lyashchenko',title_link : USER_LINK, task_links : TASK_LINK, statuses : SV_TASK_STATUSES, limit : SVLIMIT, sort_by : sorting_order },
+    { login : 'vadim.kudelko',     title_link : USER_LINK, task_links : TASK_LINK, statuses : SV_TASK_STATUSES, limit : SVLIMIT, sort_by : sorting_order },
+    { login : 'konstantin.zubkov', title_link : USER_LINK, task_links : TASK_LINK, statuses : SV_TASK_STATUSES, limit : SVLIMIT, sort_by : sorting_order }
+    ];
+
+    var STATUSES_TO_LOAD = ['!Closed', '!Rejected', '!Done'];
+    var OPTIONS = {
+      COLUMNS : 2,
+      MOBILE_COLUMNS : 1,
+      MOBILE_BLOCKS_SORTER: 'project_attribute',
+      LOGIN_KEY_FIELDNAME : 'customfield_10900', // supervisor
+      LOGIN_KEY_CONDTIONS : 'Supervisor',
+      SHOW_DUEDATE_INSTEAD_TIMESPEND : true
+    };
+  }
+  else if(~document.location.href.indexOf('tver')){
+    var VIEWTEAM  = 'all';
+
+    var SVLIMIT   = Infinity;
+    var sorting_order = 'duedate_priority';
+
+    BLOCKS = [
+      { projects : ['OTT', 'AH', 'AC', 'PM', 'SEO', 'FE'], title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Tver Tasks', sort_by : sorting_order},
+    ];
+
+    var STATUSES_TO_LOAD = ['To Do', 'Open'];
+    var OPTIONS = {
+      COLUMNS : 2,
+      MOBILE_COLUMNS : 1,
+      LABELS_TO_LOAD : ['TT']
+    };
+  }
+  else{
     var AVIATEAM  = ['alexey.sutiagin','ek','fedor.shumov','aleksandr.gladkikh','andrey.ivanov','anton.ipatov', 'evgeniy.petrov',
                      'Ango','alexander.litvinov','andrey.plotnikov','andrey.iliopulo','alexander.neyasov','Yury.Kocharyan',
                      'konstantin.kalinin','danila.dergachev', 'dmitry.zharsky', 'alexander.ryzhikov', 'vadim.kudryavtsev', 'pavel.kilin', 'ruslan.ismagilov', 'pavel.vlasov', 'eduard.gataullin', 'vladislav.kolesnikov'];
@@ -209,122 +333,6 @@
       // SHOW_DUEDATE_PLUS_TIMESPEND : true,
       REVIEWERS : AVIATEAM
     };
-  }
-  else if(team === 'devops'){
-    var VIEWTEAM  = ['melnik', 'eth', 'dmitry.shmelev'];
-    var LEADLIMIT = 20;
-    var DEVLIMIT  = 10;
-
-    BLOCKS = [
-    { login : 'melnik', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : LEADLIMIT},
-    { projects : ['SRV'], statuses : ['Code Review'], title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Code Review'},
-
-    { login : 'eth', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
-    { projects : ['SRV'], statuses : ['Test ready'], title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Test Ready'},
-
-    { login : 'dmitry.shmelev', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
-    { projects : ['SRV'], statuses : ['Merge ready'], title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Merge Ready'},
-
-    { skip : 1},
-    { projects : ['SRV'], statuses : ['Done'], title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Done', sort_by : 'updated', limit : 25 },
-    ];
-
-    var STATUSES_TO_LOAD = ['!Closed', '!Rejected'];
-    var OPTIONS = {
-      COLUMNS : 2,
-      MOBILE_COLUMNS : 1,
-      MOBILE_BLOCKS_SORTER : 'project_attribute'
-    };
-  }
-  else if(team === 'pm'){
-    var VIEWTEAM  = ['evgeny.bush', 'rostislav.palchun', 'valentin.kachanov', 'leonid.riaboshtan',
-      'nikolay.malikov', 'armen.dzhanumov', 'alexander.bezhan', 'timur.danilov', 'dmitry.rumyantsev',
-      'sergey.mashkov', 'maxim.azarov', 'andrey.ivanov', 'maria.polikarpova', 'artur.bolshakov'];
-
-    var PMLIMIT   = Infinity;
-    var sorting_order = 'duedate_priority';
-
-    BLOCKS = [
-    { login : 'rostislav.palchun',  title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
-    { login : 'valentin.kachanov',  title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
-    { login : 'alexander.bezhan',   title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
-    { login : 'armen.dzhanumov',    title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
-    { login : 'leonid.riaboshtan',  title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
-    { login : 'nikolay.malikov',    title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
-    { login : 'timur.danilov',      title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
-    { login : 'dmitry.rumyantsev',  title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
-    { login : 'sergey.mashkov',     title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
-    { login : 'maxim.azarov',       title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
-    { login : 'andrey.ivanov',      title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
-    { login : 'maria.polikarpova',  title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
-    { login : 'artur.bolshakov',    title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
-    { title : 'TODO', labels : ['PM-Planned'], title_link : LABELS_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order }
-    ];
-
-    var STATUSES_TO_LOAD = ['!Closed', '!Rejected', '!Done'];
-    var OPTIONS = {
-      COLUMNS : 2,
-      MOBILE_COLUMNS : 1,
-      MOBILE_BLOCKS_SORTER: 'project_attribute',
-      LOGIN_KEY_FIELDNAME : 'customfield_10201',
-      LOGIN_KEY_CONDTIONS : 'PM',
-      SHOW_DUEDATE_INSTEAD_TIMESPEND : true,
-      LABELS_TO_LOAD : ['PM-Planned'],
-      LABELS_MODE : 'OR'
-    };
-  }
-  else if(team === 'pm2'){
-    var VIEWTEAM  = [ 'nikolay.malikov' ];
-    var PMLIMIT   = Infinity;
-    var sorting_order = 'duedate_priority';
-
-    BLOCKS = [
-    { login : 'nikolay.malikov',  title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
-    { title : 'Peter Kutis', labels : ['PK'], title_link : LABELS_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order }
-    ];
-
-    var STATUSES_TO_LOAD = ['!Closed', '!Rejected', '!Done'];
-    var OPTIONS = {
-      COLUMNS : 2,
-      MOBILE_COLUMNS : 1,
-      MOBILE_BLOCKS_SORTER: 'project_attribute',
-      LOGIN_KEY_FIELDNAME : 'customfield_10200',
-      LOGIN_KEY_CONDTIONS : 'Stakeholder',
-      SHOW_DUEDATE_INSTEAD_TIMESPEND : true,
-      LABELS_TO_LOAD : ['PK'],
-      LABELS_MODE : 'OR'
-    };
-  }
-  else if(team === 'roadmap'){
-    var VIEWTEAM  = ['mikhail.sokolov', 'konstantin.mamonov', 'leonid.riaboshtan', 'konstantin.zubkov', 'kim', 'max.karaush', 'dmitry.kayutin', 'alexey.lyashchenko', 'vadim.kudelko'];
-
-    var SVLIMIT   = Infinity;
-    var sorting_order = 'duedate_priority';
-
-    BLOCKS = [
-    { login : 'mikhail.sokolov',   title_link : USER_LINK, task_links : TASK_LINK, statuses : SV_TASK_STATUSES, limit : SVLIMIT, sort_by : sorting_order },
-    { login : 'konstantin.mamonov',title_link : USER_LINK, task_links : TASK_LINK, statuses : SV_TASK_STATUSES, limit : SVLIMIT, sort_by : sorting_order },
-    { login : 'leonid.riaboshtan', title_link : USER_LINK, task_links : TASK_LINK, statuses : SV_TASK_STATUSES, limit : SVLIMIT, sort_by : sorting_order },
-    { login : 'konstantin.zubkov', title_link : USER_LINK, task_links : TASK_LINK, statuses : SV_TASK_STATUSES, limit : SVLIMIT, sort_by : sorting_order },
-    { login : 'kim',               title_link : USER_LINK, task_links : TASK_LINK, statuses : SV_TASK_STATUSES, limit : SVLIMIT, sort_by : sorting_order },
-    { login : 'max.karaush',       title_link : USER_LINK, task_links : TASK_LINK, statuses : SV_TASK_STATUSES, limit : SVLIMIT, sort_by : sorting_order },
-    { login : 'dmitry.kayutin',    title_link : USER_LINK, task_links : TASK_LINK, statuses : SV_TASK_STATUSES, limit : SVLIMIT, sort_by : sorting_order },
-    { login : 'alexey.lyashchenko',title_link : USER_LINK, task_links : TASK_LINK, statuses : SV_TASK_STATUSES, limit : SVLIMIT, sort_by : sorting_order },
-    { login : 'vadim.kudelko',     title_link : USER_LINK, task_links : TASK_LINK, statuses : SV_TASK_STATUSES, limit : SVLIMIT, sort_by : sorting_order }
-    ];
-
-    var STATUSES_TO_LOAD = ['!Closed', '!Rejected', '!Done'];
-    var OPTIONS = {
-      COLUMNS : 2,
-      MOBILE_COLUMNS : 1,
-      MOBILE_BLOCKS_SORTER: 'project_attribute',
-      LOGIN_KEY_FIELDNAME : 'customfield_10900', // supervisor
-      LOGIN_KEY_CONDTIONS : 'Supervisor',
-      SHOW_DUEDATE_INSTEAD_TIMESPEND : true
-    };
-  }
-  else{
-    throw 'unknown team:' + team;
   }
 
   var task_engine = new window.TaskTable(VIEWTEAM, BLOCKS, STATUSES_TO_LOAD, document.getElementById('todo_block'), OPTIONS);

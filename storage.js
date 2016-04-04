@@ -72,6 +72,13 @@
     var issue_types    = filter_options.types;
     var labels         = filter_options.labels;
 
+    var issue_types_neg = [];
+    for(var i in issue_types){
+      if(issue_types[i][0] === '!'){
+        issue_types_neg.push(issue_types[i].slice(1));
+      }
+    }
+
     for(var i = 0; i < this.tasks.length; i++){
       var task = this.tasks[i];
 
@@ -101,7 +108,10 @@
 
       // filter by issue
       if(issue_types){
-        if(issue_types.indexOf(task.type) === -1){
+        if(issue_types_neg.length && issue_types_neg.indexOf(task.type) === -1){
+          // not permitted => ok
+        }
+        else if(issue_types.indexOf(task.type) === -1){
           continue;
         }
       }

@@ -54,15 +54,15 @@
     var SUBTASK_QUERY = '/monitor/jira/api/2/issue/{key}?fields=timespent';
     var JIRA_QUERY = '/monitor/jira/api/2/search?maxResults={LOAD_LIMIT}' +
       '&fields=customfield_10300,customfield_10024,key,{ASSIGNEE},description,status,labels,priority,project,subtasks,summary,timespent,updated,created,issuetype,duedate' +
-      '&jql=({STATUSES}) AND {ASSIGNEES} {PROJECT} {LABELS} ORDER BY {ORDERBY}';
+      '&jql=({STATUSES}) {ASSIGNEES} {PROJECT} {ISSUE_TYPE} {LABELS} ORDER BY {ORDERBY}';
 
     var statuses_have_status_not  = false;
     var statuses = STATUSES_TO_LOAD.map(function(s){
       if(s[0] === '!'){
         statuses_have_status_not = true;
-        return 'status != ' + s.slice(1);
+        return 'status != "' + s.slice(1) + '"';
       }
-      return 'status = ' + s;
+      return 'status = "' + s  + '"';
     });
 
     statuses = statuses.join(statuses_have_status_not ? ' AND ' : ' OR ');
@@ -80,16 +80,20 @@
     var assignee_field_string = OPTIONS.LOGIN_KEY_FIELDNAME || 'assignee';
     var assignee_conditions_string = OPTIONS.LOGIN_KEY_CONDTIONS || 'assignee';
     var devteam = ' is Empty';
-    if(DEVTEAM.length){
+    if(DEVTEAM instanceof Array && DEVTEAM.length){
       devteam = [' IN (', ')'].join(DEVTEAM.join(','));
     }
+
     var reviewrs = '';
 
     if(OPTIONS.REVIEWERS){
       reviewrs = [' OR Reviewer IN (', ')'].join(OPTIONS.REVIEWERS.join(','));
     }
 
-    var assigness = '(' + assignee_conditions_string + devteam + reviewrs + ')';
+    var assigness = ' AND (' + assignee_conditions_string + devteam + reviewrs + ')';
+    if(DEVTEAM === 'all'){
+      assigness = '';
+    }
 
     var labels = '';
     if(OPTIONS.LABELS_TO_LOAD){
@@ -97,9 +101,13 @@
       labels = ' ' + labels_mode + ' labels in (' + OPTIONS.LABELS_TO_LOAD.join(',') + ') ';
     }
 
+    var issuetype = ''
+    if(OPTIONS.ISSUE_TYPES_TO_LOAD){
+      issuetype = ' AND issuetype IN (' + OPTIONS.ISSUE_TYPES_TO_LOAD.join(',') + ') ';
+    }
+
     // replace vars in templae
     var query = JIRA_QUERY
-      .replace('{DEVTEAM}', devteam)
       .replace('{STATUSES}', statuses)
       .replace('{ORDERBY}', orderby)
       .replace('{LOAD_LIMIT}', OPTIONS.LOAD_LIMIT || 2000)
@@ -107,6 +115,7 @@
       .replace('{ASSIGNEE}', assignee_field_string)
       .replace('{ASSIGNEES}', assigness)
       .replace('{LABELS}', labels)
+      .replace('{ISSUE_TYPE}', issuetype)
 
     var processResults = function(data){
       for(var idx = 0; idx < data.issues.length; idx++){
