@@ -67,7 +67,8 @@
     var DEVTEAM = DEVTEAM_DONE = [
       'melnik',
       'eth',
-      'dmitry.shmelev'
+      'dmitry.shmelev',
+      'vladimir.karnushin'
     ];
 
     var DEVTEAM_TODO = DEVTEAM_DONE;
@@ -166,7 +167,7 @@
 
   var utils  = new window.Utils();
   var params = utils.getQueryString();
-  var time_to_look   = +params.timespent || +params.timespent_mobile || 7;
+  var time_to_look   = +params.timespent || +params.timespent_mobile || +params.timespent_devops || 7;
 
   var timespent = new window.TaskTimespend(DEVTEAM, time_to_look, document.getElementById('timespend-left'), OPTIONS_TIMESPENT);
   var todo = new window.TaskTable(DEVTEAM_TODO, BLOCKS_TODO, STATUSES_TO_LOAD_TODO, document.getElementById('timespend-bottom'), OPTIONS_TODO);

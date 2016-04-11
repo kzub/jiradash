@@ -11,7 +11,7 @@
   var LABELS_LINK = 'https://onetwotripdev.atlassian.net/issues/?jql=({labels}) and ({statuses}) ORDER BY priority,created ASC';
 
   if(~document.location.href.indexOf('devops')){
-    var VIEWTEAM  = ['melnik', 'eth', 'dmitry.shmelev'];
+    var VIEWTEAM  = ['melnik', 'eth', 'dmitry.shmelev', 'vladimir.karnushin'];
     var LEADLIMIT = 20;
     var DEVLIMIT  = 10;
 
@@ -25,7 +25,7 @@
     { login : 'dmitry.shmelev', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
     { projects : ['SRV'], statuses : ['Merge ready'], title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Merge Ready'},
 
-    { skip : 1},
+    { login : 'vladimir.karnushin', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT},
     { projects : ['SRV'], statuses : ['Done'], title_link : STATUS_LINK, task_links : TASK_LINK, title : 'Done', sort_by : 'updated', limit : 25 },
     ];
 
@@ -34,6 +34,28 @@
       COLUMNS : 2,
       MOBILE_COLUMNS : 1,
       MOBILE_BLOCKS_SORTER : 'project_attribute'
+    };
+  }
+  else if(~document.location.href.indexOf('pm2')){
+    var VIEWTEAM  = [ 'nikolay.malikov' ];
+    var PMLIMIT   = Infinity;
+    var sorting_order = 'duedate_priority';
+
+    BLOCKS = [
+    { login : 'nikolay.malikov',  title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
+    { title : 'Peter Kutis', labels : ['PK'], title_link : LABELS_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order }
+    ];
+
+    var STATUSES_TO_LOAD = ['!Closed', '!Rejected', '!Done'];
+    var OPTIONS = {
+      COLUMNS : 2,
+      MOBILE_COLUMNS : 1,
+      MOBILE_BLOCKS_SORTER: 'project_attribute',
+      LOGIN_KEY_FIELDNAME : 'customfield_10200',
+      LOGIN_KEY_CONDTIONS : 'Stakeholder',
+      SHOW_DUEDATE_INSTEAD_TIMESPEND : true,
+      LABELS_TO_LOAD : ['PK'],
+      LABELS_MODE : 'OR'
     };
   }
   else if(~document.location.href.indexOf('pm')){
@@ -70,28 +92,6 @@
       LOGIN_KEY_CONDTIONS : 'PM',
       SHOW_DUEDATE_INSTEAD_TIMESPEND : true,
       LABELS_TO_LOAD : ['PM-Planned'],
-      LABELS_MODE : 'OR'
-    };
-  }
-  else if(~document.location.href.indexOf('pm2')){
-    var VIEWTEAM  = [ 'nikolay.malikov' ];
-    var PMLIMIT   = Infinity;
-    var sorting_order = 'duedate_priority';
-
-    BLOCKS = [
-    { login : 'nikolay.malikov',  title_link : USER_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order },
-    { title : 'Peter Kutis', labels : ['PK'], title_link : LABELS_LINK, task_links : TASK_LINK, statuses : PM_TASK_STATUSES, limit : PMLIMIT, sort_by : sorting_order }
-    ];
-
-    var STATUSES_TO_LOAD = ['!Closed', '!Rejected', '!Done'];
-    var OPTIONS = {
-      COLUMNS : 2,
-      MOBILE_COLUMNS : 1,
-      MOBILE_BLOCKS_SORTER: 'project_attribute',
-      LOGIN_KEY_FIELDNAME : 'customfield_10200',
-      LOGIN_KEY_CONDTIONS : 'Stakeholder',
-      SHOW_DUEDATE_INSTEAD_TIMESPEND : true,
-      LABELS_TO_LOAD : ['PK'],
       LABELS_MODE : 'OR'
     };
   }
