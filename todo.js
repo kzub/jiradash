@@ -148,7 +148,7 @@
   }
   else{
     var AVIATEAM  = ['alexey.sutiagin','ek','fedor.shumov','aleksandr.gladkikh','andrey.ivanov','anton.ipatov', 'evgeniy.petrov',
-                     'Ango','alexander.litvinov','andrey.plotnikov','andrey.iliopulo','alexander.neyasov','Yury.Kocharyan',
+                     'Ango','alexander.litvinov','andrey.plotnikov','andrey.iliopulo','andrey.kulpin','Yury.Kocharyan',
                      'konstantin.kalinin','danila.dergachev', 'dmitry.zharsky', 'alexander.ryzhikov', 'vadim.kudryavtsev', 'vadik.shilov', 'ruslan.ismagilov', 'pavel.vlasov', 'eduard.gataullin', 'vladislav.kolesnikov'];
     var VIEWTEAM  = ['dmitrii.loskutov', 'andrey.lakotko', 'konstantin.zubkov', 'leonid.riaboshtan'].concat(AVIATEAM);
 
@@ -183,7 +183,7 @@
       },
       {
         fields : {
-          login  : ['aleksandr.gladkikh', 'alexander.neyasov', 'Yury.Kocharyan', 'alexander.litvinov', 'danila.dergachev', 'ruslan.ismagilov', 'evgeniy.petrov'],
+          login  : ['aleksandr.gladkikh', 'andrey.kulpin', 'Yury.Kocharyan', 'alexander.litvinov', 'danila.dergachev', 'ruslan.ismagilov', 'evgeniy.petrov'],
           status : ['Code Review', 'Resolved']
         },
         change_fields : {
@@ -263,7 +263,7 @@
     { login : 'vadim.kudryavtsev',    title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order },
     { skip : 1 },
 
-    { login : 'alexander.neyasov',    title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT2, sort_by : sorting_order},
+    { login : 'andrey.kulpin',    title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT2, sort_by : sorting_order},
     { login : 'eduard.gataullin',     title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT2, sort_by : sorting_order},
     { skip : 1 },
     { login : 'vladislav.kolesnikov', title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order },
@@ -284,7 +284,7 @@
         'alexander.litvinov',
         'danila.dergachev',
         'ruslan.ismagilov',
-        'alexander.neyasov',
+        'andrey.kulpin',
         'aleksandr.gladkikh',
         'evgeniy.petrov',
 
@@ -317,7 +317,7 @@
         'alexander.litvinov', 'andrey.plotnikov',
         'danila.dergachev', '-',
         'ruslan.ismagilov', 'konstantin.kalinin',
-        'alexander.neyasov', 'vadik.shilov',
+        'andrey.kulpin', 'vadik.shilov',
         'aleksandr.gladkikh', 'fedor.shumov',
         'evgeniy.petrov', 'Ango',
         '-', 'dmitry.zharsky',

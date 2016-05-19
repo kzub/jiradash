@@ -119,7 +119,7 @@
   }
   else /* AVIA TEAM */ {
     var DEVTEAM  = [
-      'alexey.sutiagin','aleksandr.gladkikh','alexander.litvinov','alexander.neyasov','Yury.Kocharyan', 'danila.dergachev', 'ruslan.ismagilov', 'evgeniy.petrov',
+      'alexey.sutiagin','aleksandr.gladkikh','alexander.litvinov','andrey.kulpin','Yury.Kocharyan', 'danila.dergachev', 'ruslan.ismagilov', 'evgeniy.petrov',
       'ek','andrey.ivanov','anton.ipatov','andrey.plotnikov',
       'fedor.shumov','andrey.iliopulo', 'dmitry.zharsky', 'alexander.ryzhikov', 'vadim.kudryavtsev', 'vladislav.kolesnikov',
       'konstantin.kalinin', 'vadik.shilov', 'andrey.lakotko', 'pavel.vlasov','dmitrii.loskutov'
