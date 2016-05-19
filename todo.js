@@ -149,7 +149,7 @@
   else{
     var AVIATEAM  = ['alexey.sutiagin','ek','fedor.shumov','aleksandr.gladkikh','andrey.ivanov','anton.ipatov', 'evgeniy.petrov',
                      'Ango','alexander.litvinov','andrey.plotnikov','andrey.iliopulo','alexander.neyasov','Yury.Kocharyan',
-                     'konstantin.kalinin','danila.dergachev', 'dmitry.zharsky', 'alexander.ryzhikov', 'vadim.kudryavtsev', 'pavel.kilin', 'ruslan.ismagilov', 'pavel.vlasov', 'eduard.gataullin', 'vladislav.kolesnikov'];
+                     'konstantin.kalinin','danila.dergachev', 'dmitry.zharsky', 'alexander.ryzhikov', 'vadim.kudryavtsev', 'vadik.shilov', 'ruslan.ismagilov', 'pavel.vlasov', 'eduard.gataullin', 'vladislav.kolesnikov'];
     var VIEWTEAM  = ['dmitrii.loskutov', 'andrey.lakotko', 'konstantin.zubkov', 'leonid.riaboshtan'].concat(AVIATEAM);
 
     var LEADLIMIT = 20;
@@ -209,7 +209,7 @@
       },
       {
         fields : {
-          login  : ['pavel.kilin'],
+          login  : ['vadik.shilov'],
           status : ['Code Review', 'Resolved']
         },
         change_fields : {
@@ -246,7 +246,7 @@
     { login : 'Yury.Kocharyan',       title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order},
     { login : 'andrey.ivanov',        title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order},
     { login : 'andrey.iliopulo',      title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order},
-    { login : 'pavel.kilin',          title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order},
+    { login : 'vadik.shilov',          title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order},
 
     { login : 'danila.dergachev',     title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT2, sort_by : sorting_order},
     { login : 'anton.ipatov',         title_link : USER_LINK, task_links : TASK_LINK, statuses : TASK_STATUSES, limit : DEVLIMIT, sort_by : sorting_order},
@@ -294,7 +294,7 @@
         'andrey.plotnikov',
         'eduard.gataullin',
         'konstantin.kalinin',
-        'pavel.kilin',
+        'vadik.shilov',
         'pavel.vlasov',
 
         'fedor.shumov',
@@ -317,7 +317,7 @@
         'alexander.litvinov', 'andrey.plotnikov',
         'danila.dergachev', '-',
         'ruslan.ismagilov', 'konstantin.kalinin',
-        'alexander.neyasov', 'pavel.kilin',
+        'alexander.neyasov', 'vadik.shilov',
         'aleksandr.gladkikh', 'fedor.shumov',
         'evgeniy.petrov', 'Ango',
         '-', 'dmitry.zharsky',

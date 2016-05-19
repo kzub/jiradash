@@ -122,7 +122,7 @@
       'alexey.sutiagin','aleksandr.gladkikh','alexander.litvinov','alexander.neyasov','Yury.Kocharyan', 'danila.dergachev', 'ruslan.ismagilov', 'evgeniy.petrov',
       'ek','andrey.ivanov','anton.ipatov','andrey.plotnikov',
       'fedor.shumov','andrey.iliopulo', 'dmitry.zharsky', 'alexander.ryzhikov', 'vadim.kudryavtsev', 'vladislav.kolesnikov',
-      'konstantin.kalinin', 'pavel.kilin', 'andrey.lakotko', 'pavel.vlasov','dmitrii.loskutov'
+      'konstantin.kalinin', 'vadik.shilov', 'andrey.lakotko', 'pavel.vlasov','dmitrii.loskutov'
     ];
 
     var AVIATEAM = ['konstantin.zubkov', 'leonid.riaboshtan'].concat(DEVTEAM);
