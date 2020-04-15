@@ -1,0 +1,25 @@
+server {
+	listen 80;
+
+	ssi on;
+
+	server_name monitor.dev;
+
+	sendfile off;
+	root /usr/share/nginx/html;
+	
+	index index.html index.htm;
+
+	location /monitor/jira {
+		proxy_cache my_zone;
+		proxy_cache_valid 200 302 120m;
+
+		proxy_ignore_headers 'Set-Cookie';
+		proxy_ignore_headers 'Expires';
+		proxy_ignore_headers 'Cache-Control';
+
+		proxy_set_header 'Authorization' 'Basic ${JIRA_AUTH}';
+		proxy_set_header 'Content-Type' 'application/json';
+		proxy_pass https://onetwotripdev.atlassian.net/rest;
+	}
+}

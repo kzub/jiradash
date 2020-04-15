@@ -6,14 +6,13 @@
   var URL_ICON_LOADING = 'https://s3.eu-central-1.amazonaws.com/ott-static/images/jira/ajax-loader.gif';
   var JIRA_QUERY = '/monitor/jira/api/2/search?maxResults=2000' +
     '&fields=key,description,project,priority,worklog,summary,timespent,updated' +
-    '&jql=(worklogDate >= -%DAYS_TO_ANALIZE%d) AND worklogAuthor IN (%DEVTEAM%) ORDER BY updated';
+    '&jql=(worklogDate >= -%DAYS_TO_ANALIZE%d) AND worklogAuthor = "%DEVELOPER%" ORDER BY updated';
 
   var TASK_LINK = 'https://onetwotripdev.atlassian.net/browse/{key}';
   var WORKLOG_QUERY = '/monitor/jira/api/2/issue/{key}/worklog';
 
   function ENGINE(DEVTEAM, DAYS_TO_ANALIZE, MAIN_CONTAINER, OPTIONS){
     var self = this;
-    var initialized;
     var storage = new window.TaskStorage();
     var layout  = new window.TaskLayout(OPTIONS);
     var network = new window.Network();
@@ -32,7 +31,7 @@
         var worklogs = issue.get('fields.worklog.worklogs');
 
         // if worklog doesn't fit load it
-        if(worklog_info.total > worklog_info.maxResults){
+        if(worklog_info.total > worklog_info.maxResults && !data.worklogRequest){
           loading_queue++;
           // set task to load worklog detail
           (function(issue_pointer){
@@ -43,7 +42,7 @@
               // update worklog
               issue_pointer.fields.worklog = results[0]
               // and reprocess it
-              processResults({ issues : [issue_pointer] }, callback);
+              processResults({ issues : [issue_pointer], worklogRequest: true }, callback);
             });
           })(data.issues[idx]);
           continue;
@@ -53,17 +52,22 @@
           var worklog = new utils.Extractor(worklogs[idx2]);
 
           var displayName = worklog.get('author.displayName');
-          var login       = worklog.get('author.name');
+          var login       = worklog.get('author.displayName'); // author.login перестал существовать, author.accountId; - плохо работает, если нету ворклога, будет uuid на дашборде
           var avatar      = worklog.get('author.avatarUrls.48x48');
           var time        = utils.getTimeFormat(worklog.get('started')); // could be used 'started' ot 'created'
-          // skip old work log tracks
+
+          // skip not releavnt worklog's
           if(time < timeLimit){
+            continue;
+          }
+          if(DEVTEAM.indexOf(login) === -1){
             continue;
           }
 
           storage.addPerson(login, displayName, avatar);
 
           var task = {
+            id            : worklog.get('id'),
             login         : login,
             priorityIcon  : issue.get('fields.priority.iconUrl'),
             key           : issue.get('key'),
@@ -73,6 +77,7 @@
             project       : issue.get('fields.project.key'),
             updated       : utils.getTimeFormat(issue.get('fields.updated')),
             timespent     : worklog.get('timeSpentSeconds')*1000 /* in miliseconds */,
+            timespentTotal: issue.get('fields.timespent')*1000 /* in miliseconds */,
             time          : time
           };
 
@@ -96,10 +101,10 @@
       var bar_margin = bar_height / 7;
       var top_margin = 22;
       var bottom_margin = 4;
-      var left_margin = 13 * DEVTEAM.reduce(function(a, b){ return a.length >= b.length ? a.length : b.length; }); // max name length
-      var right_margin = left_margin;
+      var left_margin = 0; // DEVTEAM.reduce(function(a, b){ return ((a|0) >= b.length) || (b.length > 15) ? a|0 : b.length; }); // max name length
+      var right_margin = 160; // left_margin;
       var max_time = 8 /* 5 work days in a week */ * (DAYS_TO_ANALIZE - (2*(DAYS_TO_ANALIZE/7|0)));
-      var DAY_PERCENT_TO_SHOW_UP_TASK_NAME = 67;
+      var DAY_PERCENT_TO_SHOW_UP_TASK_NAME = 50;
       var HOUR = 3600000;
       var shrug_koef = 0.8;
 
@@ -123,11 +128,12 @@
       });
 
       var task_coloring_helper = d3.scale.linear()
-        .domain([HOUR, 16*HOUR, 40*HOUR])
+        .domain([HOUR, 25*HOUR, 50*HOUR])
         .range(['green', 'orange', 'red']);
 
       var person_color2 = function(task){
-        return task_coloring_helper(task_spent_info[[task.login, task.key].join()].timespent);
+        var elm = task_spent_info[[task.login, task.key].join()];
+        return task_coloring_helper(elm.timespentTotal);
       };
 
       var task_workday_percent = function(task){
@@ -135,7 +141,9 @@
       };
 
       var task_get_summary = function(task){
-        return [task.key, task.summary, utils.timestampToHours(task.timespent, 'round') + 'h', '\n' + task.comment].join(' ');
+        return [task.key, task.summary,
+        utils.timestampToHours(task.timespent, 'round') + 'h (' + utils.timestampToHours(task.timespentTotal, 'round') + 'h)',
+        '\n' + task.comment].join(' ');
       };
 
       var x_v2 = d3.scale.linear()
@@ -168,24 +176,6 @@
           .attr("transform", "translate("+dates_x_shift+"," + -top_margin + ")")
           .call(xAxis);
 
-      // DRAW NAMES (left)
-      svg.append("g")
-        .attr("transform", "translate(-10, 0)")
-        .selectAll(".names")
-        .data(people)
-        .enter()
-      .append("text")
-        .attr("x", function(task, i, p){
-          return 0;
-        })
-        .attr("y", function(d, i, p) {
-          return height - y(i);
-        })
-        .text(function(p){
-          return p.displayName
-        })
-        .attr('class', 'text-timespent-names');
-
       // DRAW NAMES (right)
       svg.append("g")
         .attr("transform", "translate(-10, 0)")
@@ -215,9 +205,14 @@
         .attr("y", function(person, i) {
           return height - y(i) + bar_height/2;
         })
-        .attr("height", 2/*bar_height*/)
+        .attr("height", function(d){
+          return 2;
+        })
         .attr("width", x_v2(ts_max))
         .attr('class', function(d, i){
+          if(!d.login){
+            return 'man-timespent-background3';
+          }
           return i % 2 === 0 ? 'man-timespent-background' : 'man-timespent-background2';
         })
 
@@ -339,32 +334,60 @@
     };
 
     this.process = function(callback){
-      if(!initialized){
-        self.drawMsg('loading...');
+      drawlib.showLoader(true);
+      storage.clear();
+      var updaterId = setInterval(function(){
+        self.clearScreen();
+        drawBlocksTable();
+      }, 1000);
+
+      var queries = [];
+      for (var idx in DEVTEAM) {
+        var name = DEVTEAM[idx];
+        if (!name) {
+          continue;
+        }
+        var query = JIRA_QUERY
+          .replace('%DEVELOPER%', name)
+          .replace('%DAYS_TO_ANALIZE%', DAYS_TO_ANALIZE);
+        queries.push(query);
       }
 
-      // replace vars in templae
-      var query = JIRA_QUERY
-        .replace('%DEVTEAM%', DEVTEAM.join(','))
-        .replace('%DAYS_TO_ANALIZE%', DAYS_TO_ANALIZE);
+      var stop;
+      var totalRequests = queries.length;
+      for (var idx2 in queries) {
+        setTimeout(networkRequest([queries[idx2]]), 100*idx2);
+      }
 
-      network.load([query], function(err, data){
-        initialized = true;
+      function networkRequest(q){
+        return function(){
+          network.load([q], queryResponseHandler);
+        }
+      }
+
+      function queryResponseHandler(err, data){
+        if(stop){ return; }
+        totalRequests--;
 
         if(err){
+          stop = true;
           self.drawMsg([err.status, err.statusText].join(' '));
-          callback(err);
+          callback && callback(err);
+          return;
         }
-        else if(data){
-          storage.clear();
 
+        if(data){
           processResults(data[0], function(){
-            self.clearScreen();
-            drawBlocksTable();
-            callback(null, data);
+            if(totalRequests === 0){
+              clearInterval(updaterId);
+              drawlib.showLoader(false);
+              self.clearScreen();
+              drawBlocksTable();
+              callback && callback();
+            }
           });
         }
-      });
+      }
     };
   }
 

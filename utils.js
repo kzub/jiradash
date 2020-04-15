@@ -5,7 +5,7 @@
 
   var PRIORITY_RANK = {
     'ASAP'     : 0,
-    'Critical' : 1,
+    'Very Very High' : 1,
     'Very High': 2,
     'High'     : 3,
     'Normal'   : 4
@@ -311,10 +311,39 @@
       return is_task_a_duedate_older_than_b(a, b);
     };
 
-    this.task_sorter_duedate_priority_reviewer_first = function(a, b){
-      debugger;
+    var isTaskOpen = function(task){
+      return ['Open', 'To Do'].indexOf(task.status) > -1;
+    };
 
-      return is_task_a_duedate_older_than_b(a, b);
+    var compare_status = function(a, b){
+      if(isTaskOpen(a) === isTaskOpen(b) && isTaskOpen(b) === true){
+        return 0;
+      }
+      else if(isTaskOpen(a)){
+        return +1;
+      }
+      else if(isTaskOpen(b)){
+        return -1;
+      }
+
+      return 0;
+    };
+
+    this.task_sorter_review_inprogress_created = function(a, b){
+      if(a.status === 'In Progress' || b.status === 'In Progress'){
+        return a.status === 'In Progress' ? -1 : +1;
+      }
+
+      var result = compare_status(a, b);
+      if(result !== 0){
+        return result;
+      }
+
+      if(a.priority === b.priority){
+        return self.task_sorter_created_reverse_priority(a, b);
+      }
+
+      return a.priority - b.priority;
     };
 
     this.task_sorter_updated_reverse = function(a, b){

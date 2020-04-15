@@ -83,6 +83,11 @@
     this.paper = function(c){
       return new SVG(c);
     };
+
+    this.showLoader = function(visible) {
+      var l = document.getElementsByClassName('loader');
+      l[0].style.display = visible ? "block" : "none";
+    }
   }
 
   window.DrawLib = LIB;

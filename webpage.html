@@ -1,0 +1,108 @@
+<!DOCTYPE html> 
+<html>
+<body> 
+
+<script>
+var POWER = [
+	[0, 0],
+	[40, 60],
+	[60, 60],
+	[60, 40],
+	[100, 40],
+	[100, 0] 
+];
+
+var Create = {};
+
+function request(path, callback){
+	var req = new XMLHttpRequest();	
+	req.open('GET', '/' + path)
+	req.send();
+	req.onreadystatechange = function() {
+  	if(req.readyState == 4 && req.status == 200) {
+  		if(!callback){ return; }
+    	var obj = JSON.parse(req.responseText);
+    	callback(obj);
+  	}
+	};
+}
+
+function getProc(name){
+	return function(states){
+		if(!(states instanceof Array)){
+			Create[name](states);
+			return;
+		}
+		for(var i = 0; i < states.length; i++){
+			Create[name](states[i]);
+		}
+	};
+}
+
+request('info',  getProc('info'));
+
+Create.power = function(state){
+	var elm = document.createElement('input');
+	elm.type = 'range';
+	elm.min = 0; elm.max = POWER.length - 1;
+	elm.value = POWER.findIndex(function(e){ return e[0] == state.on && e[1] == state.off });
+
+	var label = document.createElement('span');
+	label.innerHTML = 'POWER ID:' + state.id;
+	document.body.appendChild(label);
+	document.body.appendChild(elm);
+	document.body.appendChild(document.createElement('br'));
+
+	elm.oninput = function (ev){
+		var on  = POWER[ev.target.value][0];
+		var off = POWER[ev.target.value][1];
+		var url = 'power?id=' + state.id + '&on=' + on + '&off=' + off;
+		request(url);
+	};
+}
+
+Create.relay = function(state){
+	var elm = document.createElement('input');
+	elm.type = 'checkbox';
+	elm.checked = state.state == 'on' ? true : false;
+
+	var label = document.createElement('span');
+	label.innerHTML = 'RELAY ID:' + state.id;
+	document.body.appendChild(label);
+	document.body.appendChild(elm);
+	document.body.appendChild(document.createElement('br'));
+
+	elm.onchange = function (ev){
+		var checked = ev.srcElement.checked ? 'on' : 'off';
+		var url = 'relay?id=' + state.id + '&state=' + checked;
+		request(url);
+	};
+}
+
+Create.temp = function(state){
+	var elm = document.createElement('div');
+	elm.innerHTML = 'TEMP ID:' + state.id + ' T:' + state.t/10;
+
+	document.body.appendChild(elm);
+}
+
+Create.volt = function(state){
+	var elm = document.createElement('div');
+	elm.innerHTML = 'VOLT ID:' + state.id + ' ON:' + state.on;
+
+	document.body.appendChild(elm);
+}
+
+Create.info = function(state){
+	var elm = document.createElement('div');
+	elm.innerHTML = 'INFO:' + JSON.stringify(state);
+
+	document.body.appendChild(elm);
+
+	state.devices.forEach(function(device){
+		request(device, getProc(device));
+	});
+}
+</script>  
+</body>
+</html>

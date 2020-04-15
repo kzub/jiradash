@@ -4,6 +4,11 @@
 
 .task-table-list {
   position: absolute;
+  margin-bottom: 30px;
+}
+
+#todo_block2 {
+  left: 50%;
 }
 
 .paper {
@@ -32,11 +37,11 @@
 }
 
 .reopened {
-  fill : #FF00FF;
+  fill : #FF44FF;
 }
 
 .wtf {
-  fill : #FF00FF;
+  fill : #FF44FF;
 }
 
 .wbs {
@@ -107,6 +112,12 @@ text {
   font-size: 16px;
 }
 
+.text-hours-warn {
+  fill: cyan !important;
+  text-anchor: end;
+  font-size: 16px;
+}
+
 .text-hours-normal-anchor {
   text-anchor: start !important;
 }
@@ -145,6 +156,10 @@ text {
   /*fill: steelblue;*/
 }
 
+.timeoff-bar {
+  opacity: 0.9;
+}
+
 .axis {
   font: 10px sans-serif;
 }
@@ -158,6 +173,10 @@ text {
 
 .x.axis path {
   display: none;
+}
+
+.man-timespent-background3 {
+    fill : black;
 }
 
 .man-timespent-background2 {
@@ -190,11 +209,22 @@ text {
   font-weight : bold;
 }
 
-.timespend-split-screen {
+#timespend-split-screen {
   /*float: left;*/
   display: -webkit-box;
 }
 .timespend-view {
   /*display: -webkit-box;*/
   display: block;
+}
+
+.loader {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  display: none;
+}
+
+.text-overflow {
+  overflow: hidden;
 }

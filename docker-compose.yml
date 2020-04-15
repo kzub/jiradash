@@ -1,0 +1,20 @@
+version: '2'
+
+volumes:
+  cache:
+    driver: local
+
+services:
+  nginx:
+    image: nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./:/usr/share/nginx/html:ro
+      - ./docker/monitor.template:/etc/nginx/conf.d/monitor.template
+      - ./docker/nginx.conf:/etc/nginx/nginx.conf
+      - cache:/tmp/nginx
+    env_file:
+      - docker/nginx.env
+    domainname: monitor.dev
+    command: /bin/bash -c "envsubst < /etc/nginx/conf.d/monitor.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'" 
